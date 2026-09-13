@@ -1,203 +1,123 @@
-# STM32N6 AI – Model Zoo Deployment
+# STM32N6 AI + USB + Ethernet Project Setup
 
-<img width="798" height="525" alt="Image" src="https://github.com/user-attachments/assets/221e057f-b8b8-4978-bee1-7cc925009b4d" />
+This project combines **STM32N6 AI (Neural-ART/NPU), USB and Ethernet/NetX Duo** on the STM32N6570-DK.
 
-<img width="1020" height="884" alt="Image" src="https://github.com/user-attachments/assets/d05c2f7f-b79a-4371-bc12-f8ad904100da" />
+## 1. Generate the AI Reference Project
 
-
-## Environment
-
-Required tools:
-
-* STM32CubeIDE
-* STM32CubeProgrammer
-* X-CUBE-AI / STEdgeAI Core
-* Python 3.12
-* TensorFlow 2.18
-* STM32AI Model Zoo
-* STM32AI Model Zoo Services
-* Git LFS
-
-Repositories:
+Required repositories:
 
 ```text
 ~/stm32ai-modelzoo
 ~/stm32ai-modelzoo-services
 ```
 
-## 1. Download Model Zoo Models
-
-Model files are managed with Git LFS.
+Download models and initialize the STM32N6 reference project:
 
 ```bash
 cd ~/stm32ai-modelzoo
 git lfs pull
-```
 
-Selected model:
-
-```text
-Face Detection
-└── BlazeFace 128 INT8
-    └── blazeface_front_128_int8.tflite
-```
-
-## 2. Initialize STM32N6 Application
-
-The STM32N6 application is a Git submodule and must be downloaded separately.
-
-```bash
 cd ~/stm32ai-modelzoo-services
 git submodule update --init application_code/face_detection/STM32N6
 ```
 
-Application project:
+Configure:
 
 ```text
-application_code/face_detection/STM32N6/
+face_detection/user_config.yaml
 ```
 
-Model Zoo Services does not generate the complete firmware from scratch. It updates this reference STM32N6 project with model-specific generated files.
-
-## 3. Create Deployment Configuration
-
-Copy the provided example configuration:
-
-```bash
-cd ~/stm32ai-modelzoo-services/face_detection
-cp config_file_examples/deployment_n6_blazeface_config.yaml user_config.yaml
-```
-
-`stm32ai_main.py` uses `user_config.yaml` as its active configuration.
-
-Set the local tool paths:
-
-```yaml
-tools:
-   stedgeai:
-      optimization: balanced
-      on_cloud: False
-      path_to_stedgeai: /home/ck/STEdgeAI/4.0/Utilities/linux/stedgeai
-
-   path_to_cubeIDE: /opt/st/stm32cubeide_2.2.0/stm32cubeide
-```
-
-Deployment target:
-
-```yaml
-deployment:
-  c_project_path: ../application_code/face_detection/STM32N6/
-  IDE: GCC
-  hardware_setup:
-    serie: STM32N6
-    board: STM32N6570-DK
-```
-
-## 4. Generate / Deploy
-
-Run:
+Then generate/deploy:
 
 ```bash
 cd ~/stm32ai-modelzoo-services/face_detection
 python3.12 stm32ai_main.py
 ```
 
-Flow:
+Generated/reference project:
 
 ```text
-Pretrained Model
-      ↓
-Model Zoo Services
-      ↓
-STEdgeAI Core
-      ↓
-Generate Neural-ART / NPU files
-      ↓
-Update STM32N6 C Project
-      ↓
-CubeIDE Build
-      ↓
+/home/ck/stm32ai-modelzoo-services/application_code/face_detection/STM32N6/
+```
+
+## 2. Copy AI Files into Our Project
+
+From the generated STM32N6 reference project, copy the required AI integration files into our project.
+
+Main directories:
+
+```text
+stedgeai-lib/
+Model/
+```
+
+These contain the generated **STAI runtime/network integration, Neural-ART configuration, model files and post-processing support**.
+
+Also copy/adapt the required STM32N6 AI initialization, camera pipeline and external-memory configuration from the reference project.
+
+Runtime flow:
+
+```text
+Camera → DCMIPP → NN Input → stai_network_run()
+       → NN Output → Post-Processing → Application
+```
+
+## 3. Add USB
+
+Enable **USB OTG + USBX CDC ACM** in CubeMX.
+
+USB buffers are placed in the dedicated non-cacheable USB RAM region.
+
+```text
+USB_RAM → 0x341F8000
+```
+
+## 4. Add Ethernet
+
+Enable:
+
+```text
+ETH
+ThreadX
+NetX Duo
+```
+
+Add the STM32N6 Ethernet driver/HAL sources and NetX Duo application files.
+
+Ethernet descriptors and NetX memory are placed in the dedicated Ethernet RAM region.
+
+```text
+ETH_RAM → 0x341EA000
+```
+
+DMA/cache coherency must be handled correctly for Ethernet RX/TX buffers.
+
+## 5. External Memories
+
+The project uses:
+
+```text
+External NOR   → AI/model binaries
+External PSRAM → Camera / large frame buffers
+Internal SRAM  → Application, USB and Ethernet buffers
+```
+
+Required BSP, XSPI, MPU/cache and RIF configuration is based on the working Model Zoo STM32N6 reference project.
+
+## Final Project
+
+```text
 STM32N6570-DK
+│
+├── ThreadX
+├── USBX CDC
+├── NetX Duo / Ethernet
+├── Camera / DCMIPP
+├── Neural-ART NPU
+├── STAI generated model
+├── AI post-processing
+├── External NOR
+└── External PSRAM
 ```
 
-The board is required for the complete deployment process. Model generation and project update occur before the board programming stage.
-
-## 5. Generated STM32 Project
-
-Final generated/reference project:
-
-```text
-~/stm32ai-modelzoo-services/application_code/face_detection/STM32N6/
-```
-
-The generated project contains the model-specific NN integration required by STM32N6:
-
-```text
-STAI runtime / generated network
-Post-processing
-Neural-ART / NPU configuration
-Camera pipeline
-External PSRAM / NOR support
-Model-specific headers and binaries
-```
-
-The application initializes the NPU and external memories, obtains the generated network input/output buffers and connects the camera NN pipeline directly to the network input.
-
-Typical runtime flow:
-
-```text
-Camera
-  ↓
-DCMIPP / Camera Pipeline
-  ↓
-nn_in
-  ↓
-stai_network_run()
-  ↓
-nn_out[]
-  ↓
-Face Detection Post-Process
-  ↓
-Application
-```
-
-## 6. Integrate into Our Project
-
-The generated Model Zoo project is used as the **reference AI implementation**.
-
-Instead of developing the final application directly inside the Model Zoo repository, copy the required model and AI integration files from:
-
-```text
-~/stm32ai-modelzoo-services/application_code/face_detection/STM32N6/
-```
-
-into our own STM32N6570-DK project.
-
-Main pieces to integrate:
-
-```text
-Generated STAI / network files
-Neural-ART / NPU support
-Model-specific headers and binaries
-Post-processing
-Camera pipeline
-Required BSP / memory configuration
-```
-
-Then integrate the NN flow into the existing application:
-
-```text
-Existing Application
-       +
-Camera Pipeline
-       +
-Generated AI Model
-       +
-NPU Initialization
-       +
-Post-Processing
-       ↓
-Final Project
-```
-
-This keeps the Model Zoo project as a reproducible reference while the actual application remains independent and under our own project structure.
+The Model Zoo project is kept only as the **reference/generation project**. The final application is maintained independently in our own STM32CubeIDE project.
