@@ -2,6 +2,11 @@
 
 This project combines **STM32N6 AI (Neural-ART/NPU), USB and Ethernet/NetX Duo** on the STM32N6570-DK.
 
+<img width="3419" height="3156" alt="Image" src="https://github.com/user-attachments/assets/60a1b6de-f567-4930-a5cc-e23162398121" />
+<img width="3855" height="4277" alt="Image" src="https://github.com/user-attachments/assets/a466117d-630e-4bfc-92ac-b6ab001ffb5b" />
+<img width="891" height="363" alt="Image" src="https://github.com/user-attachments/assets/ec4c6e51-66e3-4c3a-9b15-2ff8f11c1fbb" />
+<img width="903" height="396" alt="Image" src="https://github.com/user-attachments/assets/5a4023f1-26b1-4afc-9f53-fc3d9abb6e7e" />
+
 ## 1. Generate the AI Reference Project
 
 Required repositories:
