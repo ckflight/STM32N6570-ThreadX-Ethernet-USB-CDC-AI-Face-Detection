@@ -1,27 +1,9 @@
-/home/ck/Desktop/Workspace/STM32CubeIDE Workspace/STM32N6570-ThreadX-USB-CDC-AI-Face-Detection/FSBL/../Drivers/STM32N6xx_HAL_Driver/Inc/stm32n6xx_ll_bus.h:679:22:LL_MEM_EnableClock	1
-/home/ck/Desktop/Workspace/STM32CubeIDE Workspace/STM32N6570-ThreadX-USB-CDC-AI-Face-Detection/FSBL/../Drivers/STM32N6xx_HAL_Driver/Inc/stm32n6xx_ll_bus.h:751:22:LL_MEM_DisableClock	1
-/home/ck/Desktop/Workspace/STM32CubeIDE Workspace/STM32N6570-ThreadX-USB-CDC-AI-Face-Detection/FSBL/../Drivers/STM32N6xx_HAL_Driver/Inc/stm32n6xx_ll_bus.h:785:22:LL_MEM_EnableClockLowPower	1
-/home/ck/Desktop/Workspace/STM32CubeIDE Workspace/STM32N6570-ThreadX-USB-CDC-AI-Face-Detection/FSBL/../Drivers/STM32N6xx_HAL_Driver/Inc/stm32n6xx_ll_bus.h:1009:22:LL_AHB2_GRP1_EnableClock	1
-/home/ck/Desktop/Workspace/STM32CubeIDE Workspace/STM32N6570-ThreadX-USB-CDC-AI-Face-Detection/FSBL/../Drivers/STM32N6xx_HAL_Driver/Inc/stm32n6xx_ll_bus.h:1165:22:LL_AHB3_GRP1_EnableClock	1
-/home/ck/Desktop/Workspace/STM32CubeIDE Workspace/STM32N6570-ThreadX-USB-CDC-AI-Face-Detection/FSBL/../Drivers/STM32N6xx_HAL_Driver/Inc/stm32n6xx_ll_bus.h:1755:22:LL_AHB5_GRP1_EnableClock	1
-/home/ck/Desktop/Workspace/STM32CubeIDE Workspace/STM32N6570-ThreadX-USB-CDC-AI-Face-Detection/FSBL/../Drivers/STM32N6xx_HAL_Driver/Inc/stm32n6xx_ll_bus.h:1891:22:LL_AHB5_GRP1_DisableClock	1
-/home/ck/Desktop/Workspace/STM32CubeIDE Workspace/STM32N6570-ThreadX-USB-CDC-AI-Face-Detection/FSBL/../Drivers/STM32N6xx_HAL_Driver/Inc/stm32n6xx_ll_bus.h:1945:22:LL_AHB5_GRP1_ForceReset	1
-/home/ck/Desktop/Workspace/STM32CubeIDE Workspace/STM32N6570-ThreadX-USB-CDC-AI-Face-Detection/FSBL/../Drivers/STM32N6xx_HAL_Driver/Inc/stm32n6xx_ll_bus.h:1999:22:LL_AHB5_GRP1_ReleaseReset	1
-/home/ck/Desktop/Workspace/STM32CubeIDE Workspace/STM32N6570-ThreadX-USB-CDC-AI-Face-Detection/FSBL/../Drivers/STM32N6xx_HAL_Driver/Inc/stm32n6xx_ll_bus.h:2065:22:LL_AHB5_GRP1_EnableClockLowPower	1
-/home/ck/Desktop/Workspace/STM32CubeIDE Workspace/STM32N6570-ThreadX-USB-CDC-AI-Face-Detection/FSBL/../Drivers/STM32N6xx_HAL_Driver/Inc/stm32n6xx_ll_bus.h:3743:22:LL_APB5_GRP1_EnableClockLowPower	1
-../Application/User/Core/Src/main.c:106:5:main	7
-../Application/User/Core/Src/main.c:194:13:LCD_TestOverlay	3
-../Application/User/Core/Src/main.c:215:13:LCD_init	1
-../Application/User/Core/Src/main.c:245:13:set_clk_sleep_mode	1
-../Application/User/Core/Src/main.c:268:6:npu_cache_enable_clocks_and_reset	1
-../Application/User/Core/Src/main.c:277:6:npu_cache_disable_clocks_and_reset	1
-../Application/User/Core/Src/main.c:285:19:MX_DCMIPP_ClockConfig	2
-../Application/User/Core/Src/main.c:310:13:NeuralNetwork_init	2
-../Application/User/Core/Src/main.c:341:13:NPURam_enable	1
-../Application/User/Core/Src/main.c:368:13:NPUCache_config	1
-../Application/User/Core/Src/main.c:373:6:NeuralNetwork_run	1
-../Application/User/Core/Src/main.c:386:6:SystemClock_Config	4
-../Application/User/Core/Src/main.c:540:13:SystemIsolation_Config	1
-../Application/User/Core/Src/main.c:651:6:MPU_Config	1
-../Application/User/Core/Src/main.c:697:6:HAL_TIM_PeriodElapsedCallback	2
-../Application/User/Core/Src/main.c:719:6:Error_Handler	1
+../Application/User/Core/Src/main.c:291:6:npu_cache_enable_clocks_and_reset	1
+../Application/User/Core/Src/main.c:300:6:npu_cache_disable_clocks_and_reset	1
+../Application/User/Core/Src/main.c:308:19:MX_DCMIPP_ClockConfig	2
+../Application/User/Core/Src/main.c:396:6:NeuralNetwork_run	1
+../Application/User/Core/Src/main.c:587:6:HAL_TIM_PeriodElapsedCallback	2
+../Application/User/Core/Src/main.c:609:6:Error_Handler	1
+../Application/User/Core/Src/main.c:223:6:MX_SDMMC2_SD_Init	1
+../Application/User/Core/Src/main.c:409:6:SystemClock_Config	3
+../Application/User/Core/Src/main.c:120:5:main	7

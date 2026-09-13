@@ -1,1 +1,1 @@
-/home/ck/Desktop/Workspace/STM32CubeIDE Workspace/STM32N6570-ThreadX-USB-CDC-AI-Face-Detection/Middlewares/ST/threadx/ports/cortex_m55/gnu/src/txe_thread_secure_stack_allocate.c:74:9:_txe_thread_secure_stack_allocate	16	static
+/home/ck/Desktop/Workspace/STM32CubeIDE Workspace/STM32N6570-ThreadX-USB-CDC-AI-Face-Detection-Ethernet/Middlewares/ST/threadx/ports/cortex_m55/gnu/src/txe_thread_secure_stack_allocate.c:74:9:_txe_thread_secure_stack_allocate	0	static

@@ -96,7 +96,9 @@ void MX_USB1_OTG_HS_PCD_Init(void);
 #define LED_GREEN_GPIO_Port GPIOO
 #define LED_RED_Pin GPIO_PIN_10
 #define LED_RED_GPIO_Port GPIOG
-
+#define SD_DETECT_Pin GPIO_PIN_12
+#define SD_DETECT_GPIO_Port GPION
+#define SD_DETECT_EXTI_IRQn EXTI12_IRQn
 /* USER CODE BEGIN Private defines */
 
 /* USER CODE END Private defines */

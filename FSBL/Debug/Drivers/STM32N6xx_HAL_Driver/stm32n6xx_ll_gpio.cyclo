@@ -1,11 +1,3 @@
-/home/ck/Desktop/Workspace/STM32CubeIDE Workspace/STM32N6570-ThreadX-USB-CDC-AI-Face-Detection/FSBL/../Drivers/STM32N6xx_HAL_Driver/Inc/stm32n6xx_ll_bus.h:1525:22:LL_AHB4_GRP1_ForceReset	1
-/home/ck/Desktop/Workspace/STM32CubeIDE Workspace/STM32N6570-ThreadX-USB-CDC-AI-Face-Detection/FSBL/../Drivers/STM32N6xx_HAL_Driver/Inc/stm32n6xx_ll_bus.h:1563:22:LL_AHB4_GRP1_ReleaseReset	1
-/home/ck/Desktop/Workspace/STM32CubeIDE Workspace/STM32N6570-ThreadX-USB-CDC-AI-Face-Detection/FSBL/../Drivers/STM32N6xx_HAL_Driver/Inc/stm32n6xx_ll_gpio.h:311:22:LL_GPIO_SetPinMode	3
-/home/ck/Desktop/Workspace/STM32CubeIDE Workspace/STM32N6570-ThreadX-USB-CDC-AI-Face-Detection/FSBL/../Drivers/STM32N6xx_HAL_Driver/Inc/stm32n6xx_ll_gpio.h:381:22:LL_GPIO_SetPinOutputType	1
-/home/ck/Desktop/Workspace/STM32CubeIDE Workspace/STM32N6570-ThreadX-USB-CDC-AI-Face-Detection/FSBL/../Drivers/STM32N6xx_HAL_Driver/Inc/stm32n6xx_ll_gpio.h:452:22:LL_GPIO_SetPinSpeed	3
-/home/ck/Desktop/Workspace/STM32CubeIDE Workspace/STM32N6570-ThreadX-USB-CDC-AI-Face-Detection/FSBL/../Drivers/STM32N6xx_HAL_Driver/Inc/stm32n6xx_ll_gpio.h:523:22:LL_GPIO_SetPinPull	3
-/home/ck/Desktop/Workspace/STM32CubeIDE Workspace/STM32N6570-ThreadX-USB-CDC-AI-Face-Detection/FSBL/../Drivers/STM32N6xx_HAL_Driver/Inc/stm32n6xx_ll_gpio.h:596:22:LL_GPIO_SetAFPin_0_7	3
-/home/ck/Desktop/Workspace/STM32CubeIDE Workspace/STM32N6570-ThreadX-USB-CDC-AI-Face-Detection/FSBL/../Drivers/STM32N6xx_HAL_Driver/Inc/stm32n6xx_ll_gpio.h:673:22:LL_GPIO_SetAFPin_8_15	3
-/home/ck/Desktop/Workspace/STM32CubeIDE Workspace/STM32N6570-ThreadX-USB-CDC-AI-Face-Detection/Drivers/STM32N6xx_HAL_Driver/Src/stm32n6xx_ll_gpio.c:107:13:LL_GPIO_DeInit	13
-/home/ck/Desktop/Workspace/STM32CubeIDE Workspace/STM32N6570-ThreadX-USB-CDC-AI-Face-Detection/Drivers/STM32N6xx_HAL_Driver/Src/stm32n6xx_ll_gpio.c:192:13:LL_GPIO_Init	7
-/home/ck/Desktop/Workspace/STM32CubeIDE Workspace/STM32N6570-ThreadX-USB-CDC-AI-Face-Detection/Drivers/STM32N6xx_HAL_Driver/Src/stm32n6xx_ll_gpio.c:265:6:LL_GPIO_StructInit	1
+/home/ck/Desktop/Workspace/STM32CubeIDE Workspace/STM32N6570-ThreadX-USB-CDC-AI-Face-Detection-Ethernet/Drivers/STM32N6xx_HAL_Driver/Src/stm32n6xx_ll_gpio.c:107:13:LL_GPIO_DeInit	13
+/home/ck/Desktop/Workspace/STM32CubeIDE Workspace/STM32N6570-ThreadX-USB-CDC-AI-Face-Detection-Ethernet/Drivers/STM32N6xx_HAL_Driver/Src/stm32n6xx_ll_gpio.c:192:13:LL_GPIO_Init	17
+/home/ck/Desktop/Workspace/STM32CubeIDE Workspace/STM32N6570-ThreadX-USB-CDC-AI-Face-Detection-Ethernet/Drivers/STM32N6xx_HAL_Driver/Src/stm32n6xx_ll_gpio.c:265:6:LL_GPIO_StructInit	1

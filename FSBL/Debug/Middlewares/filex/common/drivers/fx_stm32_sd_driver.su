@@ -1,0 +1,3 @@
+/home/ck/Desktop/Workspace/STM32CubeIDE Workspace/STM32N6570-ThreadX-USB-CDC-AI-Face-Detection-Ethernet/Middlewares/ST/filex/common/drivers/fx_stm32_sd_driver.c:258:13:sd_read_data	24	static,ignoring_inline_asm
+/home/ck/Desktop/Workspace/STM32CubeIDE Workspace/STM32N6570-ThreadX-USB-CDC-AI-Face-Detection-Ethernet/Middlewares/ST/filex/common/drivers/fx_stm32_sd_driver.c:342:13:sd_write_data	32	static,ignoring_inline_asm
+/home/ck/Desktop/Workspace/STM32CubeIDE Workspace/STM32N6570-ThreadX-USB-CDC-AI-Face-Detection-Ethernet/Middlewares/ST/filex/common/drivers/fx_stm32_sd_driver.c:57:7:fx_stm32_sd_driver	32	static

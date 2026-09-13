@@ -1,6 +1,1 @@
-/home/ck/Desktop/Workspace/STM32CubeIDE Workspace/STM32N6570-ThreadX-USB-CDC-AI-Face-Detection/FSBL/../Drivers/CMSIS/Include/core_cm55.h:3906:26:__NVIC_GetPriorityGrouping	4	static
-/home/ck/Desktop/Workspace/STM32CubeIDE Workspace/STM32N6570-ThreadX-USB-CDC-AI-Face-Detection/FSBL/../Drivers/CMSIS/Include/core_cm55.h:3918:22:__NVIC_EnableIRQ	16	static,ignoring_inline_asm
-/home/ck/Desktop/Workspace/STM32CubeIDE Workspace/STM32N6570-ThreadX-USB-CDC-AI-Face-Detection/FSBL/../Drivers/CMSIS/Include/core_cm55.h:4115:22:__NVIC_SetPriority	16	static
-/home/ck/Desktop/Workspace/STM32CubeIDE Workspace/STM32N6570-ThreadX-USB-CDC-AI-Face-Detection/FSBL/../Drivers/CMSIS/Include/core_cm55.h:4162:26:NVIC_EncodePriority	40	static
-/home/ck/Desktop/Workspace/STM32CubeIDE Workspace/STM32N6570-ThreadX-USB-CDC-AI-Face-Detection/FSBL/../Drivers/STM32N6xx_HAL_Driver/Inc/stm32n6xx_ll_bus.h:2739:22:LL_APB1_GRP2_EnableClock	24	static
-../Application/User/Core/Src/ucpd.c:28:6:MX_UCPD1_Init	160	static
+../Application/User/Core/Src/ucpd.c:28:6:MX_UCPD1_Init	176	static,ignoring_inline_asm

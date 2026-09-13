@@ -1,2 +1,2 @@
-/home/ck/Desktop/Workspace/STM32CubeIDE Workspace/STM32N6570-ThreadX-USB-CDC-AI-Face-Detection/Middlewares/ST/stm32-mw-camera/ISP_Library/isp/Src/isp_awb_algo.c:53:19:ISP_AWB_Init	8
-/home/ck/Desktop/Workspace/STM32CubeIDE Workspace/STM32N6570-ThreadX-USB-CDC-AI-Face-Detection/Middlewares/ST/stm32-mw-camera/ISP_Library/isp/Src/isp_awb_algo.c:103:19:ISP_AWB_GetConfig	17
+/home/ck/Desktop/Workspace/STM32CubeIDE Workspace/STM32N6570-ThreadX-USB-CDC-AI-Face-Detection-Ethernet/Middlewares/ST/stm32-mw-camera/ISP_Library/isp/Src/isp_awb_algo.c:53:19:ISP_AWB_Init	8
+/home/ck/Desktop/Workspace/STM32CubeIDE Workspace/STM32N6570-ThreadX-USB-CDC-AI-Face-Detection-Ethernet/Middlewares/ST/stm32-mw-camera/ISP_Library/isp/Src/isp_awb_algo.c:103:19:ISP_AWB_GetConfig	15

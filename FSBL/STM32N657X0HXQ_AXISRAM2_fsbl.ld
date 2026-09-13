@@ -30,16 +30,16 @@ _Min_Stack_Size = 0x4000;
  * PSRAM:
  *   Large frame buffers
  */
+
 MEMORY
 {
-  AXISRAM1_S (xrw) : ORIGIN = 0x34000400, LENGTH = 1023K
+  AXISRAM1_S (xrw) : ORIGIN = 0x34000400, LENGTH = 1023K /*Last byte location 0x340FFFFF */
 
-  RAM        (xrw) : ORIGIN = 0x341C0000, LENGTH = 224K
-
-  USB_RAM    (xrw) : ORIGIN = 0x341F8000, LENGTH = 32K
+  RAM      (xrw) : ORIGIN = 0x34100000, LENGTH = 936K
+  ETH_RAM  (xrw) : ORIGIN = 0x341EA000, LENGTH = 56K
+  USB_RAM  (xrw) : ORIGIN = 0x341F8000, LENGTH = 32K
 
   FLASH      (xrw) : ORIGIN = 0x71380000, LENGTH = 2M
-
   PSRAM      (xrw) : ORIGIN = 0x91000000, LENGTH = 16M
 }
 
@@ -229,6 +229,23 @@ SECTIONS
 
     . = ALIGN(8);
   } >RAM
+
+  /* ETHERNET Dedicated Memory */
+  .tcp_sec (NOLOAD) :
+  {
+    . = ABSOLUTE(0x341EAE80);
+    KEEP(*(.RxDecripSection)) /*192 byte */
+
+    . = ABSOLUTE(0x341EAF40); 
+    KEEP(*(.TxDecripSection)) /*192 byte */
+  } >ETH_RAM
+
+  .nx_data (NOLOAD) :
+  {
+    . = ABSOLUTE(0x341EB000);
+    KEEP(*(.NetXPoolSection)) /*52kbyte */
+  } >ETH_RAM
+
 
   /*
    * USB dedicated memory.

@@ -1,1 +1,1 @@
-/home/ck/Desktop/Workspace/STM32CubeIDE Workspace/STM32N6570-ThreadX-USB-CDC-AI-Face-Detection/Middlewares/ST/threadx/common/src/txe_block_allocate.c:80:7:_txe_block_allocate	40	static,ignoring_inline_asm
+/home/ck/Desktop/Workspace/STM32CubeIDE Workspace/STM32N6570-ThreadX-USB-CDC-AI-Face-Detection-Ethernet/Middlewares/ST/threadx/common/src/txe_block_allocate.c:80:7:_txe_block_allocate	4	static,ignoring_inline_asm

@@ -1,0 +1,11 @@
+../Application/User/NetXDuo/App/app_netxduo.c:217:13:NetXDuo_IP_Change_Callback	3
+../Application/User/NetXDuo/App/app_netxduo.c:18:6:MX_NetXDuo_Init	13
+../Application/User/NetXDuo/App/app_netxduo.c:67:6:NetXDuo_DHCP_Wait	4
+../Application/User/NetXDuo/App/app_netxduo.c:87:6:NetXDuo_TCP_Server_Start	3
+../Application/User/NetXDuo/App/app_netxduo.c:104:6:NetXDuo_TCP_Receive_Packet	1
+../Application/User/NetXDuo/App/app_netxduo.c:109:6:NetXDuo_TCP_Accept	2
+../Application/User/NetXDuo/App/app_netxduo.c:120:6:NetXDuo_TCP_Receive	2
+../Application/User/NetXDuo/App/app_netxduo.c:137:6:NetXDuo_TCP_Get_TX_Buffer	2
+../Application/User/NetXDuo/App/app_netxduo.c:155:6:NetXDuo_TCP_Send_ZeroCopy	3
+../Application/User/NetXDuo/App/app_netxduo.c:178:6:NetXDuo_TCP_Send	4
+../Application/User/NetXDuo/App/app_netxduo.c:208:6:NetXDuo_TCP_Disconnect	1

@@ -101,13 +101,21 @@ static void SystemIsolation_Config(void);
 // #define UX_SLAVE_REQUEST_DATA_MAX_LENGTH 32768 is increased.
 // DMA is enabled hpcd_USB_OTG_HS1.Init.dma_enable = ENABLE;
 
-
-
 // Önemli not: network weight vs bir dataları flasha yazınca app çalışıyor.
 // python3.12 stm32ai_main.py (user_config.yml oluşturunca) bu kod flasha yazıyor.
 // ai kodunun flashtan çalışması için face_detection/STM32N6/FSBL/ai_fsbl.hex yaz bu face detect kodunu flashlıyor bunu henüz açamadı.
 // network_data.hex de yazmak lazım
 // projenin hex dosyasını da doğru adrese yazmak lazım
+
+static void MX_ETH1_Init(void);
+void MX_SDMMC2_SD_Init(void);
+
+ETH_DMADescTypeDef DMARxDscrTab[ETH_DMA_RX_CH_CNT][ETH_RX_DESC_CNT] __attribute__((section(".RxDecripSection"))); /* Ethernet Rx DMA Descriptors */
+ETH_DMADescTypeDef DMATxDscrTab[ETH_DMA_TX_CH_CNT][ETH_TX_DESC_CNT] __attribute__((section(".TxDecripSection")));   /* Ethernet Tx DMA Descriptors */
+
+ETH_HandleTypeDef heth1;
+
+SD_HandleTypeDef hsd2;
 
 int main(void)
 {
@@ -128,7 +136,15 @@ int main(void)
     HAL_Init();
     SystemClock_Config();
 
+	uint32_t clock_freq = 0; UNUSED(clock_freq);
+	clock_freq = HAL_RCC_GetCpuClockFreq();
+	clock_freq = HAL_RCC_GetHCLKFreq();
+	clock_freq = HAL_RCC_GetPCLK1Freq();
+	clock_freq = HAL_RCC_GetPCLK2Freq();
+
     MX_GPIO_Init();
+	MX_SDMMC2_SD_Init();
+	MX_ETH1_Init();
     MX_GPDMA1_Init();
     MX_UCPD1_Init();
     MX_USB1_OTG_HS_PCD_Init();
@@ -176,6 +192,47 @@ int main(void)
     while (1)
     {
     }
+}
+static void MX_ETH1_Init(void)
+{
+
+   static uint8_t MACAddr[6];
+
+  heth1.Instance = ETH1;
+  MACAddr[0] = 0x00;
+  MACAddr[1] = 0x80;
+  MACAddr[2] = 0xE0;
+  MACAddr[3] = 0x00;
+  MACAddr[4] = 0x10;
+  MACAddr[5] = 0x00;
+  heth1.Init.MACAddr = &MACAddr[0];
+  heth1.Init.MediaInterface = HAL_ETH_RGMII_MODE;
+  for (int ch = 0; ch < ETH_DMA_CH_CNT; ch++)
+  {
+    heth1.Init.TxDesc[ch] = DMATxDscrTab[ch];
+    heth1.Init.RxDesc[ch] = DMARxDscrTab[ch];
+  }
+  heth1.Init.RxBuffLen = 1536;
+
+  if (HAL_ETH_Init(&heth1) != HAL_OK)
+  {
+    Error_Handler();
+  }
+}
+
+void MX_SDMMC2_SD_Init(void)
+{
+
+  hsd2.Instance = SDMMC2;
+  hsd2.Init.ClockEdge = SDMMC_CLOCK_EDGE_RISING;
+  hsd2.Init.ClockPowerSave = SDMMC_CLOCK_POWER_SAVE_DISABLE;
+  hsd2.Init.BusWide = SDMMC_BUS_WIDE_4B;
+  hsd2.Init.HardwareFlowControl = SDMMC_HARDWARE_FLOW_CONTROL_DISABLE;
+  hsd2.Init.ClockDiv = 0;
+  if (HAL_SD_Init(&hsd2) != HAL_OK)
+  {
+    Error_Handler();
+  }
 }
 
 static void LCD_init(void)
@@ -355,33 +412,14 @@ void SystemClock_Config(void)
     RCC_OscInitTypeDef RCC_OscInitStruct = {0};
     RCC_PeriphCLKInitTypeDef RCC_PeriphCLKInitStruct = {0};
 
-    /*
-     * Same power configuration as original Face Detection project.
-     * Required for high frequency operation.
-     */
     BSP_SMPS_Init(SMPS_VOLTAGE_OVERDRIVE);
 
-    /*
-     * Keep HSE enabled for USB:
-     *
-     * USB PHY = HSE / 2
-     * USB OTG = HSE direct
-     *
-     * PLL1/2/3/4 remain identical to Face Detection.
-     */
-    RCC_OscInitStruct.OscillatorType =
-        RCC_OSCILLATORTYPE_HSI |
-        RCC_OSCILLATORTYPE_HSE;
-
+    RCC_OscInitStruct.OscillatorType = RCC_OSCILLATORTYPE_HSI | RCC_OSCILLATORTYPE_HSE;
     RCC_OscInitStruct.HSIState = RCC_HSI_ON;
     RCC_OscInitStruct.HSIDiv = RCC_HSI_DIV1;
     RCC_OscInitStruct.HSICalibrationValue = RCC_HSICALIBRATION_DEFAULT;
-
     RCC_OscInitStruct.HSEState = RCC_HSE_BYPASS_DIGITAL;
 
-    /*
-     * PLL1 = 64 MHz * 25 / 2 = 800 MHz
-     */
     RCC_OscInitStruct.PLL1.PLLState = RCC_PLL_ON;
     RCC_OscInitStruct.PLL1.PLLSource = RCC_PLLSOURCE_HSI;
     RCC_OscInitStruct.PLL1.PLLM = 2;
@@ -390,10 +428,6 @@ void SystemClock_Config(void)
     RCC_OscInitStruct.PLL1.PLLP1 = 1;
     RCC_OscInitStruct.PLL1.PLLP2 = 1;
 
-    /*
-     * PLL2 = 64 MHz * 125 / 8 = 1000 MHz
-     * NPU clock
-     */
     RCC_OscInitStruct.PLL2.PLLState = RCC_PLL_ON;
     RCC_OscInitStruct.PLL2.PLLSource = RCC_PLLSOURCE_HSI;
     RCC_OscInitStruct.PLL2.PLLM = 8;
@@ -402,10 +436,6 @@ void SystemClock_Config(void)
     RCC_OscInitStruct.PLL2.PLLP1 = 1;
     RCC_OscInitStruct.PLL2.PLLP2 = 1;
 
-    /*
-     * PLL3 = 900 MHz
-     * AXISRAM3/4/5/6
-     */
     RCC_OscInitStruct.PLL3.PLLState = RCC_PLL_ON;
     RCC_OscInitStruct.PLL3.PLLSource = RCC_PLLSOURCE_HSI;
     RCC_OscInitStruct.PLL3.PLLM = 8;
@@ -414,10 +444,6 @@ void SystemClock_Config(void)
     RCC_OscInitStruct.PLL3.PLLP1 = 1;
     RCC_OscInitStruct.PLL3.PLLP2 = 2;
 
-    /*
-     * PLL4 = 50 MHz
-     * Keep it exactly as Face Detection because LCD will be added later.
-     */
     RCC_OscInitStruct.PLL4.PLLState = RCC_PLL_ON;
     RCC_OscInitStruct.PLL4.PLLSource = RCC_PLLSOURCE_HSI;
     RCC_OscInitStruct.PLL4.PLLM = 8;
@@ -426,76 +452,34 @@ void SystemClock_Config(void)
     RCC_OscInitStruct.PLL4.PLLP1 = 6;
     RCC_OscInitStruct.PLL4.PLLP2 = 6;
 
-    if (HAL_RCC_OscConfig(&RCC_OscInitStruct) != HAL_OK)
-    {
-        Error_Handler();
-    }
+    if (HAL_RCC_OscConfig(&RCC_OscInitStruct) != HAL_OK) Error_Handler();
 
-    /*
-     * Face Detection clock tree
-     */
-    RCC_ClkInitStruct.ClockType =
-        RCC_CLOCKTYPE_CPUCLK |
-        RCC_CLOCKTYPE_SYSCLK |
-        RCC_CLOCKTYPE_HCLK |
-        RCC_CLOCKTYPE_PCLK1 |
-        RCC_CLOCKTYPE_PCLK2 |
-        RCC_CLOCKTYPE_PCLK4 |
-        RCC_CLOCKTYPE_PCLK5;
-
-    /* CPU = PLL1 / 1 = 800 MHz */
+    RCC_ClkInitStruct.ClockType = RCC_CLOCKTYPE_CPUCLK | RCC_CLOCKTYPE_SYSCLK | RCC_CLOCKTYPE_HCLK | RCC_CLOCKTYPE_PCLK1 | RCC_CLOCKTYPE_PCLK2 | RCC_CLOCKTYPE_PCLK4 | RCC_CLOCKTYPE_PCLK5;
     RCC_ClkInitStruct.CPUCLKSource = RCC_CPUCLKSOURCE_IC1;
+    RCC_ClkInitStruct.SYSCLKSource = RCC_SYSCLKSOURCE_IC2_IC6_IC11;
+
     RCC_ClkInitStruct.IC1Selection.ClockSelection = RCC_ICCLKSOURCE_PLL1;
     RCC_ClkInitStruct.IC1Selection.ClockDivider = 1;
-
-    /* AXI SYS = PLL1 / 2 = 400 MHz */
-    RCC_ClkInitStruct.SYSCLKSource =
-        RCC_SYSCLKSOURCE_IC2_IC6_IC11;
-
-    RCC_ClkInitStruct.IC2Selection.ClockSelection =
-        RCC_ICCLKSOURCE_PLL1;
+    RCC_ClkInitStruct.IC2Selection.ClockSelection = RCC_ICCLKSOURCE_PLL1;
     RCC_ClkInitStruct.IC2Selection.ClockDivider = 2;
-
-    /* NPU = PLL2 / 1 = 1000 MHz */
-    RCC_ClkInitStruct.IC6Selection.ClockSelection =
-        RCC_ICCLKSOURCE_PLL2;
+    RCC_ClkInitStruct.IC6Selection.ClockSelection = RCC_ICCLKSOURCE_PLL2;
     RCC_ClkInitStruct.IC6Selection.ClockDivider = 1;
-
-    /* AXISRAM = PLL3 / 1 = 900 MHz */
-    RCC_ClkInitStruct.IC11Selection.ClockSelection =
-        RCC_ICCLKSOURCE_PLL3;
+    RCC_ClkInitStruct.IC11Selection.ClockSelection = RCC_ICCLKSOURCE_PLL3;
     RCC_ClkInitStruct.IC11Selection.ClockDivider = 1;
 
-    /* HCLK = 400 / 2 = 200 MHz */
     RCC_ClkInitStruct.AHBCLKDivider = RCC_HCLK_DIV2;
-
     RCC_ClkInitStruct.APB1CLKDivider = RCC_APB1_DIV1;
     RCC_ClkInitStruct.APB2CLKDivider = RCC_APB2_DIV1;
     RCC_ClkInitStruct.APB4CLKDivider = RCC_APB4_DIV1;
     RCC_ClkInitStruct.APB5CLKDivider = RCC_APB5_DIV1;
 
-    if (HAL_RCC_ClockConfig(&RCC_ClkInitStruct) != HAL_OK)
-    {
-        Error_Handler();
-    }
+    if (HAL_RCC_ClockConfig(&RCC_ClkInitStruct) != HAL_OK) Error_Handler();
 
-    /*
-     * XSPI clocks identical to Face Detection.
-     */
-    RCC_PeriphCLKInitStruct.PeriphClockSelection =
-        RCC_PERIPHCLK_XSPI1 |
-        RCC_PERIPHCLK_XSPI2;
+    RCC_PeriphCLKInitStruct.PeriphClockSelection = RCC_PERIPHCLK_XSPI1 | RCC_PERIPHCLK_XSPI2;
+    RCC_PeriphCLKInitStruct.Xspi1ClockSelection = RCC_XSPI1CLKSOURCE_HCLK;
+    RCC_PeriphCLKInitStruct.Xspi2ClockSelection = RCC_XSPI2CLKSOURCE_HCLK;
 
-    RCC_PeriphCLKInitStruct.Xspi1ClockSelection =
-        RCC_XSPI1CLKSOURCE_HCLK;
-
-    RCC_PeriphCLKInitStruct.Xspi2ClockSelection =
-        RCC_XSPI2CLKSOURCE_HCLK;
-
-    if (HAL_RCCEx_PeriphCLKConfig(&RCC_PeriphCLKInitStruct) != HAL_OK)
-    {
-        Error_Handler();
-    }
+    if (HAL_RCCEx_PeriphCLKConfig(&RCC_PeriphCLKInitStruct) != HAL_OK) Error_Handler();
 }
 
 /**
@@ -505,151 +489,91 @@ void SystemClock_Config(void)
   */
 static void SystemIsolation_Config(void)
 {
+	// Enable RIF CLock
+	__HAL_RCC_RIFSC_CLK_ENABLE();
 
-/* USER CODE BEGIN RIF_Init 0 */
+	/*RIMC configuration*/
+	RIMC_MasterConfig_t RIMC_master = {0};
+	RIMC_master.MasterCID = RIF_CID_1;
+	RIMC_master.SecPriv = RIF_ATTRIBUTE_SEC | RIF_ATTRIBUTE_PRIV;
 
-/* USER CODE END RIF_Init 0 */
+	/* RIMC - Bus Masters */
+	HAL_RIF_RIMC_ConfigMasterAttributes(RIF_MASTER_INDEX_NPU,   &RIMC_master);
+	HAL_RIF_RIMC_ConfigMasterAttributes(RIF_MASTER_INDEX_DCMIPP,&RIMC_master);
+	HAL_RIF_RIMC_ConfigMasterAttributes(RIF_MASTER_INDEX_LTDC1, &RIMC_master);
+	HAL_RIF_RIMC_ConfigMasterAttributes(RIF_MASTER_INDEX_LTDC2, &RIMC_master);
+	HAL_RIF_RIMC_ConfigMasterAttributes(RIF_MASTER_INDEX_OTG1,  &RIMC_master);
+	HAL_RIF_RIMC_ConfigMasterAttributes(RIF_MASTER_INDEX_DMA2D, &RIMC_master);
+	HAL_RIF_RIMC_ConfigMasterAttributes(RIF_MASTER_INDEX_ETH1, &RIMC_master);
+	HAL_RIF_RIMC_ConfigMasterAttributes(RIF_MASTER_INDEX_SDMMC2, &RIMC_master);
 
-  /* set all required IPs as secure privileged */
-  __HAL_RCC_RIFSC_CLK_ENABLE();
-
-  /*RIMC configuration*/
-  RIMC_MasterConfig_t RIMC_master = {0};
-  RIMC_master.MasterCID = RIF_CID_1;
-  RIMC_master.SecPriv = RIF_ATTRIBUTE_SEC | RIF_ATTRIBUTE_PRIV;
-
-  HAL_RIF_RIMC_ConfigMasterAttributes(
-      RIF_MASTER_INDEX_NPU,
-      &RIMC_master
-  );
-
-  HAL_RIF_RISC_SetSlaveSecureAttributes(
-      RIF_RISC_PERIPH_INDEX_NPU,
-      RIF_ATTRIBUTE_SEC | RIF_ATTRIBUTE_PRIV
-  );
-
-  HAL_RIF_RIMC_ConfigMasterAttributes(
-      RIF_MASTER_INDEX_DCMIPP,
-      &RIMC_master
-  );
-
-  HAL_RIF_RISC_SetSlaveSecureAttributes(
-      RIF_RISC_PERIPH_INDEX_CSI,
-      RIF_ATTRIBUTE_SEC | RIF_ATTRIBUTE_PRIV
-  );
-
-  HAL_RIF_RISC_SetSlaveSecureAttributes(
-      RIF_RISC_PERIPH_INDEX_DCMIPP,
-      RIF_ATTRIBUTE_SEC | RIF_ATTRIBUTE_PRIV
-  );
-
-  HAL_RIF_RIMC_ConfigMasterAttributes(
-      RIF_MASTER_INDEX_LTDC1,
-      &RIMC_master
-  );
-
-  HAL_RIF_RIMC_ConfigMasterAttributes(
-      RIF_MASTER_INDEX_LTDC2,
-      &RIMC_master
-  );
-
-  HAL_RIF_RISC_SetSlaveSecureAttributes(
-      RIF_RISC_PERIPH_INDEX_LTDC,
-      RIF_ATTRIBUTE_SEC | RIF_ATTRIBUTE_PRIV
-  );
-
-  HAL_RIF_RISC_SetSlaveSecureAttributes(
-      RIF_RISC_PERIPH_INDEX_LTDCL1,
-      RIF_ATTRIBUTE_SEC | RIF_ATTRIBUTE_PRIV
-  );
-
-  HAL_RIF_RISC_SetSlaveSecureAttributes(
-      RIF_RISC_PERIPH_INDEX_LTDCL2,
-      RIF_ATTRIBUTE_SEC | RIF_ATTRIBUTE_PRIV
-  );
-
-  HAL_RIF_RIMC_ConfigMasterAttributes(RIF_MASTER_INDEX_OTG1, &RIMC_master);
-
-  HAL_RIF_RIMC_ConfigMasterAttributes(
-      RIF_MASTER_INDEX_DMA2D,
-      &RIMC_master
-  );
-
-  HAL_RIF_RISC_SetSlaveSecureAttributes(
-      RIF_RISC_PERIPH_INDEX_DMA2D,
-      RIF_ATTRIBUTE_SEC | RIF_ATTRIBUTE_PRIV
-  );
-
-  /*RISUP configuration*/
-  HAL_RIF_RISC_SetSlaveSecureAttributes(RIF_RISC_PERIPH_INDEX_OTG1HS , RIF_ATTRIBUTE_SEC | RIF_ATTRIBUTE_PRIV);
-  HAL_RIF_RISC_SetSlaveSecureAttributes(RIF_RISC_PERIPH_INDEX_ADC12 , RIF_ATTRIBUTE_SEC | RIF_ATTRIBUTE_PRIV);
-
-  /* RIF-Aware IPs Config */
-
-  /* set up GPIO configuration */
-  HAL_GPIO_ConfigPinAttributes(GPIOA,GPIO_PIN_0,GPIO_PIN_SEC|GPIO_PIN_NPRIV);
-  HAL_GPIO_ConfigPinAttributes(GPIOA,GPIO_PIN_1,GPIO_PIN_SEC|GPIO_PIN_NPRIV);
-  HAL_GPIO_ConfigPinAttributes(GPIOC,GPIO_PIN_1,GPIO_PIN_SEC|GPIO_PIN_NPRIV);
-  HAL_GPIO_ConfigPinAttributes(GPIOC,GPIO_PIN_13,GPIO_PIN_SEC|GPIO_PIN_NPRIV);
-  HAL_GPIO_ConfigPinAttributes(GPIOE,GPIO_PIN_5,GPIO_PIN_SEC|GPIO_PIN_NPRIV);
-  HAL_GPIO_ConfigPinAttributes(GPIOE,GPIO_PIN_6,GPIO_PIN_SEC|GPIO_PIN_NPRIV);
-  HAL_GPIO_ConfigPinAttributes(GPIOF,GPIO_PIN_11,GPIO_PIN_SEC|GPIO_PIN_NPRIV);
-  HAL_GPIO_ConfigPinAttributes(GPIOG,GPIO_PIN_10,GPIO_PIN_SEC|GPIO_PIN_NPRIV);
-  HAL_GPIO_ConfigPinAttributes(GPIOH,GPIO_PIN_9,GPIO_PIN_SEC|GPIO_PIN_NPRIV);
-  HAL_GPIO_ConfigPinAttributes(GPION,GPIO_PIN_12,GPIO_PIN_SEC|GPIO_PIN_NPRIV);
-  HAL_GPIO_ConfigPinAttributes(GPIOO,GPIO_PIN_1,GPIO_PIN_SEC|GPIO_PIN_NPRIV);
-
-/* USER CODE BEGIN RIF_Init 1 */
-
-/* USER CODE END RIF_Init 1 */
-/* USER CODE BEGIN RIF_Init 2 */
-
-/* USER CODE END RIF_Init 2 */
+	/* RISC / RISUP - Peripheral Resources */
+	HAL_RIF_RISC_SetSlaveSecureAttributes(RIF_RISC_PERIPH_INDEX_NPU,    RIF_ATTRIBUTE_SEC | RIF_ATTRIBUTE_PRIV);
+	HAL_RIF_RISC_SetSlaveSecureAttributes(RIF_RISC_PERIPH_INDEX_CSI,    RIF_ATTRIBUTE_SEC | RIF_ATTRIBUTE_PRIV);
+	HAL_RIF_RISC_SetSlaveSecureAttributes(RIF_RISC_PERIPH_INDEX_DCMIPP, RIF_ATTRIBUTE_SEC | RIF_ATTRIBUTE_PRIV);
+	HAL_RIF_RISC_SetSlaveSecureAttributes(RIF_RISC_PERIPH_INDEX_LTDC,   RIF_ATTRIBUTE_SEC | RIF_ATTRIBUTE_PRIV);
+	HAL_RIF_RISC_SetSlaveSecureAttributes(RIF_RISC_PERIPH_INDEX_LTDCL1, RIF_ATTRIBUTE_SEC | RIF_ATTRIBUTE_PRIV);
+	HAL_RIF_RISC_SetSlaveSecureAttributes(RIF_RISC_PERIPH_INDEX_LTDCL2, RIF_ATTRIBUTE_SEC | RIF_ATTRIBUTE_PRIV);
+	HAL_RIF_RISC_SetSlaveSecureAttributes(RIF_RISC_PERIPH_INDEX_DMA2D,  RIF_ATTRIBUTE_SEC | RIF_ATTRIBUTE_PRIV);
+	HAL_RIF_RISC_SetSlaveSecureAttributes(RIF_RISC_PERIPH_INDEX_OTG1HS, RIF_ATTRIBUTE_SEC | RIF_ATTRIBUTE_PRIV);
+	HAL_RIF_RISC_SetSlaveSecureAttributes(RIF_RISC_PERIPH_INDEX_ADC12,  RIF_ATTRIBUTE_SEC | RIF_ATTRIBUTE_PRIV);
+	HAL_RIF_RISC_SetSlaveSecureAttributes(RIF_RISC_PERIPH_INDEX_ETH1, 	RIF_ATTRIBUTE_SEC | RIF_ATTRIBUTE_PRIV);
+	HAL_RIF_RISC_SetSlaveSecureAttributes(RIF_RISC_PERIPH_INDEX_SDMMC2, RIF_ATTRIBUTE_SEC | RIF_ATTRIBUTE_PRIV);
 
 }
 
-/* USER CODE BEGIN 4 */
-
-/* USER CODE END 4 */
-
  /* MPU Configuration */
-
 void MPU_Config(void)
 {
-  MPU_Region_InitTypeDef MPU_InitStruct = {0};
-  MPU_Attributes_InitTypeDef MPU_AttributesInit = {0};
-  uint32_t primask_bit = __get_PRIMASK();
-  __disable_irq();
+    MPU_Region_InitTypeDef MPU_InitStruct = {0};
+    MPU_Attributes_InitTypeDef MPU_AttributesInit = {0};
+    uint32_t primask_bit = __get_PRIMASK();
 
-  /* Disables the MPU */
-  HAL_MPU_Disable();
+    __disable_irq();
+    HAL_MPU_Disable();
 
-  /** Initializes and configures the Region 0 and the memory to be protected
-  */
-  MPU_InitStruct.Enable = MPU_REGION_ENABLE;
-  MPU_InitStruct.Number = MPU_REGION_NUMBER0;
-  MPU_InitStruct.BaseAddress = 0x341F8000;
-  MPU_InitStruct.LimitAddress = 0x341FFFFF;
-  MPU_InitStruct.AttributesIndex = MPU_ATTRIBUTES_NUMBER0;
-  MPU_InitStruct.AccessPermission = MPU_REGION_PRIV_RW;
-  MPU_InitStruct.DisableExec = MPU_INSTRUCTION_ACCESS_ENABLE;
-  MPU_InitStruct.DisablePrivExec = MPU_PRIV_INSTRUCTION_ACCESS_ENABLE;
-  MPU_InitStruct.IsShareable = MPU_ACCESS_NOT_SHAREABLE;
+    /* Region 0: ETH RX/TX descriptors - NON-CACHEABLE
+       0x341EAE80 - 0x341EAFFF = 384 bytes */
+    MPU_InitStruct.Enable = MPU_REGION_ENABLE;
+    MPU_InitStruct.Number = MPU_REGION_NUMBER0;
+    MPU_InitStruct.BaseAddress = 0x341EAE80;
+    MPU_InitStruct.LimitAddress = 0x341EAFFF;
+    MPU_InitStruct.AttributesIndex = MPU_ATTRIBUTES_NUMBER0;
+    MPU_InitStruct.AccessPermission = MPU_REGION_ALL_RW;
+    MPU_InitStruct.DisableExec = MPU_INSTRUCTION_ACCESS_ENABLE;
+    MPU_InitStruct.DisablePrivExec = MPU_PRIV_INSTRUCTION_ACCESS_ENABLE;
+    MPU_InitStruct.IsShareable = MPU_ACCESS_NOT_SHAREABLE;
+    HAL_MPU_ConfigRegion(&MPU_InitStruct);
 
-  HAL_MPU_ConfigRegion(&MPU_InitStruct);
+    /* Region 1: NetX pool - CACHEABLE
+       0x341EB000 - 0x341F7FFF = 52 KB */
+    MPU_InitStruct.Number = MPU_REGION_NUMBER1;
+    MPU_InitStruct.BaseAddress = 0x341EB000;
+    MPU_InitStruct.LimitAddress = 0x341F7FFF;
+    MPU_InitStruct.AttributesIndex = MPU_ATTRIBUTES_NUMBER1;
+    HAL_MPU_ConfigRegion(&MPU_InitStruct);
 
-  /** Initializes and configures the Attribute 0 and the memory to be protected
-  */
-  MPU_AttributesInit.Number = MPU_ATTRIBUTES_NUMBER0;
-  MPU_AttributesInit.Attributes = INNER_OUTER(MPU_NOT_CACHEABLE);
+    /* Region 2: USB RAM - NON-CACHEABLE
+       0x341F8000 - 0x341FFFFF = 32 KB */
+    MPU_InitStruct.Number = MPU_REGION_NUMBER2;
+    MPU_InitStruct.BaseAddress = 0x341F8000;
+    MPU_InitStruct.LimitAddress = 0x341FFFFF;
+    MPU_InitStruct.AttributesIndex = MPU_ATTRIBUTES_NUMBER0;
+    MPU_InitStruct.AccessPermission = MPU_REGION_PRIV_RW;
+    HAL_MPU_ConfigRegion(&MPU_InitStruct);
 
-  HAL_MPU_ConfigMemoryAttributes(&MPU_AttributesInit);
-  /* Enables the MPU */
-  HAL_MPU_Enable(MPU_PRIVILEGED_DEFAULT);
+    /* Attribute 0: Non-cacheable */
+    MPU_AttributesInit.Number = MPU_ATTRIBUTES_NUMBER0;
+    MPU_AttributesInit.Attributes = INNER_OUTER(MPU_NOT_CACHEABLE);
+    HAL_MPU_ConfigMemoryAttributes(&MPU_AttributesInit);
 
-  /* Exit critical section to lock the system and avoid any issue around MPU mechanism */
-  __set_PRIMASK(primask_bit);
+    /* Attribute 1: Cacheable Write-Back + Read/Write Allocate */
+    MPU_AttributesInit.Number = MPU_ATTRIBUTES_NUMBER1;
+    MPU_AttributesInit.Attributes = INNER_OUTER(MPU_WRITE_BACK | MPU_RW_ALLOCATE);
+    HAL_MPU_ConfigMemoryAttributes(&MPU_AttributesInit);
 
+    HAL_MPU_Enable(MPU_PRIVILEGED_DEFAULT);
+    __set_PRIMASK(primask_bit);
 }
 
 /**
@@ -684,15 +608,14 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
   */
 void Error_Handler(void)
 {
-  /* USER CODE BEGIN Error_Handler_Debug */
   /* User can add his own implementation to report the HAL error return state */
   while (1)
   {
     HAL_GPIO_TogglePin(LED_RED_GPIO_Port, LED_RED_Pin);
     HAL_Delay(200);
   }
-  /* USER CODE END Error_Handler_Debug */
 }
+
 #ifdef USE_FULL_ASSERT
 /**
   * @brief  Reports the name of the source file and the source line number
@@ -703,13 +626,11 @@ void Error_Handler(void)
   */
 void assert_failed(uint8_t *file, uint32_t line)
 {
-  /* USER CODE BEGIN 6 */
   /* User can add his own implementation to report the file name and line number,
      ex: printf("Wrong parameters value: file %s on line %d\r\n", file, line) */
   /* Infinite loop */
   while (1)
   {
   }
-  /* USER CODE END 6 */
 }
 #endif /* USE_FULL_ASSERT */

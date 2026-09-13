@@ -1,7 +1,9 @@
-../Application/User/Core/Src/app_threadx.c:71:6:App_ThreadX_Init	88	static,ignoring_inline_asm
-../Application/User/Core/Src/app_threadx.c:108:6:MX_ThreadX_Init	8	static
-../Application/User/Core/Src/app_threadx.c:114:13:AI_Task	16	static
-../Application/User/Core/Src/app_threadx.c:153:13:USB_TX_Task	56	static,ignoring_inline_asm
-../Application/User/Core/Src/app_threadx.c:271:13:MATH_Task	24	static
-../Application/User/Core/Src/app_threadx.c:299:13:LED1_Task	16	static
-../Application/User/Core/Src/app_threadx.c:312:13:LED2_Task	16	static
+../Application/User/Core/Src/app_threadx.c:390:13:LED2_Thread	8	static
+../Application/User/Core/Src/app_threadx.c:377:13:LED1_Thread	8	static
+../Application/User/Core/Src/app_threadx.c:190:13:LCD_Text_Thread	328	static,ignoring_inline_asm
+../Application/User/Core/Src/app_threadx.c:238:13:AI_Thread	16	static
+../Application/User/Core/Src/app_threadx.c:349:13:MATH_Thread	40	static
+../Application/User/Core/Src/app_threadx.c:320:13:USB_TX_Thread2	24	static
+../Application/User/Core/Src/app_threadx.c:146:13:Ethernet_Thread	8	static
+../Application/User/Core/Src/app_threadx.c:101:6:App_ThreadX_Init	64	static,ignoring_inline_asm
+../Application/User/Core/Src/app_threadx.c:139:6:MX_ThreadX_Init	0	static

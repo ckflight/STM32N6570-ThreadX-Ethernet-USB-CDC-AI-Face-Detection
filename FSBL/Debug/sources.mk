@@ -25,6 +25,9 @@ OBJCOPY_BIN :=
 SUBDIRS := \
 Application/User/AZURE_RTOS/App \
 Application/User/Core/Src \
+Application/User/FileX/App \
+Application/User/FileX/Target \
+Application/User/NetXDuo/App \
 Application/User/Startup \
 Application/User/USBPD/App \
 Application/User/USBPD/Target \
@@ -32,8 +35,17 @@ Application/User/USBX/App \
 Drivers/BSP/Components \
 Drivers/BSP/STM32N6570-DK \
 Drivers/STM32N6xx_HAL_Driver \
+Drivers \
 Middlewares/STM32_USBPD_Library \
 Middlewares/ai-postprocessing-wrapper \
+Middlewares/filex/common/drivers \
+Middlewares/filex/common/src \
+Middlewares/netxduo/addons/dhcp \
+Middlewares/netxduo/addons/web \
+Middlewares/netxduo/common/drivers/ethernet \
+Middlewares/netxduo/common/drivers/ethernet/rtl8211 \
+Middlewares/netxduo/common/src \
+Middlewares/netxduo/tsn/src \
 Middlewares/screenl/Src \
 Middlewares/screenl/ili9341 \
 Middlewares/stedgeai-lib/Npu/Devices/STM32N6xx \

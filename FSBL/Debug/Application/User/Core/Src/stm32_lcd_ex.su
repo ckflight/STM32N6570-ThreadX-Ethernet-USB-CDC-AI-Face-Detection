@@ -1,2 +1,2 @@
-../Application/User/Core/Src/stm32_lcd_ex.c:28:6:UTIL_LCDEx_PrintfAtLine	28	static
-../Application/User/Core/Src/stm32_lcd_ex.c:38:6:UTIL_LCDEx_PrintfAt	36	static
+../Application/User/Core/Src/stm32_lcd_ex.c:28:6:UTIL_LCDEx_PrintfAtLine	20	static
+../Application/User/Core/Src/stm32_lcd_ex.c:38:6:UTIL_LCDEx_PrintfAt	28	static

@@ -2,5 +2,4 @@
 ../Application/User/USBX/App/ux_device_mouse.c:84:6:USBD_HID_Mouse_Deactivate	1
 ../Application/User/USBX/App/ux_device_mouse.c:105:6:USBD_HID_Mouse_SetReport	1
 ../Application/User/USBX/App/ux_device_mouse.c:126:6:USBD_HID_Mouse_GetReport	1
-../Application/User/USBX/App/ux_device_mouse.c:146:6:usbx_hid_thread_entry	4
-../Application/User/USBX/App/ux_device_mouse.c:192:13:GetPointerData	8
+../Application/User/USBX/App/ux_device_mouse.c:146:6:usbx_hid_thread_entry	8

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <projectDescription>
-	<name>STM32N6570_USBD_CDC_FACE_DETECT_FSBL</name>
+	<name>STM32N6570-ThreadX-USB-CDC-AI-Face-Detection-Ethernet-FSBL</name>
 	<comment></comment>
 	<projects>
 	</projects>
@@ -43,9 +43,24 @@
 			<locationURI>PARENT-1-PROJECT_LOC/Utilities</locationURI>
 		</link>
 		<link>
+			<name>Drivers/stm32n6xx_hal_eth.c</name>
+			<type>1</type>
+			<locationURI>PARENT-1-PROJECT_LOC/Drivers/STM32N6xx_HAL_Driver/Src/stm32n6xx_hal_eth.c</locationURI>
+		</link>
+		<link>
 			<name>Middlewares/ai-postprocessing-wrapper</name>
 			<type>2</type>
 			<locationURI>PARENT-1-PROJECT_LOC/Middlewares/ST/ai-postprocessing-wrapper</locationURI>
+		</link>
+		<link>
+			<name>Middlewares/filex</name>
+			<type>2</type>
+			<locationURI>PARENT-1-PROJECT_LOC/Middlewares/ST/filex</locationURI>
+		</link>
+		<link>
+			<name>Middlewares/netxduo</name>
+			<type>2</type>
+			<locationURI>PARENT-1-PROJECT_LOC/Middlewares/ST/netxduo</locationURI>
 		</link>
 		<link>
 			<name>Middlewares/screenl</name>
@@ -113,6 +128,11 @@
 			<locationURI>PARENT-1-PROJECT_LOC/Drivers/STM32N6xx_HAL_Driver/Src/stm32n6xx_hal_dma_ex.c</locationURI>
 		</link>
 		<link>
+			<name>Drivers/STM32N6xx_HAL_Driver/stm32n6xx_hal_eth_ex.c</name>
+			<type>1</type>
+			<locationURI>PARENT-1-PROJECT_LOC/Drivers/STM32N6xx_HAL_Driver/Src/stm32n6xx_hal_eth_ex.c</locationURI>
+		</link>
+		<link>
 			<name>Drivers/STM32N6xx_HAL_Driver/stm32n6xx_hal_exti.c</name>
 			<type>1</type>
 			<locationURI>PARENT-1-PROJECT_LOC/Drivers/STM32N6xx_HAL_Driver/Src/stm32n6xx_hal_exti.c</locationURI>
@@ -178,6 +198,16 @@
 			<locationURI>PARENT-1-PROJECT_LOC/Drivers/STM32N6xx_HAL_Driver/Src/stm32n6xx_hal_rif.c</locationURI>
 		</link>
 		<link>
+			<name>Drivers/STM32N6xx_HAL_Driver/stm32n6xx_hal_sd.c</name>
+			<type>1</type>
+			<locationURI>PARENT-1-PROJECT_LOC/Drivers/STM32N6xx_HAL_Driver/Src/stm32n6xx_hal_sd.c</locationURI>
+		</link>
+		<link>
+			<name>Drivers/STM32N6xx_HAL_Driver/stm32n6xx_hal_sd_ex.c</name>
+			<type>1</type>
+			<locationURI>PARENT-1-PROJECT_LOC/Drivers/STM32N6xx_HAL_Driver/Src/stm32n6xx_hal_sd_ex.c</locationURI>
+		</link>
+		<link>
 			<name>Drivers/STM32N6xx_HAL_Driver/stm32n6xx_hal_tim.c</name>
 			<type>1</type>
 			<locationURI>PARENT-1-PROJECT_LOC/Drivers/STM32N6xx_HAL_Driver/Src/stm32n6xx_hal_tim.c</locationURI>
@@ -221,6 +251,11 @@
 			<name>Drivers/STM32N6xx_HAL_Driver/stm32n6xx_ll_rcc.c</name>
 			<type>1</type>
 			<locationURI>PARENT-1-PROJECT_LOC/Drivers/STM32N6xx_HAL_Driver/Src/stm32n6xx_ll_rcc.c</locationURI>
+		</link>
+		<link>
+			<name>Drivers/STM32N6xx_HAL_Driver/stm32n6xx_ll_sdmmc.c</name>
+			<type>1</type>
+			<locationURI>PARENT-1-PROJECT_LOC/Drivers/STM32N6xx_HAL_Driver/Src/stm32n6xx_ll_sdmmc.c</locationURI>
 		</link>
 		<link>
 			<name>Drivers/STM32N6xx_HAL_Driver/stm32n6xx_ll_ucpd.c</name>
@@ -286,6 +321,11 @@
 			<name>Drivers/BSP/Components/mx66uw1g45g.c</name>
 			<type>1</type>
 			<locationURI>$%7BPARENT-1-PROJECT_LOC%7D/Drivers/BSP/Components/mx66uw1g45g/mx66uw1g45g.c</locationURI>
+		</link>
+		<link>
+			<name>Drivers/BSP/Components/rtl8211.c</name>
+			<type>1</type>
+			<locationURI>$%7BPARENT-1-PROJECT_LOC%7D/Drivers/BSP/Components/rtl8211/rtl8211.c</locationURI>
 		</link>
 		<link>
 			<name>Drivers/BSP/Components/tcpp0203.c</name>

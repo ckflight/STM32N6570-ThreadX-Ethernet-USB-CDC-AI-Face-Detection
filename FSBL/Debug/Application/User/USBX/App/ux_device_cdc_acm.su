@@ -1,3 +1,3 @@
-/home/ck/Desktop/Workspace/STM32CubeIDE Workspace/STM32N6570-ThreadX-USB-CDC-AI-Face-Detection/FSBL/Application/User/USBX/App/ux_device_cdc_acm.c:80:6:USBD_CDC_ACM_Activate	16	static
-/home/ck/Desktop/Workspace/STM32CubeIDE Workspace/STM32N6570-ThreadX-USB-CDC-AI-Face-Detection/FSBL/Application/User/USBX/App/ux_device_cdc_acm.c:98:6:USBD_CDC_ACM_Deactivate	16	static
-/home/ck/Desktop/Workspace/STM32CubeIDE Workspace/STM32N6570-ThreadX-USB-CDC-AI-Face-Detection/FSBL/Application/User/USBX/App/ux_device_cdc_acm.c:117:6:USBD_CDC_ACM_ParameterChange	32	static
+/home/ck/Desktop/Workspace/STM32CubeIDE Workspace/STM32N6570-ThreadX-USB-CDC-AI-Face-Detection-Ethernet/FSBL/Application/User/USBX/App/ux_device_cdc_acm.c:80:6:USBD_CDC_ACM_Activate	0	static
+/home/ck/Desktop/Workspace/STM32CubeIDE Workspace/STM32N6570-ThreadX-USB-CDC-AI-Face-Detection-Ethernet/FSBL/Application/User/USBX/App/ux_device_cdc_acm.c:98:6:USBD_CDC_ACM_Deactivate	0	static
+/home/ck/Desktop/Workspace/STM32CubeIDE Workspace/STM32N6570-ThreadX-USB-CDC-AI-Face-Detection-Ethernet/FSBL/Application/User/USBX/App/ux_device_cdc_acm.c:117:6:USBD_CDC_ACM_ParameterChange	0	static

@@ -5071,7 +5071,7 @@ STAI_API_DECLARE_END
 #define STAI_NETWORK_FLAGS (STAI_FLAG_INPUTS|STAI_FLAG_OUTPUTS|STAI_FLAG_ACTIVATIONS|STAI_FLAG_WEIGHTS)
 #endif // LL_ATON_DBG_BUFFER_INFO_EXCLUDED == 0
 
-#define STAI_NETWORK_ORIGIN_MODEL_NAME "blazeface_front_128_quant_pc_ff_od_wider_face_OE_3_3_1"
+#define STAI_NETWORK_ORIGIN_MODEL_NAME "blazeface_front_128_int8_OE_3_3_1"
 #define STAI_NETWORK_C_MODEL_NAME "network"
 
 /*************************** RELATIVE MEMORY POOLS ***************************/

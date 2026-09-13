@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <projectDescription>
-	<name>STM32N6570_USBD_CDC_FACE_DETECT</name>
+	<name>STM32N6570-ThreadX-USB-CDC-AI-Face-Detection-Ethernet</name>
 	<comment></comment>
 	<projects>
 	</projects>
@@ -18,9 +18,9 @@
 	</natures>
 	<linkedResources>
 		<link>
-			<name>STM32N6570_USBD_CDC_FACE_DETECT.ioc</name>
+			<name>STM32N6570-ThreadX-USB-CDC-AI-Face-Detection-Ethernet.ioc</name>
 			<type>1</type>
-			<locationURI>PARENT-1-PROJECT_LOC/STM32N6570_USBD_CDC_FACE_DETECT.ioc</locationURI>
+			<locationURI>PARENT-1-PROJECT_LOC/STM32N6570-ThreadX-USB-CDC-AI-Face-Detection-Ethernet.ioc</locationURI>
 		</link>
 	</linkedResources>
 </projectDescription>

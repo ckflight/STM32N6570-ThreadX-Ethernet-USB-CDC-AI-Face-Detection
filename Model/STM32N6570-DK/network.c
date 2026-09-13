@@ -18,26 +18,26 @@
   */
 
 /*
- * GIT_SHA         "7cc654104236b2ac726c804c5d7f201e2afd1c79"
+ * GIT_SHA         "6770925d2803cfc24528c45bb3ba8b791b2a83e4"
  * GIT_BRANCH      "STAI-4.0"
- * GIT_DESCRIPTION "STAI-3.0.0-254-g7cc65410"
+ * GIT_DESCRIPTION "atonn-v1.1.3-275-g6770925d"
  *
  * Command Line options:
- * --load-mdesc-file = "/opt/ST/STEdgeAI/Utilities/configs/stm32n6"
- * --load-cdesc-file = "/opt/ST/STEdgeAI/Utilities/configs/cortex-m55"
- * --load-mpool-file = "/home/jenkins/agent/workspace/tarted_FaceDetection_ModelZoo_fd/Model/my_mpools/stm32n6-app2_STM32N6570-DK"
+ * --load-mdesc-file = "/opt/ST/STEdgeAI/4.0/Utilities/configs/stm32n6"
+ * --load-cdesc-file = "/opt/ST/STEdgeAI/4.0/Utilities/configs/cortex-m55"
+ * --load-mpool-file = "/home/ck/stm32ai-modelzoo-services/application_code/face_detection/STM32N6/Model/my_mpools/stm32n6-app2_STM32N6570-DK"
  * --cache-maintenance = true
  * --enable-virtual-mem-pools = true
  * --native-float = true
- * --json-quant-file = "/home/jenkins/agent/workspace/tarted_FaceDetection_ModelZoo_fd/Model/st_ai_output/blazeface_front_128_quant_pc_ff_od_wider_face_OE_3_3_1_Q.json"
+ * --json-quant-file = "/home/ck/stm32ai-modelzoo-services/face_detection/experiments_outputs/2026_09_13_11_47_31/blazeface_front_128_int8_OE_3_3_1_Q.json"
  * --optimization = 3
  * --Os = true
  * --Omax-ca-pipe = 4
  * --Ocache-opt = true
  * --enable-epoch-controller = true
  * --output-info-file = "c_info"
- * --onnx-input = "/home/jenkins/agent/workspace/tarted_FaceDetection_ModelZoo_fd/Model/st_ai_output/blazeface_front_128_quant_pc_ff_od_wider_face_OE_3_3_1.onnx"
- * --out-dir-prefix = "/home/jenkins/agent/workspace/tarted_FaceDetection_ModelZoo_fd/Model/st_ai_ws/neural_art__network/"
+ * --onnx-input = "/home/ck/stm32ai-modelzoo-services/face_detection/experiments_outputs/2026_09_13_11_47_31/blazeface_front_128_int8_OE_3_3_1.onnx"
+ * --out-dir-prefix = "/home/ck/stm32ai-modelzoo-services/face_detection/experiments_outputs/2026_09_13_11_47_31/neural_art__network/"
  * --network-name = "network"
  * --all-buffers-info = true
  * --generate-stai = true
@@ -55,7 +55,7 @@
 #include "ecloader.h"
 #include "ll_aton_cipher.h"
 
-#if LL_ATON_VERSION_MAJOR != 1 || LL_ATON_VERSION_MINOR != 1 || LL_ATON_VERSION_MICRO != 3 || LL_ATON_VERSION_DEV != 262
+#if LL_ATON_VERSION_MAJOR != 1 || LL_ATON_VERSION_MINOR != 1 || LL_ATON_VERSION_MICRO != 3 || LL_ATON_VERSION_DEV != 275
 #  error "Possible mismatch in ll_aton library used"
 #endif
 
@@ -75,10 +75,10 @@
 /* index=3 file postfix=AXISRAM3 name=npuRAM3 offset=0x34200000  absolute_mode size=458752 READ_WRITE THROUGHPUT=HIGH LATENCY=LOW byte width=8 freq ratio=1.25 burst max length=MAXINT burst penalty=0 pipelined=ON cacheable=OFF read_power=18.531 write_power=16.201 use4initializers=NO score=94  */
 /* global pool 0 is ? */
 /* index=0 file postfix=AXISRAM6 name=npuRAM6 offset=0x34350000  absolute_mode size=458744 READ_WRITE THROUGHPUT=HIGH LATENCY=LOW byte width=8 freq ratio=1.25 burst max length=MAXINT burst penalty=0 pipelined=ON cacheable=OFF read_power=19.006 write_power=15.79 use4initializers=NO score=94  */
-/* global pool 11 is 2.28 MB */
-/* index=11 file postfix=AXISRAM2_AXISRAM3_AXISRAM4_AXISRAM5_AXISRAM6 name=cpuRAM2_npuRAM3_npuRAM4_npuRAM5_npuRAM6 offset=0x34100000  absolute_mode size=2883576 vpool READ_WRITE THROUGHPUT=HIGH LATENCY=MID byte width=8 freq ratio=1.25 burst max length=MAXINT burst penalty=0 pipelined=ON cacheable=OFF read_power=19.006 write_power=16.201 use4initializers=NO score=91  */
+/* global pool 11 is 1.28 MB */
+/* index=11 file postfix=AXISRAM3_AXISRAM4_AXISRAM5_AXISRAM6 name=npuRAM3_npuRAM4_npuRAM5_npuRAM6 offset=0x34200000  absolute_mode size=1835000 vpool READ_WRITE THROUGHPUT=HIGH LATENCY=LOW byte width=8 freq ratio=1.25 burst max length=MAXINT burst penalty=0 pipelined=ON cacheable=OFF read_power=19.006 write_power=16.201 use4initializers=NO score=93  */
 /* global pool 4 is ? */
-/* index=4 file postfix=AXISRAM2 name=cpuRAM2 offset=0x34100000  absolute_mode size=1048576 READ_WRITE THROUGHPUT=MID LATENCY=MID byte width=8 freq ratio=2.5 burst max length=MAXINT burst penalty=0 pipelined=ON cacheable=OFF read_power=17.324 write_power=15.321 use4initializers=NO score=84  */
+/* index=4 file postfix=AXISRAM2 name=cpuRAM2 offset=0x34100000  absolute_mode size=0 READ_WRITE THROUGHPUT=MID LATENCY=MID byte width=8 freq ratio=2.5 burst max length=MAXINT burst penalty=0 pipelined=ON cacheable=OFF read_power=17.324 write_power=15.321 use4initializers=NO score=84  */
 /* global pool 5 is ? */
 /* index=5 file postfix=AXISRAM1 name=cpuRAM1 offset=0x34080000  absolute_mode size=0 READ_WRITE THROUGHPUT=MID LATENCY=MID byte width=8 freq ratio=2.5 burst max length=MAXINT burst penalty=0 pipelined=ON cacheable=OFF read_power=16.616 write_power=14.522 use4initializers=NO score=84  */
 /* global pool 6 is ? */

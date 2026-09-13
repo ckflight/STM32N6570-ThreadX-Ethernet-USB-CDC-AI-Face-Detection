@@ -1,4 +1,2 @@
-/home/ck/Desktop/Workspace/STM32CubeIDE Workspace/STM32N6570-ThreadX-USB-CDC-AI-Face-Detection/Middlewares/ST/stm32-mw-camera/ISP_Library/isp/Src/isp_ae_algo.c:69:6:isp_ae_init	16	static
-/home/ck/Desktop/Workspace/STM32CubeIDE Workspace/STM32N6570-ThreadX-USB-CDC-AI-Face-Detection/Middlewares/ST/stm32-mw-camera/ISP_Library/isp/Src/isp_ae_algo.c:87:13:isp_ae_compute_antiflcker	40	static
-/home/ck/Desktop/Workspace/STM32CubeIDE Workspace/STM32N6570-ThreadX-USB-CDC-AI-Face-Detection/Middlewares/ST/stm32-mw-camera/ISP_Library/isp/Src/isp_ae_algo.c:142:13:isp_ae_reverse_antiflicker	40	static
-/home/ck/Desktop/Workspace/STM32CubeIDE Workspace/STM32N6570-ThreadX-USB-CDC-AI-Face-Detection/Middlewares/ST/stm32-mw-camera/ISP_Library/isp/Src/isp_ae_algo.c:200:6:isp_ae_get_new_exposure	96	static
+/home/ck/Desktop/Workspace/STM32CubeIDE Workspace/STM32N6570-ThreadX-USB-CDC-AI-Face-Detection-Ethernet/Middlewares/ST/stm32-mw-camera/ISP_Library/isp/Src/isp_ae_algo.c:69:6:isp_ae_init	8	static
+/home/ck/Desktop/Workspace/STM32CubeIDE Workspace/STM32N6570-ThreadX-USB-CDC-AI-Face-Detection-Ethernet/Middlewares/ST/stm32-mw-camera/ISP_Library/isp/Src/isp_ae_algo.c:200:6:isp_ae_get_new_exposure	136	static

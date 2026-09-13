@@ -33,6 +33,8 @@
 
 #include "app_usbx.h"
 #include "usbpd.h"
+#include "app_filex.h"
+#include "app_netxduo.h"
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
