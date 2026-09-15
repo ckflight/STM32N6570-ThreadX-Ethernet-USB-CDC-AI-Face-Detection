@@ -10,6 +10,8 @@
 #include "ai_app.h"
 #include "lcd_app.h"
 #include "camera_app.h"
+#include "ethernet.h"
+#include "sd.h"
 
 #include "stm32n6570_discovery_xspi.h"
 #include "stm32n6570_discovery.h"
@@ -21,29 +23,12 @@ void SystemClock_Config(void);
 static void MPU_Config(void);
 static void SystemIsolation_Config(void);
 
-// Default cod comes with while loop buffer copying which is so slow.
-// To eliminate #define UX_DEVICE_ENDPOINT_BUFFER_OWNER      1 and #define UX_DEVICE_CLASS_CDC_ACM_ZERO_COPY
-// is defined in ux_user.h
-// With these paremeters no need to implement fast write since it already does that.
-
-// #define UX_SLAVE_REQUEST_DATA_MAX_LENGTH 32768 is increased.
-// DMA is enabled hpcd_USB_OTG_HS1.Init.dma_enable = ENABLE;
-
 // Önemli not: network weight vs bir dataları flasha yazınca app çalışıyor.
 // python3.12 stm32ai_main.py (user_config.yml oluşturunca) bu kod flasha yazıyor.
 // ai kodunun flashtan çalışması için face_detection/STM32N6/FSBL/ai_fsbl.hex yaz bu face detect kodunu flashlıyor bunu henüz açamadı.
 // network_data.hex de yazmak lazım
 // projenin hex dosyasını da doğru adrese yazmak lazım
 
-static void MX_ETH1_Init(void);
-void MX_SDMMC2_SD_Init(void);
-
-ETH_DMADescTypeDef DMARxDscrTab[ETH_DMA_RX_CH_CNT][ETH_RX_DESC_CNT] __attribute__((section(".RxDecripSection"))); /* Ethernet Rx DMA Descriptors */
-ETH_DMADescTypeDef DMATxDscrTab[ETH_DMA_TX_CH_CNT][ETH_TX_DESC_CNT] __attribute__((section(".TxDecripSection")));   /* Ethernet Tx DMA Descriptors */
-
-ETH_HandleTypeDef heth1;
-
-SD_HandleTypeDef hsd2;
 
 int main(void)
 {
@@ -69,8 +54,10 @@ int main(void)
 	clock_freq = HAL_RCC_GetPCLK2Freq();
 
     MX_GPIO_Init();
-	MX_SDMMC2_SD_Init();
-	MX_ETH1_Init();
+
+    Ethernet_Init();
+    SD_Init();
+
     MX_GPDMA1_Init();
     MX_UCPD1_Init();
     MX_USB1_OTG_HS_PCD_Init();
@@ -99,47 +86,6 @@ int main(void)
     while (1)
     {
     }
-}
-static void MX_ETH1_Init(void)
-{
-
-   static uint8_t MACAddr[6];
-
-  heth1.Instance = ETH1;
-  MACAddr[0] = 0x00;
-  MACAddr[1] = 0x80;
-  MACAddr[2] = 0xE0;
-  MACAddr[3] = 0x00;
-  MACAddr[4] = 0x10;
-  MACAddr[5] = 0x00;
-  heth1.Init.MACAddr = &MACAddr[0];
-  heth1.Init.MediaInterface = HAL_ETH_RGMII_MODE;
-  for (int ch = 0; ch < ETH_DMA_CH_CNT; ch++)
-  {
-    heth1.Init.TxDesc[ch] = DMATxDscrTab[ch];
-    heth1.Init.RxDesc[ch] = DMARxDscrTab[ch];
-  }
-  heth1.Init.RxBuffLen = 1536;
-
-  if (HAL_ETH_Init(&heth1) != HAL_OK)
-  {
-    Error_Handler();
-  }
-}
-
-void MX_SDMMC2_SD_Init(void)
-{
-
-  hsd2.Instance = SDMMC2;
-  hsd2.Init.ClockEdge = SDMMC_CLOCK_EDGE_RISING;
-  hsd2.Init.ClockPowerSave = SDMMC_CLOCK_POWER_SAVE_DISABLE;
-  hsd2.Init.BusWide = SDMMC_BUS_WIDE_4B;
-  hsd2.Init.HardwareFlowControl = SDMMC_HARDWARE_FLOW_CONTROL_DISABLE;
-  hsd2.Init.ClockDiv = 0;
-  if (HAL_SD_Init(&hsd2) != HAL_OK)
-  {
-    Error_Handler();
-  }
 }
 
 static void set_clk_sleep_mode(void)

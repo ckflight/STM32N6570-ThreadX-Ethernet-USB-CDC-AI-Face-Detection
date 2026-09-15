@@ -31,6 +31,7 @@ Application/FileX/Target \
 Application/Hardware \
 Application/LCD \
 Application/NetXDuo/App \
+Application/NetXDuo/Target \
 Application/RTOS \
 Application/Startup \
 Application/USBPD/App \

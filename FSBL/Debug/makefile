@@ -48,6 +48,7 @@ RM := rm -rf
 -include Application/USBPD/App/subdir.mk
 -include Application/Startup/subdir.mk
 -include Application/RTOS/subdir.mk
+-include Application/NetXDuo/Target/subdir.mk
 -include Application/NetXDuo/App/subdir.mk
 -include Application/LCD/subdir.mk
 -include Application/Hardware/subdir.mk
