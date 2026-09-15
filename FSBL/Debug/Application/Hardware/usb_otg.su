@@ -1,0 +1,3 @@
+../Application/Hardware/usb_otg.c:37:6:MX_USB1_OTG_HS_PCD_Init	16	static
+../Application/Hardware/usb_otg.c:82:6:HAL_PCD_MspInit	432	static
+../Application/Hardware/usb_otg.c:135:6:HAL_PCD_MspDeInit	8	static

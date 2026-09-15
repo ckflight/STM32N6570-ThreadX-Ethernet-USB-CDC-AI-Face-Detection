@@ -1,0 +1,2 @@
+../Application/LCD/lcd_app.c:28:6:LCD_Init	1
+../Application/LCD/lcd_app.c:55:10:LCD_GetBackgroundBuffer	1

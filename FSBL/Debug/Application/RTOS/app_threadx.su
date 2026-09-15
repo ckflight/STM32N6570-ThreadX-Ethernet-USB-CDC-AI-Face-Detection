@@ -1,0 +1,9 @@
+../Application/RTOS/app_threadx.c:376:13:LED2_Thread	8	static
+../Application/RTOS/app_threadx.c:363:13:LED1_Thread	8	static
+../Application/RTOS/app_threadx.c:176:13:LCD_Text_Thread	328	static,ignoring_inline_asm
+../Application/RTOS/app_threadx.c:224:13:AI_Thread	16	static
+../Application/RTOS/app_threadx.c:335:13:MATH_Thread	40	static
+../Application/RTOS/app_threadx.c:306:13:USB_TX_Thread2	24	static
+../Application/RTOS/app_threadx.c:132:13:Ethernet_Thread	8	static
+../Application/RTOS/app_threadx.c:87:6:App_ThreadX_Init	64	static,ignoring_inline_asm
+../Application/RTOS/app_threadx.c:125:6:MX_ThreadX_Init	0	static

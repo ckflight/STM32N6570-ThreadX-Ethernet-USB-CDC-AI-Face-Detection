@@ -3,10 +3,10 @@ Middlewares/stm32-mw-camera/sensors/cmw_vd1943.o: \
  /home/ck/Desktop/Workspace/STM32CubeIDE\ Workspace/STM32N6570-ThreadX-USB-CDC-AI-Face-Detection-Ethernet/Middlewares/ST/stm32-mw-camera/sensors/cmw_vd1943.h \
  /home/ck/Desktop/Workspace/STM32CubeIDE\ Workspace/STM32N6570-ThreadX-USB-CDC-AI-Face-Detection-Ethernet/Middlewares/ST/stm32-mw-camera/sensors/cmw_sensors_if.h \
  /home/ck/Desktop/Workspace/STM32CubeIDE\ Workspace/STM32N6570-ThreadX-USB-CDC-AI-Face-Detection-Ethernet/FSBL/../Middlewares/ST/stm32-mw-camera/ISP_Library/isp/Inc/isp_core.h \
- /home/ck/Desktop/Workspace/STM32CubeIDE\ Workspace/STM32N6570-ThreadX-USB-CDC-AI-Face-Detection-Ethernet/FSBL/Application/User/Core/Inc/isp_conf.h \
+ /home/ck/Desktop/Workspace/STM32CubeIDE\ Workspace/STM32N6570-ThreadX-USB-CDC-AI-Face-Detection-Ethernet/FSBL/Application/Camera/isp_conf.h \
  /home/ck/Desktop/Workspace/STM32CubeIDE\ Workspace/STM32N6570-ThreadX-USB-CDC-AI-Face-Detection-Ethernet/FSBL/../Middlewares/ST/stm32-mw-camera/ISP_Library/isp/Inc/isp_platform.h \
  /home/ck/Desktop/Workspace/STM32CubeIDE\ Workspace/STM32N6570-ThreadX-USB-CDC-AI-Face-Detection-Ethernet/FSBL/../Drivers/STM32N6xx_HAL_Driver/Inc/stm32n6xx_hal.h \
- /home/ck/Desktop/Workspace/STM32CubeIDE\ Workspace/STM32N6570-ThreadX-USB-CDC-AI-Face-Detection-Ethernet/FSBL/Application/User/Core/Inc/stm32n6xx_hal_conf.h \
+ /home/ck/Desktop/Workspace/STM32CubeIDE\ Workspace/STM32N6570-ThreadX-USB-CDC-AI-Face-Detection-Ethernet/FSBL/Application/Core/Inc/stm32n6xx_hal_conf.h \
  /home/ck/Desktop/Workspace/STM32CubeIDE\ Workspace/STM32N6570-ThreadX-USB-CDC-AI-Face-Detection-Ethernet/FSBL/../Drivers/STM32N6xx_HAL_Driver/Inc/stm32n6xx_hal_rcc.h \
  /home/ck/Desktop/Workspace/STM32CubeIDE\ Workspace/STM32N6570-ThreadX-USB-CDC-AI-Face-Detection-Ethernet/FSBL/../Drivers/STM32N6xx_HAL_Driver/Inc/stm32n6xx_hal_def.h \
  /home/ck/Desktop/Workspace/STM32CubeIDE\ Workspace/STM32N6570-ThreadX-USB-CDC-AI-Face-Detection-Ethernet/FSBL/../Drivers/CMSIS/Device/ST/STM32N6xx/Include/stm32n6xx.h \
@@ -64,15 +64,15 @@ Middlewares/stm32-mw-camera/sensors/cmw_vd1943.o: \
  /home/ck/Desktop/Workspace/STM32CubeIDE\ Workspace/STM32N6570-ThreadX-USB-CDC-AI-Face-Detection-Ethernet/FSBL/../Middlewares/ST/stm32-mw-camera/sensors/vd1943/vd1943.h \
  /home/ck/Desktop/Workspace/STM32CubeIDE\ Workspace/STM32N6570-ThreadX-USB-CDC-AI-Face-Detection-Ethernet/FSBL/../Middlewares/ST/stm32-mw-camera/cmw_camera.h \
  /home/ck/Desktop/Workspace/STM32CubeIDE\ Workspace/STM32N6570-ThreadX-USB-CDC-AI-Face-Detection-Ethernet/FSBL/../Middlewares/ST/stm32-mw-camera/cmw_errno.h \
- /home/ck/Desktop/Workspace/STM32CubeIDE\ Workspace/STM32N6570-ThreadX-USB-CDC-AI-Face-Detection-Ethernet/FSBL/Application/User/Core/Inc/cmw_camera_conf.h \
+ /home/ck/Desktop/Workspace/STM32CubeIDE\ Workspace/STM32N6570-ThreadX-USB-CDC-AI-Face-Detection-Ethernet/FSBL/Application/Camera/cmw_camera_conf.h \
  /home/ck/Desktop/Workspace/STM32CubeIDE\ Workspace/STM32N6570-ThreadX-USB-CDC-AI-Face-Detection-Ethernet/FSBL/../Drivers/BSP/STM32N6570-DK/stm32n6570_discovery_bus.h \
- /home/ck/Desktop/Workspace/STM32CubeIDE\ Workspace/STM32N6570-ThreadX-USB-CDC-AI-Face-Detection-Ethernet/FSBL/Application/User/Core/Inc/stm32n6570_discovery_conf.h \
+ /home/ck/Desktop/Workspace/STM32CubeIDE\ Workspace/STM32N6570-ThreadX-USB-CDC-AI-Face-Detection-Ethernet/FSBL/Application/Hardware/stm32n6570_discovery_conf.h \
  /home/ck/Desktop/Workspace/STM32CubeIDE\ Workspace/STM32N6570-ThreadX-USB-CDC-AI-Face-Detection-Ethernet/FSBL/../Drivers/BSP/STM32N6570-DK/stm32n6570_discovery_errno.h \
  /home/ck/Desktop/Workspace/STM32CubeIDE\ Workspace/STM32N6570-ThreadX-USB-CDC-AI-Face-Detection-Ethernet/FSBL/../Middlewares/ST/stm32-mw-camera/sensors/cmw_sensors_if.h \
  /home/ck/Desktop/Workspace/STM32CubeIDE\ Workspace/STM32N6570-ThreadX-USB-CDC-AI-Face-Detection-Ethernet/FSBL/../Middlewares/ST/stm32-mw-camera/ISP_Library/isp/Inc/isp_api.h \
  /home/ck/Desktop/Workspace/STM32CubeIDE\ Workspace/STM32N6570-ThreadX-USB-CDC-AI-Face-Detection-Ethernet/FSBL/../Middlewares/ST/stm32-mw-camera/ISP_Library/isp/Inc/isp_core.h \
- /home/ck/Desktop/Workspace/STM32CubeIDE\ Workspace/STM32N6570-ThreadX-USB-CDC-AI-Face-Detection-Ethernet/FSBL/Application/User/Core/Inc/isp_param_conf.h \
- /home/ck/Desktop/Workspace/STM32CubeIDE\ Workspace/STM32N6570-ThreadX-USB-CDC-AI-Face-Detection-Ethernet/FSBL/Application/User/Core/Inc/app_config.h \
+ /home/ck/Desktop/Workspace/STM32CubeIDE\ Workspace/STM32N6570-ThreadX-USB-CDC-AI-Face-Detection-Ethernet/FSBL/Application/Camera/isp_param_conf.h \
+ /home/ck/Desktop/Workspace/STM32CubeIDE\ Workspace/STM32N6570-ThreadX-USB-CDC-AI-Face-Detection-Ethernet/FSBL/Application/AI/app_config.h \
  /home/ck/Desktop/Workspace/STM32CubeIDE\ Workspace/STM32N6570-ThreadX-USB-CDC-AI-Face-Detection-Ethernet/FSBL/../Drivers/CMSIS/Include/arm_math.h \
  /home/ck/Desktop/Workspace/STM32CubeIDE\ Workspace/STM32N6570-ThreadX-USB-CDC-AI-Face-Detection-Ethernet/FSBL/../Drivers/CMSIS/Include/arm_math_types.h \
  /home/ck/Desktop/Workspace/STM32CubeIDE\ Workspace/STM32N6570-ThreadX-USB-CDC-AI-Face-Detection-Ethernet/FSBL/../Drivers/CMSIS/Include/arm_math_memory.h \
@@ -104,16 +104,16 @@ Middlewares/stm32-mw-camera/sensors/cmw_vd1943.o: \
  /home/ck/Desktop/Workspace/STM32CubeIDE\ Workspace/STM32N6570-ThreadX-USB-CDC-AI-Face-Detection-Ethernet/FSBL/../Drivers/CMSIS/Include/dsp/support_functions.h \
  /home/ck/Desktop/Workspace/STM32CubeIDE\ Workspace/STM32N6570-ThreadX-USB-CDC-AI-Face-Detection-Ethernet/FSBL/../Drivers/CMSIS/Include/dsp/quaternion_math_functions.h \
  /home/ck/Desktop/Workspace/STM32CubeIDE\ Workspace/STM32N6570-ThreadX-USB-CDC-AI-Face-Detection-Ethernet/FSBL/../Drivers/CMSIS/Include/dsp/window_functions.h \
- /home/ck/Desktop/Workspace/STM32CubeIDE\ Workspace/STM32N6570-ThreadX-USB-CDC-AI-Face-Detection-Ethernet/FSBL/Application/User/Core/Inc/imx335_isp_param_conf.h \
- /home/ck/Desktop/Workspace/STM32CubeIDE\ Workspace/STM32N6570-ThreadX-USB-CDC-AI-Face-Detection-Ethernet/FSBL/Application/User/Core/Inc/vd66gy_isp_param_conf.h \
- /home/ck/Desktop/Workspace/STM32CubeIDE\ Workspace/STM32N6570-ThreadX-USB-CDC-AI-Face-Detection-Ethernet/FSBL/Application/User/Core/Inc/vd1943_isp_param_conf.h
+ /home/ck/Desktop/Workspace/STM32CubeIDE\ Workspace/STM32N6570-ThreadX-USB-CDC-AI-Face-Detection-Ethernet/FSBL/Application/Camera/imx335_isp_param_conf.h \
+ /home/ck/Desktop/Workspace/STM32CubeIDE\ Workspace/STM32N6570-ThreadX-USB-CDC-AI-Face-Detection-Ethernet/FSBL/Application/Camera/vd66gy_isp_param_conf.h \
+ /home/ck/Desktop/Workspace/STM32CubeIDE\ Workspace/STM32N6570-ThreadX-USB-CDC-AI-Face-Detection-Ethernet/FSBL/Application/Camera/vd1943_isp_param_conf.h
 /home/ck/Desktop/Workspace/STM32CubeIDE\ Workspace/STM32N6570-ThreadX-USB-CDC-AI-Face-Detection-Ethernet/Middlewares/ST/stm32-mw-camera/sensors/cmw_vd1943.h:
 /home/ck/Desktop/Workspace/STM32CubeIDE\ Workspace/STM32N6570-ThreadX-USB-CDC-AI-Face-Detection-Ethernet/Middlewares/ST/stm32-mw-camera/sensors/cmw_sensors_if.h:
 /home/ck/Desktop/Workspace/STM32CubeIDE\ Workspace/STM32N6570-ThreadX-USB-CDC-AI-Face-Detection-Ethernet/FSBL/../Middlewares/ST/stm32-mw-camera/ISP_Library/isp/Inc/isp_core.h:
-/home/ck/Desktop/Workspace/STM32CubeIDE\ Workspace/STM32N6570-ThreadX-USB-CDC-AI-Face-Detection-Ethernet/FSBL/Application/User/Core/Inc/isp_conf.h:
+/home/ck/Desktop/Workspace/STM32CubeIDE\ Workspace/STM32N6570-ThreadX-USB-CDC-AI-Face-Detection-Ethernet/FSBL/Application/Camera/isp_conf.h:
 /home/ck/Desktop/Workspace/STM32CubeIDE\ Workspace/STM32N6570-ThreadX-USB-CDC-AI-Face-Detection-Ethernet/FSBL/../Middlewares/ST/stm32-mw-camera/ISP_Library/isp/Inc/isp_platform.h:
 /home/ck/Desktop/Workspace/STM32CubeIDE\ Workspace/STM32N6570-ThreadX-USB-CDC-AI-Face-Detection-Ethernet/FSBL/../Drivers/STM32N6xx_HAL_Driver/Inc/stm32n6xx_hal.h:
-/home/ck/Desktop/Workspace/STM32CubeIDE\ Workspace/STM32N6570-ThreadX-USB-CDC-AI-Face-Detection-Ethernet/FSBL/Application/User/Core/Inc/stm32n6xx_hal_conf.h:
+/home/ck/Desktop/Workspace/STM32CubeIDE\ Workspace/STM32N6570-ThreadX-USB-CDC-AI-Face-Detection-Ethernet/FSBL/Application/Core/Inc/stm32n6xx_hal_conf.h:
 /home/ck/Desktop/Workspace/STM32CubeIDE\ Workspace/STM32N6570-ThreadX-USB-CDC-AI-Face-Detection-Ethernet/FSBL/../Drivers/STM32N6xx_HAL_Driver/Inc/stm32n6xx_hal_rcc.h:
 /home/ck/Desktop/Workspace/STM32CubeIDE\ Workspace/STM32N6570-ThreadX-USB-CDC-AI-Face-Detection-Ethernet/FSBL/../Drivers/STM32N6xx_HAL_Driver/Inc/stm32n6xx_hal_def.h:
 /home/ck/Desktop/Workspace/STM32CubeIDE\ Workspace/STM32N6570-ThreadX-USB-CDC-AI-Face-Detection-Ethernet/FSBL/../Drivers/CMSIS/Device/ST/STM32N6xx/Include/stm32n6xx.h:
@@ -171,15 +171,15 @@ Middlewares/stm32-mw-camera/sensors/cmw_vd1943.o: \
 /home/ck/Desktop/Workspace/STM32CubeIDE\ Workspace/STM32N6570-ThreadX-USB-CDC-AI-Face-Detection-Ethernet/FSBL/../Middlewares/ST/stm32-mw-camera/sensors/vd1943/vd1943.h:
 /home/ck/Desktop/Workspace/STM32CubeIDE\ Workspace/STM32N6570-ThreadX-USB-CDC-AI-Face-Detection-Ethernet/FSBL/../Middlewares/ST/stm32-mw-camera/cmw_camera.h:
 /home/ck/Desktop/Workspace/STM32CubeIDE\ Workspace/STM32N6570-ThreadX-USB-CDC-AI-Face-Detection-Ethernet/FSBL/../Middlewares/ST/stm32-mw-camera/cmw_errno.h:
-/home/ck/Desktop/Workspace/STM32CubeIDE\ Workspace/STM32N6570-ThreadX-USB-CDC-AI-Face-Detection-Ethernet/FSBL/Application/User/Core/Inc/cmw_camera_conf.h:
+/home/ck/Desktop/Workspace/STM32CubeIDE\ Workspace/STM32N6570-ThreadX-USB-CDC-AI-Face-Detection-Ethernet/FSBL/Application/Camera/cmw_camera_conf.h:
 /home/ck/Desktop/Workspace/STM32CubeIDE\ Workspace/STM32N6570-ThreadX-USB-CDC-AI-Face-Detection-Ethernet/FSBL/../Drivers/BSP/STM32N6570-DK/stm32n6570_discovery_bus.h:
-/home/ck/Desktop/Workspace/STM32CubeIDE\ Workspace/STM32N6570-ThreadX-USB-CDC-AI-Face-Detection-Ethernet/FSBL/Application/User/Core/Inc/stm32n6570_discovery_conf.h:
+/home/ck/Desktop/Workspace/STM32CubeIDE\ Workspace/STM32N6570-ThreadX-USB-CDC-AI-Face-Detection-Ethernet/FSBL/Application/Hardware/stm32n6570_discovery_conf.h:
 /home/ck/Desktop/Workspace/STM32CubeIDE\ Workspace/STM32N6570-ThreadX-USB-CDC-AI-Face-Detection-Ethernet/FSBL/../Drivers/BSP/STM32N6570-DK/stm32n6570_discovery_errno.h:
 /home/ck/Desktop/Workspace/STM32CubeIDE\ Workspace/STM32N6570-ThreadX-USB-CDC-AI-Face-Detection-Ethernet/FSBL/../Middlewares/ST/stm32-mw-camera/sensors/cmw_sensors_if.h:
 /home/ck/Desktop/Workspace/STM32CubeIDE\ Workspace/STM32N6570-ThreadX-USB-CDC-AI-Face-Detection-Ethernet/FSBL/../Middlewares/ST/stm32-mw-camera/ISP_Library/isp/Inc/isp_api.h:
 /home/ck/Desktop/Workspace/STM32CubeIDE\ Workspace/STM32N6570-ThreadX-USB-CDC-AI-Face-Detection-Ethernet/FSBL/../Middlewares/ST/stm32-mw-camera/ISP_Library/isp/Inc/isp_core.h:
-/home/ck/Desktop/Workspace/STM32CubeIDE\ Workspace/STM32N6570-ThreadX-USB-CDC-AI-Face-Detection-Ethernet/FSBL/Application/User/Core/Inc/isp_param_conf.h:
-/home/ck/Desktop/Workspace/STM32CubeIDE\ Workspace/STM32N6570-ThreadX-USB-CDC-AI-Face-Detection-Ethernet/FSBL/Application/User/Core/Inc/app_config.h:
+/home/ck/Desktop/Workspace/STM32CubeIDE\ Workspace/STM32N6570-ThreadX-USB-CDC-AI-Face-Detection-Ethernet/FSBL/Application/Camera/isp_param_conf.h:
+/home/ck/Desktop/Workspace/STM32CubeIDE\ Workspace/STM32N6570-ThreadX-USB-CDC-AI-Face-Detection-Ethernet/FSBL/Application/AI/app_config.h:
 /home/ck/Desktop/Workspace/STM32CubeIDE\ Workspace/STM32N6570-ThreadX-USB-CDC-AI-Face-Detection-Ethernet/FSBL/../Drivers/CMSIS/Include/arm_math.h:
 /home/ck/Desktop/Workspace/STM32CubeIDE\ Workspace/STM32N6570-ThreadX-USB-CDC-AI-Face-Detection-Ethernet/FSBL/../Drivers/CMSIS/Include/arm_math_types.h:
 /home/ck/Desktop/Workspace/STM32CubeIDE\ Workspace/STM32N6570-ThreadX-USB-CDC-AI-Face-Detection-Ethernet/FSBL/../Drivers/CMSIS/Include/arm_math_memory.h:
@@ -211,6 +211,6 @@ Middlewares/stm32-mw-camera/sensors/cmw_vd1943.o: \
 /home/ck/Desktop/Workspace/STM32CubeIDE\ Workspace/STM32N6570-ThreadX-USB-CDC-AI-Face-Detection-Ethernet/FSBL/../Drivers/CMSIS/Include/dsp/support_functions.h:
 /home/ck/Desktop/Workspace/STM32CubeIDE\ Workspace/STM32N6570-ThreadX-USB-CDC-AI-Face-Detection-Ethernet/FSBL/../Drivers/CMSIS/Include/dsp/quaternion_math_functions.h:
 /home/ck/Desktop/Workspace/STM32CubeIDE\ Workspace/STM32N6570-ThreadX-USB-CDC-AI-Face-Detection-Ethernet/FSBL/../Drivers/CMSIS/Include/dsp/window_functions.h:
-/home/ck/Desktop/Workspace/STM32CubeIDE\ Workspace/STM32N6570-ThreadX-USB-CDC-AI-Face-Detection-Ethernet/FSBL/Application/User/Core/Inc/imx335_isp_param_conf.h:
-/home/ck/Desktop/Workspace/STM32CubeIDE\ Workspace/STM32N6570-ThreadX-USB-CDC-AI-Face-Detection-Ethernet/FSBL/Application/User/Core/Inc/vd66gy_isp_param_conf.h:
-/home/ck/Desktop/Workspace/STM32CubeIDE\ Workspace/STM32N6570-ThreadX-USB-CDC-AI-Face-Detection-Ethernet/FSBL/Application/User/Core/Inc/vd1943_isp_param_conf.h:
+/home/ck/Desktop/Workspace/STM32CubeIDE\ Workspace/STM32N6570-ThreadX-USB-CDC-AI-Face-Detection-Ethernet/FSBL/Application/Camera/imx335_isp_param_conf.h:
+/home/ck/Desktop/Workspace/STM32CubeIDE\ Workspace/STM32N6570-ThreadX-USB-CDC-AI-Face-Detection-Ethernet/FSBL/Application/Camera/vd66gy_isp_param_conf.h:
+/home/ck/Desktop/Workspace/STM32CubeIDE\ Workspace/STM32N6570-ThreadX-USB-CDC-AI-Face-Detection-Ethernet/FSBL/Application/Camera/vd1943_isp_param_conf.h:

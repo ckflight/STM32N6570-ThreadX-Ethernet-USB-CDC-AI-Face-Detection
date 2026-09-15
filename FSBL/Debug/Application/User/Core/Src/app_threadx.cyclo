@@ -1,9 +1,0 @@
-../Application/User/Core/Src/app_threadx.c:390:13:LED2_Thread	1
-../Application/User/Core/Src/app_threadx.c:377:13:LED1_Thread	1
-../Application/User/Core/Src/app_threadx.c:190:13:LCD_Text_Thread	6
-../Application/User/Core/Src/app_threadx.c:238:13:AI_Thread	2
-../Application/User/Core/Src/app_threadx.c:349:13:MATH_Thread	2
-../Application/User/Core/Src/app_threadx.c:320:13:USB_TX_Thread2	3
-../Application/User/Core/Src/app_threadx.c:146:13:Ethernet_Thread	6
-../Application/User/Core/Src/app_threadx.c:101:6:App_ThreadX_Init	9
-../Application/User/Core/Src/app_threadx.c:139:6:MX_ThreadX_Init	1

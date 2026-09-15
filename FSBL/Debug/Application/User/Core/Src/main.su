@@ -1,9 +1,0 @@
-../Application/User/Core/Src/main.c:291:6:npu_cache_enable_clocks_and_reset	8	static
-../Application/User/Core/Src/main.c:300:6:npu_cache_disable_clocks_and_reset	0	static
-../Application/User/Core/Src/main.c:308:19:MX_DCMIPP_ClockConfig	416	static
-../Application/User/Core/Src/main.c:396:6:NeuralNetwork_run	8	static
-../Application/User/Core/Src/main.c:587:6:HAL_TIM_PeriodElapsedCallback	8	static
-../Application/User/Core/Src/main.c:609:6:Error_Handler	8	static
-../Application/User/Core/Src/main.c:223:6:MX_SDMMC2_SD_Init	8	static
-../Application/User/Core/Src/main.c:409:6:SystemClock_Config	624	static
-../Application/User/Core/Src/main.c:120:5:main	296	static,ignoring_inline_asm

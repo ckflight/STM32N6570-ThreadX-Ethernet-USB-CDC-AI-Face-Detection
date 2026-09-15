@@ -1,9 +1,9 @@
 Drivers/BSP/STM32N6570-DK/stm32n6570_discovery_xspi.o: \
  /home/ck/Desktop/Workspace/STM32CubeIDE\ Workspace/STM32N6570-ThreadX-USB-CDC-AI-Face-Detection-Ethernet/Drivers/BSP/STM32N6570-DK/stm32n6570_discovery_xspi.c \
  /home/ck/Desktop/Workspace/STM32CubeIDE\ Workspace/STM32N6570-ThreadX-USB-CDC-AI-Face-Detection-Ethernet/Drivers/BSP/STM32N6570-DK/stm32n6570_discovery_xspi.h \
- /home/ck/Desktop/Workspace/STM32CubeIDE\ Workspace/STM32N6570-ThreadX-USB-CDC-AI-Face-Detection-Ethernet/FSBL/Application/User/Core/Inc/stm32n6570_discovery_conf.h \
+ /home/ck/Desktop/Workspace/STM32CubeIDE\ Workspace/STM32N6570-ThreadX-USB-CDC-AI-Face-Detection-Ethernet/FSBL/Application/Hardware/stm32n6570_discovery_conf.h \
  /home/ck/Desktop/Workspace/STM32CubeIDE\ Workspace/STM32N6570-ThreadX-USB-CDC-AI-Face-Detection-Ethernet/FSBL/../Drivers/STM32N6xx_HAL_Driver/Inc/stm32n6xx_hal.h \
- /home/ck/Desktop/Workspace/STM32CubeIDE\ Workspace/STM32N6570-ThreadX-USB-CDC-AI-Face-Detection-Ethernet/FSBL/Application/User/Core/Inc/stm32n6xx_hal_conf.h \
+ /home/ck/Desktop/Workspace/STM32CubeIDE\ Workspace/STM32N6570-ThreadX-USB-CDC-AI-Face-Detection-Ethernet/FSBL/Application/Core/Inc/stm32n6xx_hal_conf.h \
  /home/ck/Desktop/Workspace/STM32CubeIDE\ Workspace/STM32N6570-ThreadX-USB-CDC-AI-Face-Detection-Ethernet/FSBL/../Drivers/STM32N6xx_HAL_Driver/Inc/stm32n6xx_hal_rcc.h \
  /home/ck/Desktop/Workspace/STM32CubeIDE\ Workspace/STM32N6570-ThreadX-USB-CDC-AI-Face-Detection-Ethernet/FSBL/../Drivers/STM32N6xx_HAL_Driver/Inc/stm32n6xx_hal_def.h \
  /home/ck/Desktop/Workspace/STM32CubeIDE\ Workspace/STM32N6570-ThreadX-USB-CDC-AI-Face-Detection-Ethernet/FSBL/../Drivers/CMSIS/Device/ST/STM32N6xx/Include/stm32n6xx.h \
@@ -59,13 +59,13 @@ Drivers/BSP/STM32N6570-DK/stm32n6570_discovery_xspi.o: \
  /home/ck/Desktop/Workspace/STM32CubeIDE\ Workspace/STM32N6570-ThreadX-USB-CDC-AI-Face-Detection-Ethernet/FSBL/../Drivers/STM32N6xx_HAL_Driver/Inc/stm32n6xx_hal_xspi.h \
  /home/ck/Desktop/Workspace/STM32CubeIDE\ Workspace/STM32N6570-ThreadX-USB-CDC-AI-Face-Detection-Ethernet/Drivers/BSP/STM32N6570-DK/stm32n6570_discovery_errno.h \
  /home/ck/Desktop/Workspace/STM32CubeIDE\ Workspace/STM32N6570-ThreadX-USB-CDC-AI-Face-Detection-Ethernet/Drivers/BSP/STM32N6570-DK/../Components/mx66uw1g45g/mx66uw1g45g.h \
- /home/ck/Desktop/Workspace/STM32CubeIDE\ Workspace/STM32N6570-ThreadX-USB-CDC-AI-Face-Detection-Ethernet/FSBL/Application/User/Core/Inc/mx66uw1g45g_conf.h \
+ /home/ck/Desktop/Workspace/STM32CubeIDE\ Workspace/STM32N6570-ThreadX-USB-CDC-AI-Face-Detection-Ethernet/FSBL/Application/Hardware/mx66uw1g45g_conf.h \
  /home/ck/Desktop/Workspace/STM32CubeIDE\ Workspace/STM32N6570-ThreadX-USB-CDC-AI-Face-Detection-Ethernet/Drivers/BSP/STM32N6570-DK/../Components/aps256xx/aps256xx.h \
- /home/ck/Desktop/Workspace/STM32CubeIDE\ Workspace/STM32N6570-ThreadX-USB-CDC-AI-Face-Detection-Ethernet/FSBL/Application/User/Core/Inc/aps256xx_conf.h
+ /home/ck/Desktop/Workspace/STM32CubeIDE\ Workspace/STM32N6570-ThreadX-USB-CDC-AI-Face-Detection-Ethernet/FSBL/Application/Hardware/aps256xx_conf.h
 /home/ck/Desktop/Workspace/STM32CubeIDE\ Workspace/STM32N6570-ThreadX-USB-CDC-AI-Face-Detection-Ethernet/Drivers/BSP/STM32N6570-DK/stm32n6570_discovery_xspi.h:
-/home/ck/Desktop/Workspace/STM32CubeIDE\ Workspace/STM32N6570-ThreadX-USB-CDC-AI-Face-Detection-Ethernet/FSBL/Application/User/Core/Inc/stm32n6570_discovery_conf.h:
+/home/ck/Desktop/Workspace/STM32CubeIDE\ Workspace/STM32N6570-ThreadX-USB-CDC-AI-Face-Detection-Ethernet/FSBL/Application/Hardware/stm32n6570_discovery_conf.h:
 /home/ck/Desktop/Workspace/STM32CubeIDE\ Workspace/STM32N6570-ThreadX-USB-CDC-AI-Face-Detection-Ethernet/FSBL/../Drivers/STM32N6xx_HAL_Driver/Inc/stm32n6xx_hal.h:
-/home/ck/Desktop/Workspace/STM32CubeIDE\ Workspace/STM32N6570-ThreadX-USB-CDC-AI-Face-Detection-Ethernet/FSBL/Application/User/Core/Inc/stm32n6xx_hal_conf.h:
+/home/ck/Desktop/Workspace/STM32CubeIDE\ Workspace/STM32N6570-ThreadX-USB-CDC-AI-Face-Detection-Ethernet/FSBL/Application/Core/Inc/stm32n6xx_hal_conf.h:
 /home/ck/Desktop/Workspace/STM32CubeIDE\ Workspace/STM32N6570-ThreadX-USB-CDC-AI-Face-Detection-Ethernet/FSBL/../Drivers/STM32N6xx_HAL_Driver/Inc/stm32n6xx_hal_rcc.h:
 /home/ck/Desktop/Workspace/STM32CubeIDE\ Workspace/STM32N6570-ThreadX-USB-CDC-AI-Face-Detection-Ethernet/FSBL/../Drivers/STM32N6xx_HAL_Driver/Inc/stm32n6xx_hal_def.h:
 /home/ck/Desktop/Workspace/STM32CubeIDE\ Workspace/STM32N6570-ThreadX-USB-CDC-AI-Face-Detection-Ethernet/FSBL/../Drivers/CMSIS/Device/ST/STM32N6xx/Include/stm32n6xx.h:
@@ -121,6 +121,6 @@ Drivers/BSP/STM32N6570-DK/stm32n6570_discovery_xspi.o: \
 /home/ck/Desktop/Workspace/STM32CubeIDE\ Workspace/STM32N6570-ThreadX-USB-CDC-AI-Face-Detection-Ethernet/FSBL/../Drivers/STM32N6xx_HAL_Driver/Inc/stm32n6xx_hal_xspi.h:
 /home/ck/Desktop/Workspace/STM32CubeIDE\ Workspace/STM32N6570-ThreadX-USB-CDC-AI-Face-Detection-Ethernet/Drivers/BSP/STM32N6570-DK/stm32n6570_discovery_errno.h:
 /home/ck/Desktop/Workspace/STM32CubeIDE\ Workspace/STM32N6570-ThreadX-USB-CDC-AI-Face-Detection-Ethernet/Drivers/BSP/STM32N6570-DK/../Components/mx66uw1g45g/mx66uw1g45g.h:
-/home/ck/Desktop/Workspace/STM32CubeIDE\ Workspace/STM32N6570-ThreadX-USB-CDC-AI-Face-Detection-Ethernet/FSBL/Application/User/Core/Inc/mx66uw1g45g_conf.h:
+/home/ck/Desktop/Workspace/STM32CubeIDE\ Workspace/STM32N6570-ThreadX-USB-CDC-AI-Face-Detection-Ethernet/FSBL/Application/Hardware/mx66uw1g45g_conf.h:
 /home/ck/Desktop/Workspace/STM32CubeIDE\ Workspace/STM32N6570-ThreadX-USB-CDC-AI-Face-Detection-Ethernet/Drivers/BSP/STM32N6570-DK/../Components/aps256xx/aps256xx.h:
-/home/ck/Desktop/Workspace/STM32CubeIDE\ Workspace/STM32N6570-ThreadX-USB-CDC-AI-Face-Detection-Ethernet/FSBL/Application/User/Core/Inc/aps256xx_conf.h:
+/home/ck/Desktop/Workspace/STM32CubeIDE\ Workspace/STM32N6570-ThreadX-USB-CDC-AI-Face-Detection-Ethernet/FSBL/Application/Hardware/aps256xx_conf.h:

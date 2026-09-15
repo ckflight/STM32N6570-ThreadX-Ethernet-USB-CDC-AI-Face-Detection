@@ -4,7 +4,7 @@ Middlewares/STM32_USBPD_Library/usbpd_pwr_hw_if.o: \
  /home/ck/Desktop/Workspace/STM32CubeIDE\ Workspace/STM32N6570-ThreadX-USB-CDC-AI-Face-Detection-Ethernet/FSBL/../Middlewares/ST/STM32_USBPD_Library/Core/inc/usbpd_def.h \
  /home/ck/Desktop/Workspace/STM32CubeIDE\ Workspace/STM32N6570-ThreadX-USB-CDC-AI-Face-Detection-Ethernet/FSBL/../Drivers/CMSIS/Include/cmsis_compiler.h \
  /home/ck/Desktop/Workspace/STM32CubeIDE\ Workspace/STM32N6570-ThreadX-USB-CDC-AI-Face-Detection-Ethernet/FSBL/../Drivers/CMSIS/Include/cmsis_gcc.h \
- /home/ck/Desktop/Workspace/STM32CubeIDE\ Workspace/STM32N6570-ThreadX-USB-CDC-AI-Face-Detection-Ethernet/FSBL/Application/User/USBPD/Target/usbpd_devices_conf.h \
+ /home/ck/Desktop/Workspace/STM32CubeIDE\ Workspace/STM32N6570-ThreadX-USB-CDC-AI-Face-Detection-Ethernet/FSBL/Application/USBPD/Target/usbpd_devices_conf.h \
  /home/ck/Desktop/Workspace/STM32CubeIDE\ Workspace/STM32N6570-ThreadX-USB-CDC-AI-Face-Detection-Ethernet/FSBL/../Drivers/STM32N6xx_HAL_Driver/Inc/stm32n6xx_ll_bus.h \
  /home/ck/Desktop/Workspace/STM32CubeIDE\ Workspace/STM32N6570-ThreadX-USB-CDC-AI-Face-Detection-Ethernet/FSBL/../Drivers/CMSIS/Device/ST/STM32N6xx/Include/stm32n6xx.h \
  /home/ck/Desktop/Workspace/STM32CubeIDE\ Workspace/STM32N6570-ThreadX-USB-CDC-AI-Face-Detection-Ethernet/FSBL/../Drivers/CMSIS/Device/ST/STM32N6xx/Include/stm32n657xx.h \
@@ -16,7 +16,7 @@ Middlewares/STM32_USBPD_Library/usbpd_pwr_hw_if.o: \
  /home/ck/Desktop/Workspace/STM32CubeIDE\ Workspace/STM32N6570-ThreadX-USB-CDC-AI-Face-Detection-Ethernet/FSBL/../Drivers/CMSIS/Include/m-profile/armv7m_cachel1.h \
  /home/ck/Desktop/Workspace/STM32CubeIDE\ Workspace/STM32N6570-ThreadX-USB-CDC-AI-Face-Detection-Ethernet/FSBL/../Drivers/CMSIS/Device/ST/STM32N6xx/Include/system_stm32n6xx.h \
  /home/ck/Desktop/Workspace/STM32CubeIDE\ Workspace/STM32N6570-ThreadX-USB-CDC-AI-Face-Detection-Ethernet/FSBL/../Drivers/STM32N6xx_HAL_Driver/Inc/stm32n6xx_hal.h \
- /home/ck/Desktop/Workspace/STM32CubeIDE\ Workspace/STM32N6570-ThreadX-USB-CDC-AI-Face-Detection-Ethernet/FSBL/Application/User/Core/Inc/stm32n6xx_hal_conf.h \
+ /home/ck/Desktop/Workspace/STM32CubeIDE\ Workspace/STM32N6570-ThreadX-USB-CDC-AI-Face-Detection-Ethernet/FSBL/Application/Core/Inc/stm32n6xx_hal_conf.h \
  /home/ck/Desktop/Workspace/STM32CubeIDE\ Workspace/STM32N6570-ThreadX-USB-CDC-AI-Face-Detection-Ethernet/FSBL/../Drivers/STM32N6xx_HAL_Driver/Inc/stm32n6xx_hal_rcc.h \
  /home/ck/Desktop/Workspace/STM32CubeIDE\ Workspace/STM32N6570-ThreadX-USB-CDC-AI-Face-Detection-Ethernet/FSBL/../Drivers/STM32N6xx_HAL_Driver/Inc/stm32n6xx_hal_def.h \
  /home/ck/Desktop/Workspace/STM32CubeIDE\ Workspace/STM32N6570-ThreadX-USB-CDC-AI-Face-Detection-Ethernet/FSBL/../Drivers/STM32N6xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h \
@@ -66,13 +66,13 @@ Middlewares/STM32_USBPD_Library/usbpd_pwr_hw_if.o: \
  /home/ck/Desktop/Workspace/STM32CubeIDE\ Workspace/STM32N6570-ThreadX-USB-CDC-AI-Face-Detection-Ethernet/FSBL/../Drivers/STM32N6xx_HAL_Driver/Inc/stm32n6xx_ll_ucpd.h \
  /home/ck/Desktop/Workspace/STM32CubeIDE\ Workspace/STM32N6570-ThreadX-USB-CDC-AI-Face-Detection-Ethernet/FSBL/../Drivers/STM32N6xx_HAL_Driver/Inc/stm32n6xx_ll_pwr.h \
  /home/ck/Desktop/Workspace/STM32CubeIDE\ Workspace/STM32N6570-ThreadX-USB-CDC-AI-Face-Detection-Ethernet/FSBL/../Drivers/STM32N6xx_HAL_Driver/Inc/stm32n6xx_ll_tim.h \
- /home/ck/Desktop/Workspace/STM32CubeIDE\ Workspace/STM32N6570-ThreadX-USB-CDC-AI-Face-Detection-Ethernet/FSBL/Application/User/USBPD/Target/usbpd_pwr_user.h \
- /home/ck/Desktop/Workspace/STM32CubeIDE\ Workspace/STM32N6570-ThreadX-USB-CDC-AI-Face-Detection-Ethernet/FSBL/Application/User/USBPD/App/usbpd_pwr_if.h
+ /home/ck/Desktop/Workspace/STM32CubeIDE\ Workspace/STM32N6570-ThreadX-USB-CDC-AI-Face-Detection-Ethernet/FSBL/Application/USBPD/Target/usbpd_pwr_user.h \
+ /home/ck/Desktop/Workspace/STM32CubeIDE\ Workspace/STM32N6570-ThreadX-USB-CDC-AI-Face-Detection-Ethernet/FSBL/Application/USBPD/App/usbpd_pwr_if.h
 /home/ck/Desktop/Workspace/STM32CubeIDE\ Workspace/STM32N6570-ThreadX-USB-CDC-AI-Face-Detection-Ethernet/FSBL/../Middlewares/ST/STM32_USBPD_Library/Devices/STM32N6XX/inc/usbpd_hw_if.h:
 /home/ck/Desktop/Workspace/STM32CubeIDE\ Workspace/STM32N6570-ThreadX-USB-CDC-AI-Face-Detection-Ethernet/FSBL/../Middlewares/ST/STM32_USBPD_Library/Core/inc/usbpd_def.h:
 /home/ck/Desktop/Workspace/STM32CubeIDE\ Workspace/STM32N6570-ThreadX-USB-CDC-AI-Face-Detection-Ethernet/FSBL/../Drivers/CMSIS/Include/cmsis_compiler.h:
 /home/ck/Desktop/Workspace/STM32CubeIDE\ Workspace/STM32N6570-ThreadX-USB-CDC-AI-Face-Detection-Ethernet/FSBL/../Drivers/CMSIS/Include/cmsis_gcc.h:
-/home/ck/Desktop/Workspace/STM32CubeIDE\ Workspace/STM32N6570-ThreadX-USB-CDC-AI-Face-Detection-Ethernet/FSBL/Application/User/USBPD/Target/usbpd_devices_conf.h:
+/home/ck/Desktop/Workspace/STM32CubeIDE\ Workspace/STM32N6570-ThreadX-USB-CDC-AI-Face-Detection-Ethernet/FSBL/Application/USBPD/Target/usbpd_devices_conf.h:
 /home/ck/Desktop/Workspace/STM32CubeIDE\ Workspace/STM32N6570-ThreadX-USB-CDC-AI-Face-Detection-Ethernet/FSBL/../Drivers/STM32N6xx_HAL_Driver/Inc/stm32n6xx_ll_bus.h:
 /home/ck/Desktop/Workspace/STM32CubeIDE\ Workspace/STM32N6570-ThreadX-USB-CDC-AI-Face-Detection-Ethernet/FSBL/../Drivers/CMSIS/Device/ST/STM32N6xx/Include/stm32n6xx.h:
 /home/ck/Desktop/Workspace/STM32CubeIDE\ Workspace/STM32N6570-ThreadX-USB-CDC-AI-Face-Detection-Ethernet/FSBL/../Drivers/CMSIS/Device/ST/STM32N6xx/Include/stm32n657xx.h:
@@ -84,7 +84,7 @@ Middlewares/STM32_USBPD_Library/usbpd_pwr_hw_if.o: \
 /home/ck/Desktop/Workspace/STM32CubeIDE\ Workspace/STM32N6570-ThreadX-USB-CDC-AI-Face-Detection-Ethernet/FSBL/../Drivers/CMSIS/Include/m-profile/armv7m_cachel1.h:
 /home/ck/Desktop/Workspace/STM32CubeIDE\ Workspace/STM32N6570-ThreadX-USB-CDC-AI-Face-Detection-Ethernet/FSBL/../Drivers/CMSIS/Device/ST/STM32N6xx/Include/system_stm32n6xx.h:
 /home/ck/Desktop/Workspace/STM32CubeIDE\ Workspace/STM32N6570-ThreadX-USB-CDC-AI-Face-Detection-Ethernet/FSBL/../Drivers/STM32N6xx_HAL_Driver/Inc/stm32n6xx_hal.h:
-/home/ck/Desktop/Workspace/STM32CubeIDE\ Workspace/STM32N6570-ThreadX-USB-CDC-AI-Face-Detection-Ethernet/FSBL/Application/User/Core/Inc/stm32n6xx_hal_conf.h:
+/home/ck/Desktop/Workspace/STM32CubeIDE\ Workspace/STM32N6570-ThreadX-USB-CDC-AI-Face-Detection-Ethernet/FSBL/Application/Core/Inc/stm32n6xx_hal_conf.h:
 /home/ck/Desktop/Workspace/STM32CubeIDE\ Workspace/STM32N6570-ThreadX-USB-CDC-AI-Face-Detection-Ethernet/FSBL/../Drivers/STM32N6xx_HAL_Driver/Inc/stm32n6xx_hal_rcc.h:
 /home/ck/Desktop/Workspace/STM32CubeIDE\ Workspace/STM32N6570-ThreadX-USB-CDC-AI-Face-Detection-Ethernet/FSBL/../Drivers/STM32N6xx_HAL_Driver/Inc/stm32n6xx_hal_def.h:
 /home/ck/Desktop/Workspace/STM32CubeIDE\ Workspace/STM32N6570-ThreadX-USB-CDC-AI-Face-Detection-Ethernet/FSBL/../Drivers/STM32N6xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h:
@@ -134,5 +134,5 @@ Middlewares/STM32_USBPD_Library/usbpd_pwr_hw_if.o: \
 /home/ck/Desktop/Workspace/STM32CubeIDE\ Workspace/STM32N6570-ThreadX-USB-CDC-AI-Face-Detection-Ethernet/FSBL/../Drivers/STM32N6xx_HAL_Driver/Inc/stm32n6xx_ll_ucpd.h:
 /home/ck/Desktop/Workspace/STM32CubeIDE\ Workspace/STM32N6570-ThreadX-USB-CDC-AI-Face-Detection-Ethernet/FSBL/../Drivers/STM32N6xx_HAL_Driver/Inc/stm32n6xx_ll_pwr.h:
 /home/ck/Desktop/Workspace/STM32CubeIDE\ Workspace/STM32N6570-ThreadX-USB-CDC-AI-Face-Detection-Ethernet/FSBL/../Drivers/STM32N6xx_HAL_Driver/Inc/stm32n6xx_ll_tim.h:
-/home/ck/Desktop/Workspace/STM32CubeIDE\ Workspace/STM32N6570-ThreadX-USB-CDC-AI-Face-Detection-Ethernet/FSBL/Application/User/USBPD/Target/usbpd_pwr_user.h:
-/home/ck/Desktop/Workspace/STM32CubeIDE\ Workspace/STM32N6570-ThreadX-USB-CDC-AI-Face-Detection-Ethernet/FSBL/Application/User/USBPD/App/usbpd_pwr_if.h:
+/home/ck/Desktop/Workspace/STM32CubeIDE\ Workspace/STM32N6570-ThreadX-USB-CDC-AI-Face-Detection-Ethernet/FSBL/Application/USBPD/Target/usbpd_pwr_user.h:
+/home/ck/Desktop/Workspace/STM32CubeIDE\ Workspace/STM32N6570-ThreadX-USB-CDC-AI-Face-Detection-Ethernet/FSBL/Application/USBPD/App/usbpd_pwr_if.h:

@@ -1,0 +1,5 @@
+../Application/Core/Src/stm32n6xx_hal_msp.c:62:6:HAL_MspInit	8	static
+../Application/Core/Src/stm32n6xx_hal_msp.c:91:6:HAL_ETH_MspInit	488	static
+../Application/Core/Src/stm32n6xx_hal_msp.c:190:6:HAL_ETH_MspDeInit	16	static
+../Application/Core/Src/stm32n6xx_hal_msp.c:245:6:HAL_SD_MspInit	464	static
+../Application/Core/Src/stm32n6xx_hal_msp.c:311:6:HAL_SD_MspDeInit	8	static

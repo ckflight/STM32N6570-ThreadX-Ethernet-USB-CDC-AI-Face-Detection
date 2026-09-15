@@ -1,7 +1,0 @@
-/home/ck/Desktop/Workspace/STM32CubeIDE Workspace/STM32N6570-ThreadX-USB-CDC-AI-Face-Detection-Ethernet/FSBL/Application/User/USBX/App/ux_device_descriptors.c:825:14:USBD_FrameWork_AssignEp	4
-/home/ck/Desktop/Workspace/STM32CubeIDE Workspace/STM32N6570-ThreadX-USB-CDC-AI-Face-Detection-Ethernet/FSBL/Application/User/USBX/App/ux_device_descriptors.c:487:17:USBD_Device_Framework_Builder.constprop.isra	18
-/home/ck/Desktop/Workspace/STM32CubeIDE Workspace/STM32N6570-ThreadX-USB-CDC-AI-Face-Detection-Ethernet/FSBL/Application/User/USBX/App/ux_device_descriptors.c:206:10:USBD_Get_Device_Framework_Speed	2
-/home/ck/Desktop/Workspace/STM32CubeIDE Workspace/STM32N6570-ThreadX-USB-CDC-AI-Face-Detection-Ethernet/FSBL/Application/User/USBX/App/ux_device_descriptors.c:247:10:USBD_Get_String_Framework	5
-/home/ck/Desktop/Workspace/STM32CubeIDE Workspace/STM32N6570-ThreadX-USB-CDC-AI-Face-Detection-Ethernet/FSBL/Application/User/USBX/App/ux_device_descriptors.c:298:10:USBD_Get_Language_Id_Framework	1
-/home/ck/Desktop/Workspace/STM32CubeIDE Workspace/STM32N6570-ThreadX-USB-CDC-AI-Face-Detection-Ethernet/FSBL/Application/User/USBX/App/ux_device_descriptors.c:319:10:USBD_Get_Interface_Number	4
-/home/ck/Desktop/Workspace/STM32CubeIDE Workspace/STM32N6570-ThreadX-USB-CDC-AI-Face-Detection-Ethernet/FSBL/Application/User/USBX/App/ux_device_descriptors.c:351:10:USBD_Get_Configuration_Number	1

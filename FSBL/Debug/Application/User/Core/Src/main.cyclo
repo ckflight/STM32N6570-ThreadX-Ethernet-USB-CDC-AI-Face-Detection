@@ -1,9 +1,0 @@
-../Application/User/Core/Src/main.c:291:6:npu_cache_enable_clocks_and_reset	1
-../Application/User/Core/Src/main.c:300:6:npu_cache_disable_clocks_and_reset	1
-../Application/User/Core/Src/main.c:308:19:MX_DCMIPP_ClockConfig	2
-../Application/User/Core/Src/main.c:396:6:NeuralNetwork_run	1
-../Application/User/Core/Src/main.c:587:6:HAL_TIM_PeriodElapsedCallback	2
-../Application/User/Core/Src/main.c:609:6:Error_Handler	1
-../Application/User/Core/Src/main.c:223:6:MX_SDMMC2_SD_Init	1
-../Application/User/Core/Src/main.c:409:6:SystemClock_Config	3
-../Application/User/Core/Src/main.c:120:5:main	7

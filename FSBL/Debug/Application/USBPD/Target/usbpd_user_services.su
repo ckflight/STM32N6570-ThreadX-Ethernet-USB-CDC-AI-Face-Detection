@@ -1,0 +1,2 @@
+../Application/USBPD/Target/usbpd_user_services.c:208:6:USBPD_USER_SERV_StoreSRCPDO	4	static
+../Application/USBPD/Target/usbpd_user_services.c:231:6:USBPD_USER_SERV_EvaluateCapa	128	static

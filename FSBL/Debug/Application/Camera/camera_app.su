@@ -1,0 +1,3 @@
+../Application/Camera/camera_app.c:6:6:Camera_Init	16	static
+../Application/Camera/camera_app.c:12:6:Camera_Start	8	static
+../Application/Camera/camera_app.c:19:19:MX_DCMIPP_ClockConfig	416	static

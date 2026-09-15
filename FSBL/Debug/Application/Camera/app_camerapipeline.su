@@ -1,0 +1,8 @@
+../Application/Camera/app_camerapipeline.c:115:6:CameraPipeline_Init	104	static
+../Application/Camera/app_camerapipeline.c:133:6:CameraPipeline_DeInit	8	static
+../Application/Camera/app_camerapipeline.c:140:6:CameraPipeline_DisplayPipe_Start	8	static
+../Application/Camera/app_camerapipeline.c:147:6:CameraPipeline_NNPipe_Start	8	static
+../Application/Camera/app_camerapipeline.c:155:6:CameraPipeline_DisplayPipe_Stop	8	static
+../Application/Camera/app_camerapipeline.c:162:6:CameraPipeline_IspUpdate	8	static
+../Application/Camera/app_camerapipeline.c:174:5:CMW_CAMERA_PIPE_FrameEventCallback	0	static
+../Application/Camera/app_camerapipeline.c:185:6:CMW_CAMERA_PIPE_ErrorCallback	0	static

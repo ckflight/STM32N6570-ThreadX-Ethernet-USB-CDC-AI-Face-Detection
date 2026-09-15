@@ -23,15 +23,19 @@ OBJCOPY_BIN :=
 
 # Every subdirectory with source files must be described here
 SUBDIRS := \
-Application/User/AZURE_RTOS/App \
-Application/User/Core/Src \
-Application/User/FileX/App \
-Application/User/FileX/Target \
-Application/User/NetXDuo/App \
-Application/User/Startup \
-Application/User/USBPD/App \
-Application/User/USBPD/Target \
-Application/User/USBX/App \
+Application/AI \
+Application/Camera \
+Application/Core/Src \
+Application/FileX/App \
+Application/FileX/Target \
+Application/Hardware \
+Application/LCD \
+Application/NetXDuo/App \
+Application/RTOS \
+Application/Startup \
+Application/USBPD/App \
+Application/USBPD/Target \
+Application/USBX/App \
 Drivers/BSP/Components \
 Drivers/BSP/STM32N6570-DK \
 Drivers/STM32N6xx_HAL_Driver \

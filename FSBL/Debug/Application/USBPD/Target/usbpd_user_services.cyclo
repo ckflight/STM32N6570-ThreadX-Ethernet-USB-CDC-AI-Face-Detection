@@ -1,0 +1,2 @@
+../Application/USBPD/Target/usbpd_user_services.c:208:6:USBPD_USER_SERV_StoreSRCPDO	4
+../Application/USBPD/Target/usbpd_user_services.c:231:6:USBPD_USER_SERV_EvaluateCapa	45

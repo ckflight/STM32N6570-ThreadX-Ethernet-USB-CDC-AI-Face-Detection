@@ -1,0 +1,4 @@
+../Application/AI/ai_app.c:21:6:AI_Init	152	static
+../Application/AI/ai_app.c:38:6:AI_Run	8	static
+../Application/AI/ai_app.c:107:6:npu_cache_enable_clocks_and_reset	8	static
+../Application/AI/ai_app.c:115:6:npu_cache_disable_clocks_and_reset	0	static

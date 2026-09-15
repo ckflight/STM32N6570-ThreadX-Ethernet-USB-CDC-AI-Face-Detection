@@ -1,0 +1,5 @@
+../Application/USBX/App/ux_device_mouse.c:66:6:USBD_HID_Mouse_Activate	0	static
+../Application/USBX/App/ux_device_mouse.c:84:6:USBD_HID_Mouse_Deactivate	0	static
+../Application/USBX/App/ux_device_mouse.c:105:6:USBD_HID_Mouse_SetReport	0	static
+../Application/USBX/App/ux_device_mouse.c:126:6:USBD_HID_Mouse_GetReport	0	static
+../Application/USBX/App/ux_device_mouse.c:146:6:usbx_hid_thread_entry	80	static

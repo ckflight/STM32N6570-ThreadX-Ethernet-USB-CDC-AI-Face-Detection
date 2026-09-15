@@ -64,7 +64,7 @@ Middlewares/ai-postprocessing-wrapper/app_postprocess_spe_movenet_ui.o: \
  /home/ck/Desktop/Workspace/STM32CubeIDE\ Workspace/STM32N6570-ThreadX-USB-CDC-AI-Face-Detection-Ethernet/FSBL/../Middlewares/ST/stm32-vision-models-postprocessing/lib_vision_models_pp/Inc/fd_pp_output_if.h \
  /home/ck/Desktop/Workspace/STM32CubeIDE\ Workspace/STM32N6570-ThreadX-USB-CDC-AI-Face-Detection-Ethernet/FSBL/../Middlewares/ST/stm32-vision-models-postprocessing/lib_vision_models_pp/Inc/fd_yunet_pp_if.h \
  /home/ck/Desktop/Workspace/STM32CubeIDE\ Workspace/STM32N6570-ThreadX-USB-CDC-AI-Face-Detection-Ethernet/FSBL/../Middlewares/ST/stm32-vision-models-postprocessing/lib_vision_models_pp/Inc/fd_pp_output_if.h \
- /home/ck/Desktop/Workspace/STM32CubeIDE\ Workspace/STM32N6570-ThreadX-USB-CDC-AI-Face-Detection-Ethernet/FSBL/Application/User/Core/Inc/app_config.h
+ /home/ck/Desktop/Workspace/STM32CubeIDE\ Workspace/STM32N6570-ThreadX-USB-CDC-AI-Face-Detection-Ethernet/FSBL/Application/AI/app_config.h
 /home/ck/Desktop/Workspace/STM32CubeIDE\ Workspace/STM32N6570-ThreadX-USB-CDC-AI-Face-Detection-Ethernet/Middlewares/ST/ai-postprocessing-wrapper/app_postprocess.h:
 /home/ck/Desktop/Workspace/STM32CubeIDE\ Workspace/STM32N6570-ThreadX-USB-CDC-AI-Face-Detection-Ethernet/FSBL/../Middlewares/ST/stedgeai-lib/Inc/stai.h:
 /home/ck/Desktop/Workspace/STM32CubeIDE\ Workspace/STM32N6570-ThreadX-USB-CDC-AI-Face-Detection-Ethernet/FSBL/../Middlewares/ST/stm32-vision-models-postprocessing/lib_vision_models_pp/Inc/od_yolov2_pp_if.h:
@@ -129,4 +129,4 @@ Middlewares/ai-postprocessing-wrapper/app_postprocess_spe_movenet_ui.o: \
 /home/ck/Desktop/Workspace/STM32CubeIDE\ Workspace/STM32N6570-ThreadX-USB-CDC-AI-Face-Detection-Ethernet/FSBL/../Middlewares/ST/stm32-vision-models-postprocessing/lib_vision_models_pp/Inc/fd_pp_output_if.h:
 /home/ck/Desktop/Workspace/STM32CubeIDE\ Workspace/STM32N6570-ThreadX-USB-CDC-AI-Face-Detection-Ethernet/FSBL/../Middlewares/ST/stm32-vision-models-postprocessing/lib_vision_models_pp/Inc/fd_yunet_pp_if.h:
 /home/ck/Desktop/Workspace/STM32CubeIDE\ Workspace/STM32N6570-ThreadX-USB-CDC-AI-Face-Detection-Ethernet/FSBL/../Middlewares/ST/stm32-vision-models-postprocessing/lib_vision_models_pp/Inc/fd_pp_output_if.h:
-/home/ck/Desktop/Workspace/STM32CubeIDE\ Workspace/STM32N6570-ThreadX-USB-CDC-AI-Face-Detection-Ethernet/FSBL/Application/User/Core/Inc/app_config.h:
+/home/ck/Desktop/Workspace/STM32CubeIDE\ Workspace/STM32N6570-ThreadX-USB-CDC-AI-Face-Detection-Ethernet/FSBL/Application/AI/app_config.h:

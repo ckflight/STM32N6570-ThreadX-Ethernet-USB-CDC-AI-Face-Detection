@@ -37,78 +37,20 @@
 									<listOptionValue builtIn="false" value="TX_SINGLE_MODE_SECURE=1"/>
 								</option>
 								<option IS_BUILTIN_EMPTY="false" IS_VALUE_EMPTY="false" id="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.assembler.option.includepaths.1865159388" name="Include paths (-I)" superClass="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.assembler.option.includepaths" valueType="includePath">
-									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/Application/User/Core/Inc&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/Application/User/AZURE_RTOS/App&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/Application/User/USBPD/App&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/Application/User/USBPD/Target&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/Application/User/USBX/App&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/Application/User/USBX/Target&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../Drivers/BSP/STM32N6570-DK&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../Drivers/BSP/Components&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../Drivers/BSP/Components/tcpp0203&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../Drivers/STM32N6xx_HAL_Driver/Inc&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../Drivers/STM32N6xx_HAL_Driver/Inc/Legacy&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../Drivers/CMSIS/Device/ST/STM32N6xx/Include&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../Drivers/CMSIS/Include&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../Middlewares/ST/threadx/common/inc&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../Middlewares/ST/threadx/ports/cortex_m55/gnu/inc&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../Middlewares/ST/STM32_USBPD_Library/Core/inc&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../Middlewares/ST/STM32_USBPD_Library/Devices/STM32N6XX/inc&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../Middlewares/ST/usbx/common/core/inc&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../Middlewares/ST/usbx/ports/generic/inc&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../Middlewares/ST/usbx/common/usbx_stm32_device_controllers&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../Middlewares/ST/usbx/common/usbx_device_classes/inc&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../Middlewares/ST/filex/common/inc&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../Middlewares/ST/filex/ports/generic/inc&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../Middlewares/ST/netxduo/ports/cortex_m55/gnu/inc&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../Middlewares/ST/netxduo/ports/common/inc&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../Middlewares/ST/netxduo/tsn/inc&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../Middlewares/ST/netxduo/common/inc&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../Middlewares/ST/netxduo/addons/dhcp&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../Middlewares/ST/netxduo/addons/web&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../Middlewares/ST/netxduo/common/drivers/ethernet&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/Application/User/FileX/Target&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/Application/User/FileX/App&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/Application/User/NetXDuo/App&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/Application/User/NetXDuo/Target&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../Drivers/BSP/Components/rtl8211&quot;"/>
-								</option>
-								<inputType id="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.assembler.input.1784057358" superClass="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.assembler.input"/>
-							</tool>
-							<tool id="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.c.compiler.633713738" name="MCU/MPU GCC Compiler" superClass="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.c.compiler">
-								<option id="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.c.compiler.option.debuglevel.941505145" name="Debug level" superClass="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.c.compiler.option.debuglevel" useByScannerDiscovery="false" value="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.c.compiler.option.debuglevel.value.g3" valueType="enumerated"/>
-								<option id="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.c.compiler.option.optimization.level.193772684" name="Optimization level" superClass="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.c.compiler.option.optimization.level" useByScannerDiscovery="false" value="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.c.compiler.option.optimization.level.value.o2" valueType="enumerated"/>
-								<option id="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.c.compiler.option.mcmse.495879172" name="Secure mode (-mcmse)" superClass="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.c.compiler.option.mcmse" useByScannerDiscovery="false" value="true" valueType="boolean"/>
-								<option IS_BUILTIN_EMPTY="false" IS_VALUE_EMPTY="false" id="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.c.compiler.option.definedsymbols.1449538362" name="Define symbols (-D)" superClass="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.c.compiler.option.definedsymbols" useByScannerDiscovery="false" valueType="definedSymbols">
-									<listOptionValue builtIn="false" value="DEBUG"/>
-									<listOptionValue builtIn="false" value="USE_HAL_DRIVER"/>
-									<listOptionValue builtIn="false" value="STM32N657xx"/>
-									<listOptionValue builtIn="false" value="USE_FULL_LL_DRIVER"/>
-									<listOptionValue builtIn="false" value="TX_INCLUDE_USER_DEFINE_FILE"/>
-									<listOptionValue builtIn="false" value="TX_SINGLE_MODE_SECURE=1"/>
-									<listOptionValue builtIn="false" value="USBPD_PORT_COUNT=1"/>
-									<listOptionValue builtIn="false" value="_SNK"/>
-									<listOptionValue builtIn="false" value="USBPDCORE_LIB_PD3_FULL"/>
-									<listOptionValue builtIn="false" value="UX_INCLUDE_USER_DEFINE_FILE"/>
-									<listOptionValue builtIn="false" value="TCPP0203_SUPPORT"/>
-									<listOptionValue builtIn="false" value="LL_ATON_DUMP_DEBUG_API"/>
-									<listOptionValue builtIn="false" value="LL_ATON_PLATFORM=LL_ATON_PLAT_STM32N6"/>
-									<listOptionValue builtIn="false" value="LL_ATON_OSAL=LL_ATON_OSAL_BARE_METAL"/>
-									<listOptionValue builtIn="false" value="LL_ATON_RT_MODE=LL_ATON_RT_ASYNC"/>
-									<listOptionValue builtIn="false" value="LL_ATON_SW_FALLBACK"/>
-									<listOptionValue builtIn="false" value="LL_ATON_DBG_BUFFER_INFO_EXCLUDED=1"/>
-									<listOptionValue builtIn="false" value="FX_INCLUDE_USER_DEFINE_FILE"/>
-									<listOptionValue builtIn="false" value="NX_INCLUDE_USER_DEFINE_FILE"/>
-									<listOptionValue builtIn="false" value="RTL8211_INIT_TO=10000"/>
-									<listOptionValue builtIn="false" value="ETH_PHY_1000MBITS_SUPPORTED"/>
-								</option>
-								<option IS_BUILTIN_EMPTY="false" IS_VALUE_EMPTY="false" id="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.c.compiler.option.includepaths.1432621021" name="Include paths (-I)" superClass="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.c.compiler.option.includepaths" useByScannerDiscovery="false" valueType="includePath">
-									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/Application/User/Core/Inc&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/Application/User/AZURE_RTOS/App&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/Application/User/USBPD/App&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/Application/User/USBPD/Target&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/Application/User/USBX/App&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/Application/User/USBX/Target&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/Application/Core/Inc&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/Application/RTOS&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/Application/Camera&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/Application/Hardware&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/Application/AI&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/Application/LCD&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/Application/USBPD/App&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/Application/USBPD/Target&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/Application/USBX/App&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/Application/USBX/Target&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/Application/FileX/Target&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/Application/FileX/App&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/Application/NetXDuo/App&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/Application/NetXDuo/Target&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../Drivers/BSP/STM32N6570-DK&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../Drivers/BSP/Components&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../Drivers/BSP/Components/tcpp0203&quot;"/>
@@ -157,10 +99,100 @@
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../Middlewares/ST/netxduo/addons/dhcp&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../Middlewares/ST/netxduo/addons/web&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../Middlewares/ST/netxduo/common/drivers/ethernet&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/Application/User/FileX/Target&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/Application/User/FileX/App&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/Application/User/NetXDuo/App&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/Application/User/NetXDuo/Target&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../Drivers/BSP/Components/rtl8211&quot;"/>
+								</option>
+								<inputType id="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.assembler.input.1784057358" superClass="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.assembler.input"/>
+							</tool>
+							<tool id="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.c.compiler.633713738" name="MCU/MPU GCC Compiler" superClass="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.c.compiler">
+								<option id="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.c.compiler.option.debuglevel.941505145" name="Debug level" superClass="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.c.compiler.option.debuglevel" useByScannerDiscovery="false" value="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.c.compiler.option.debuglevel.value.g3" valueType="enumerated"/>
+								<option id="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.c.compiler.option.optimization.level.193772684" name="Optimization level" superClass="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.c.compiler.option.optimization.level" useByScannerDiscovery="false" value="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.c.compiler.option.optimization.level.value.o2" valueType="enumerated"/>
+								<option id="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.c.compiler.option.mcmse.495879172" name="Secure mode (-mcmse)" superClass="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.c.compiler.option.mcmse" useByScannerDiscovery="false" value="true" valueType="boolean"/>
+								<option IS_BUILTIN_EMPTY="false" IS_VALUE_EMPTY="false" id="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.c.compiler.option.definedsymbols.1449538362" name="Define symbols (-D)" superClass="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.c.compiler.option.definedsymbols" useByScannerDiscovery="false" valueType="definedSymbols">
+									<listOptionValue builtIn="false" value="DEBUG"/>
+									<listOptionValue builtIn="false" value="USE_HAL_DRIVER"/>
+									<listOptionValue builtIn="false" value="STM32N657xx"/>
+									<listOptionValue builtIn="false" value="USE_FULL_LL_DRIVER"/>
+									<listOptionValue builtIn="false" value="TX_INCLUDE_USER_DEFINE_FILE"/>
+									<listOptionValue builtIn="false" value="TX_SINGLE_MODE_SECURE=1"/>
+									<listOptionValue builtIn="false" value="USBPD_PORT_COUNT=1"/>
+									<listOptionValue builtIn="false" value="_SNK"/>
+									<listOptionValue builtIn="false" value="USBPDCORE_LIB_PD3_FULL"/>
+									<listOptionValue builtIn="false" value="UX_INCLUDE_USER_DEFINE_FILE"/>
+									<listOptionValue builtIn="false" value="TCPP0203_SUPPORT"/>
+									<listOptionValue builtIn="false" value="LL_ATON_DUMP_DEBUG_API"/>
+									<listOptionValue builtIn="false" value="LL_ATON_PLATFORM=LL_ATON_PLAT_STM32N6"/>
+									<listOptionValue builtIn="false" value="LL_ATON_OSAL=LL_ATON_OSAL_BARE_METAL"/>
+									<listOptionValue builtIn="false" value="LL_ATON_RT_MODE=LL_ATON_RT_ASYNC"/>
+									<listOptionValue builtIn="false" value="LL_ATON_SW_FALLBACK"/>
+									<listOptionValue builtIn="false" value="LL_ATON_DBG_BUFFER_INFO_EXCLUDED=1"/>
+									<listOptionValue builtIn="false" value="FX_INCLUDE_USER_DEFINE_FILE"/>
+									<listOptionValue builtIn="false" value="NX_INCLUDE_USER_DEFINE_FILE"/>
+									<listOptionValue builtIn="false" value="RTL8211_INIT_TO=10000"/>
+									<listOptionValue builtIn="false" value="ETH_PHY_1000MBITS_SUPPORTED"/>
+								</option>
+								<option IS_BUILTIN_EMPTY="false" IS_VALUE_EMPTY="false" id="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.c.compiler.option.includepaths.1432621021" name="Include paths (-I)" superClass="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.c.compiler.option.includepaths" useByScannerDiscovery="false" valueType="includePath">
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/Application/Core/Inc&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/Application/RTOS&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/Application/Camera&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/Application/Hardware&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/Application/AI&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/Application/LCD&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/Application/USBPD/App&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/Application/USBPD/Target&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/Application/USBX/App&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/Application/USBX/Target&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/Application/FileX/Target&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/Application/FileX/App&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/Application/NetXDuo/App&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/Application/NetXDuo/Target&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../Drivers/BSP/STM32N6570-DK&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../Drivers/BSP/Components&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../Drivers/BSP/Components/tcpp0203&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../Drivers/STM32N6xx_HAL_Driver/Inc&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../Drivers/STM32N6xx_HAL_Driver/Inc/Legacy&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../Drivers/CMSIS/Device/ST/STM32N6xx/Include&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../Drivers/CMSIS/Include&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../Middlewares/ST/threadx/common/inc&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../Middlewares/ST/threadx/ports/cortex_m55/gnu/inc&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../Middlewares/ST/STM32_USBPD_Library/Core/inc&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../Middlewares/ST/STM32_USBPD_Library/Devices/STM32N6XX/inc&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../Middlewares/ST/usbx/common/core/inc&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../Middlewares/ST/usbx/ports/generic/inc&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../Middlewares/ST/usbx/common/usbx_stm32_device_controllers&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../Middlewares/ST/usbx/common/usbx_device_classes/inc&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../Middlewares/ST/ai-postprocessing-wrapper&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../Middlewares/ST/stm32-vision-models-postprocessing/lib_vision_models_pp/Inc&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../Middlewares/ST/stedgeai-lib/Npu/ll_aton&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../Middlewares/ST/stedgeai-lib/Npu/Devices/STM32N6xx&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../Middlewares/ST/stedgeai-lib/Inc&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../Middlewares/ST/stm32-mw-camera&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../Middlewares/ST/stm32-mw-camera/ISP_Library/isp/Inc&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../Middlewares/ST/stm32-mw-camera/sensors&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../Middlewares/ST/stm32-mw-camera/sensors/imx335&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../Middlewares/ST/stm32-mw-camera/sensors/vd6g&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../Middlewares/ST/stm32-mw-camera/sensors/vd55g1&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../Middlewares/ST/stm32-mw-camera/sensors/vd1943&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../Middlewares/ST/stm32-mw-camera/sensors/ov5640&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../Model/STM32N6570-DK&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../Middlewares/ST/screenl&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../Drivers/CMSIS/DSP/Include&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../Middlewares/ST/screenl/Inc&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../Drivers/BSP/Components/Common&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../Drivers/BSP/Components/Common&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../Utilities/lcd&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../Utilities/Fonts&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../Middlewares/ST/screenl/ili9341&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../Middlewares/ST/screenl/uvcl/Inc&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../Middlewares/ST/filex/common/inc&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../Middlewares/ST/filex/ports/generic/inc&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../Middlewares/ST/netxduo/ports/cortex_m55/gnu/inc&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../Middlewares/ST/netxduo/ports/common/inc&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../Middlewares/ST/netxduo/tsn/inc&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../Middlewares/ST/netxduo/common/inc&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../Middlewares/ST/netxduo/common/drivers/ethernet/rtl8211&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../Middlewares/ST/netxduo/addons/dhcp&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../Middlewares/ST/netxduo/addons/web&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../Middlewares/ST/netxduo/common/drivers/ethernet&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../Drivers/BSP/Components/rtl8211&quot;"/>
 								</option>
 								<inputType id="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.c.compiler.input.c.228506707" superClass="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.c.compiler.input.c"/>
