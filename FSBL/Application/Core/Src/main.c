@@ -83,9 +83,7 @@ int main(void)
     USBPD_PreInitOs();
     MX_ThreadX_Init();
 
-    while (1)
-    {
-    }
+    while (1){}
 }
 
 static void set_clk_sleep_mode(void)
@@ -191,11 +189,7 @@ void SystemClock_Config(void)
     if (HAL_RCCEx_PeriphCLKConfig(&RCC_PeriphCLKInitStruct) != HAL_OK) Error_Handler();
 }
 
-/**
-  * @brief RIF Initialization Function
-  * @param None
-  * @retval None
-  */
+// Resource Isolation Frameword defines master and peripheral access type
 static void SystemIsolation_Config(void)
 {
 	// Enable RIF CLock
@@ -231,7 +225,7 @@ static void SystemIsolation_Config(void)
 
 }
 
- /* MPU Configuration */
+// Memory configuration cachable noncachable areas are defined
 void MPU_Config(void)
 {
     MPU_Region_InitTypeDef MPU_InitStruct = {0};
@@ -241,8 +235,7 @@ void MPU_Config(void)
     __disable_irq();
     HAL_MPU_Disable();
 
-    /* Region 0: ETH RX/TX descriptors - NON-CACHEABLE
-       0x341EAE80 - 0x341EAFFF = 384 bytes */
+    /* Region 0: ETH RX/TX descriptors - NON-CACHEABLE 0x341EAE80 - 0x341EAFFF = 384 bytes */
     MPU_InitStruct.Enable = MPU_REGION_ENABLE;
     MPU_InitStruct.Number = MPU_REGION_NUMBER0;
     MPU_InitStruct.BaseAddress = 0x341EAE80;
@@ -254,16 +247,14 @@ void MPU_Config(void)
     MPU_InitStruct.IsShareable = MPU_ACCESS_NOT_SHAREABLE;
     HAL_MPU_ConfigRegion(&MPU_InitStruct);
 
-    /* Region 1: NetX pool - CACHEABLE
-       0x341EB000 - 0x341F7FFF = 52 KB */
+    /* Region 1: NetX pool - CACHEABLE 0x341EB000 - 0x341F7FFF = 52 KB */
     MPU_InitStruct.Number = MPU_REGION_NUMBER1;
     MPU_InitStruct.BaseAddress = 0x341EB000;
     MPU_InitStruct.LimitAddress = 0x341F7FFF;
     MPU_InitStruct.AttributesIndex = MPU_ATTRIBUTES_NUMBER1;
     HAL_MPU_ConfigRegion(&MPU_InitStruct);
 
-    /* Region 2: USB RAM - NON-CACHEABLE
-       0x341F8000 - 0x341FFFFF = 32 KB */
+    /* Region 2: USB RAM - NON-CACHEABLE 0x341F8000 - 0x341FFFFF = 32 KB */
     MPU_InitStruct.Number = MPU_REGION_NUMBER2;
     MPU_InitStruct.BaseAddress = 0x341F8000;
     MPU_InitStruct.LimitAddress = 0x341FFFFF;
@@ -295,26 +286,15 @@ void MPU_Config(void)
   */
 void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 {
-  /* USER CODE BEGIN Callback 0 */
 
-  /* USER CODE END Callback 0 */
   if (htim->Instance == TIM6)
   {
     HAL_IncTick();
   }
-  /* USER CODE BEGIN Callback 1 */
   USBPD_DPM_TimerCounter();
-#if defined(_GUI_INTERFACE)
-  GUI_TimerCounter();
-#endif /* _GUI_INTERFACE */
-  /* USER CODE END Callback 1 */
+
 }
 
-/**
-  * @brief  This function is executed in case of error occurrence.
-  * @param None
-  * @retval None
-  */
 void Error_Handler(void)
 {
   /* User can add his own implementation to report the HAL error return state */
@@ -324,22 +304,3 @@ void Error_Handler(void)
     HAL_Delay(200);
   }
 }
-
-#ifdef USE_FULL_ASSERT
-/**
-  * @brief  Reports the name of the source file and the source line number
-  *         where the assert_param error has occurred.
-  * @param  file: pointer to the source file name
-  * @param  line: assert_param error line source number
-  * @retval None
-  */
-void assert_failed(uint8_t *file, uint32_t line)
-{
-  /* User can add his own implementation to report the file name and line number,
-     ex: printf("Wrong parameters value: file %s on line %d\r\n", file, line) */
-  /* Infinite loop */
-  while (1)
-  {
-  }
-}
-#endif /* USE_FULL_ASSERT */
