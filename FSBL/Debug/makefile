@@ -43,6 +43,7 @@ RM := rm -rf
 -include Drivers/BSP/STM32N6570-DK/subdir.mk
 -include Drivers/BSP/Components/subdir.mk
 -include Drivers/subdir.mk
+-include Application/USBX/Target/subdir.mk
 -include Application/USBX/App/subdir.mk
 -include Application/USBPD/Target/subdir.mk
 -include Application/USBPD/App/subdir.mk
@@ -51,7 +52,7 @@ RM := rm -rf
 -include Application/NetXDuo/Target/subdir.mk
 -include Application/NetXDuo/App/subdir.mk
 -include Application/LCD/subdir.mk
--include Application/Hardware/subdir.mk
+-include Application/Hardware/Gpio/subdir.mk
 -include Application/FileX/Target/subdir.mk
 -include Application/FileX/App/subdir.mk
 -include Application/Core/Src/subdir.mk

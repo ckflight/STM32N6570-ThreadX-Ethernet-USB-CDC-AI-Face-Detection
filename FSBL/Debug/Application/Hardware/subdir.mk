@@ -5,22 +5,13 @@
 
 # Add inputs and outputs from these tool invocations to the build variables 
 C_SRCS += \
-../Application/Hardware/gpdma.c \
-../Application/Hardware/gpio.c \
-../Application/Hardware/ucpd.c \
-../Application/Hardware/usb_otg.c 
+../Application/Hardware/gpdma.c 
 
 OBJS += \
-./Application/Hardware/gpdma.o \
-./Application/Hardware/gpio.o \
-./Application/Hardware/ucpd.o \
-./Application/Hardware/usb_otg.o 
+./Application/Hardware/gpdma.o 
 
 C_DEPS += \
-./Application/Hardware/gpdma.d \
-./Application/Hardware/gpio.d \
-./Application/Hardware/ucpd.d \
-./Application/Hardware/usb_otg.d 
+./Application/Hardware/gpdma.d 
 
 
 # Each subdirectory must supply rules for building sources it contributes
@@ -30,7 +21,7 @@ Application/Hardware/%.o Application/Hardware/%.su Application/Hardware/%.cyclo:
 clean: clean-Application-2f-Hardware
 
 clean-Application-2f-Hardware:
-	-$(RM) ./Application/Hardware/gpdma.cyclo ./Application/Hardware/gpdma.d ./Application/Hardware/gpdma.o ./Application/Hardware/gpdma.su ./Application/Hardware/gpio.cyclo ./Application/Hardware/gpio.d ./Application/Hardware/gpio.o ./Application/Hardware/gpio.su ./Application/Hardware/ucpd.cyclo ./Application/Hardware/ucpd.d ./Application/Hardware/ucpd.o ./Application/Hardware/ucpd.su ./Application/Hardware/usb_otg.cyclo ./Application/Hardware/usb_otg.d ./Application/Hardware/usb_otg.o ./Application/Hardware/usb_otg.su
+	-$(RM) ./Application/Hardware/gpdma.cyclo ./Application/Hardware/gpdma.d ./Application/Hardware/gpdma.o ./Application/Hardware/gpdma.su
 
 .PHONY: clean-Application-2f-Hardware
 

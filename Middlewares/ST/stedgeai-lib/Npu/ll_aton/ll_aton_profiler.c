@@ -206,7 +206,7 @@ int LL_ATON_LIB_ConvInteger(const LL_LIB_TensorInfo_TypeDef *inputs, unsigned in
           maxmax_k = max > maxmax_k ? max : maxmax_k;
         }
       }
-      LL_ATON_PROFILER_PRINTF("%s k=%d %d scale=%g\n", conv_name, k, maxmax_k, (double)kern->scale[k]);
+      LL_ATON_PROFILER_PRINTF("%s k=%d %ld scale=%g\n", conv_name, k, maxmax_k, (double)kern->scale[k]);
     }
   }
   LL_ATON_ASSERT(kcount == K * S * R * C * N * out_H * out_W);
@@ -282,7 +282,7 @@ int LL_ATON_LIB_ConvInteger(const LL_LIB_TensorInfo_TypeDef *inputs, unsigned in
   FILE *f = LL_ATON_FOPEN("atonn.prof", "a+");
   if (f)
   {
-    LL_ATON_PROFILER_FPRINTF(f, "%s %d\n", conv_name, maxmax); // log((float)maxmax) / log(2.0));
+    LL_ATON_PROFILER_FPRINTF(f, "%s %ld\n", conv_name, maxmax); // log((float)maxmax) / log(2.0));
     LL_ATON_FCLOSE(f);
   }
 #endif

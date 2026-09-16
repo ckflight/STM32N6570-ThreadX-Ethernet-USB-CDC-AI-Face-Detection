@@ -5,18 +5,24 @@
 
 # Add inputs and outputs from these tool invocations to the build variables 
 C_SRCS += \
+../Application/USBPD/Target/gpdma.c \
+../Application/USBPD/Target/ucpd.c \
 ../Application/USBPD/Target/usbpd_dpm_user.c \
 ../Application/USBPD/Target/usbpd_pwr_user.c \
 ../Application/USBPD/Target/usbpd_user_services.c \
 ../Application/USBPD/Target/usbpd_vdm_user.c 
 
 OBJS += \
+./Application/USBPD/Target/gpdma.o \
+./Application/USBPD/Target/ucpd.o \
 ./Application/USBPD/Target/usbpd_dpm_user.o \
 ./Application/USBPD/Target/usbpd_pwr_user.o \
 ./Application/USBPD/Target/usbpd_user_services.o \
 ./Application/USBPD/Target/usbpd_vdm_user.o 
 
 C_DEPS += \
+./Application/USBPD/Target/gpdma.d \
+./Application/USBPD/Target/ucpd.d \
 ./Application/USBPD/Target/usbpd_dpm_user.d \
 ./Application/USBPD/Target/usbpd_pwr_user.d \
 ./Application/USBPD/Target/usbpd_user_services.d \
@@ -30,7 +36,7 @@ Application/USBPD/Target/%.o Application/USBPD/Target/%.su Application/USBPD/Tar
 clean: clean-Application-2f-USBPD-2f-Target
 
 clean-Application-2f-USBPD-2f-Target:
-	-$(RM) ./Application/USBPD/Target/usbpd_dpm_user.cyclo ./Application/USBPD/Target/usbpd_dpm_user.d ./Application/USBPD/Target/usbpd_dpm_user.o ./Application/USBPD/Target/usbpd_dpm_user.su ./Application/USBPD/Target/usbpd_pwr_user.cyclo ./Application/USBPD/Target/usbpd_pwr_user.d ./Application/USBPD/Target/usbpd_pwr_user.o ./Application/USBPD/Target/usbpd_pwr_user.su ./Application/USBPD/Target/usbpd_user_services.cyclo ./Application/USBPD/Target/usbpd_user_services.d ./Application/USBPD/Target/usbpd_user_services.o ./Application/USBPD/Target/usbpd_user_services.su ./Application/USBPD/Target/usbpd_vdm_user.cyclo ./Application/USBPD/Target/usbpd_vdm_user.d ./Application/USBPD/Target/usbpd_vdm_user.o ./Application/USBPD/Target/usbpd_vdm_user.su
+	-$(RM) ./Application/USBPD/Target/gpdma.cyclo ./Application/USBPD/Target/gpdma.d ./Application/USBPD/Target/gpdma.o ./Application/USBPD/Target/gpdma.su ./Application/USBPD/Target/ucpd.cyclo ./Application/USBPD/Target/ucpd.d ./Application/USBPD/Target/ucpd.o ./Application/USBPD/Target/ucpd.su ./Application/USBPD/Target/usbpd_dpm_user.cyclo ./Application/USBPD/Target/usbpd_dpm_user.d ./Application/USBPD/Target/usbpd_dpm_user.o ./Application/USBPD/Target/usbpd_dpm_user.su ./Application/USBPD/Target/usbpd_pwr_user.cyclo ./Application/USBPD/Target/usbpd_pwr_user.d ./Application/USBPD/Target/usbpd_pwr_user.o ./Application/USBPD/Target/usbpd_pwr_user.su ./Application/USBPD/Target/usbpd_user_services.cyclo ./Application/USBPD/Target/usbpd_user_services.d ./Application/USBPD/Target/usbpd_user_services.o ./Application/USBPD/Target/usbpd_user_services.su ./Application/USBPD/Target/usbpd_vdm_user.cyclo ./Application/USBPD/Target/usbpd_vdm_user.d ./Application/USBPD/Target/usbpd_vdm_user.o ./Application/USBPD/Target/usbpd_vdm_user.su
 
 .PHONY: clean-Application-2f-USBPD-2f-Target
 

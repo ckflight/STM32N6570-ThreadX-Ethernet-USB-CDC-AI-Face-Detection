@@ -28,7 +28,7 @@ Application/Camera \
 Application/Core/Src \
 Application/FileX/App \
 Application/FileX/Target \
-Application/Hardware \
+Application/Hardware/Gpio \
 Application/LCD \
 Application/NetXDuo/App \
 Application/NetXDuo/Target \
@@ -37,6 +37,7 @@ Application/Startup \
 Application/USBPD/App \
 Application/USBPD/Target \
 Application/USBX/App \
+Application/USBX/Target \
 Drivers/BSP/Components \
 Drivers/BSP/STM32N6570-DK \
 Drivers/STM32N6xx_HAL_Driver \

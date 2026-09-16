@@ -1,11 +1,11 @@
 
 #include "app_threadx.h"
 #include "main.h"
-#include "gpdma.h"
 #include "ucpd.h"
 #include "usb_otg.h"
-#include "gpio.h"
+#include "Gpio/gpio.h"
 #include "usbpd.h"
+#include "gpdma.h"
 
 #include "ai_app.h"
 #include "lcd_app.h"
@@ -15,8 +15,6 @@
 
 #include "stm32n6570_discovery_xspi.h"
 #include "stm32n6570_discovery.h"
-
-static void set_clk_sleep_mode(void);
 
 /* Private function prototypes -----------------------------------------------*/
 void SystemClock_Config(void);
@@ -29,7 +27,8 @@ static void SystemIsolation_Config(void);
 // network_data.hex de yazmak lazım
 // projenin hex dosyasını da doğru adrese yazmak lazım
 
-
+volatile uint32_t clock_error = 0;
+volatile uint32_t clock_freq = 0;
 int main(void)
 {
 
@@ -45,15 +44,19 @@ int main(void)
 
     HAL_Init();
     SystemClock_Config();
-    set_clk_sleep_mode(); //-----------Bunun sıralamasına dikkat et önceden ai init öncesi ama npu enable sonrasıydı!!!
 
-	uint32_t clock_freq = 0; UNUSED(clock_freq);
+	clock_freq = 0; UNUSED(clock_freq);
 	clock_freq = HAL_RCC_GetCpuClockFreq();
 	clock_freq = HAL_RCC_GetHCLKFreq();
 	clock_freq = HAL_RCC_GetPCLK1Freq();
 	clock_freq = HAL_RCC_GetPCLK2Freq();
 
-    MX_GPIO_Init();
+
+
+	MX_GPIO_Init();
+    while(1){
+        HAL_GPIO_WritePin(LED_RED_GPIO_Port, LED_RED_Pin, GPIO_PIN_SET);
+    }
 
     Ethernet_Init();
     SD_Init();
@@ -68,11 +71,10 @@ int main(void)
     BSP_XSPI_RAM_EnableMemoryMappedMode(0);
 
     BSP_XSPI_NOR_Init_t NOR_Init;
-    NOR_Init.InterfaceMode = BSP_XSPI_NOR_OPI_MODE;
-    NOR_Init.TransferRate = BSP_XSPI_NOR_DTR_TRANSFER;
+    NOR_Init.InterfaceMode 	= BSP_XSPI_NOR_OPI_MODE;
+    NOR_Init.TransferRate 	= BSP_XSPI_NOR_DTR_TRANSFER;
     BSP_XSPI_NOR_Init(0, &NOR_Init);
     BSP_XSPI_NOR_EnableMemoryMappedMode(0);
-
 
     AI_Init();
     Camera_Init();
@@ -86,40 +88,13 @@ int main(void)
     while (1){}
 }
 
-static void set_clk_sleep_mode(void)
-{
-    __HAL_RCC_XSPI1_CLK_SLEEP_ENABLE();
-    __HAL_RCC_XSPI2_CLK_SLEEP_ENABLE();
-
-    __HAL_RCC_NPU_CLK_SLEEP_ENABLE();
-    __HAL_RCC_CACHEAXI_CLK_SLEEP_ENABLE();
-
-    __HAL_RCC_DCMIPP_CLK_SLEEP_ENABLE();
-    __HAL_RCC_CSI_CLK_SLEEP_ENABLE();
-
-    __HAL_RCC_FLEXRAM_MEM_CLK_SLEEP_ENABLE();
-
-    __HAL_RCC_AXISRAM1_MEM_CLK_SLEEP_ENABLE();
-    __HAL_RCC_AXISRAM2_MEM_CLK_SLEEP_ENABLE();
-    __HAL_RCC_AXISRAM3_MEM_CLK_SLEEP_ENABLE();
-    __HAL_RCC_AXISRAM4_MEM_CLK_SLEEP_ENABLE();
-    __HAL_RCC_AXISRAM5_MEM_CLK_SLEEP_ENABLE();
-    __HAL_RCC_AXISRAM6_MEM_CLK_SLEEP_ENABLE();
-
-    __HAL_RCC_DMA2D_CLK_SLEEP_ENABLE();
-}
-
-/**
-  * @brief System Clock Configuration
-  * @retval None
-  */
 void SystemClock_Config(void)
 {
     RCC_ClkInitTypeDef RCC_ClkInitStruct = {0};
     RCC_OscInitTypeDef RCC_OscInitStruct = {0};
     RCC_PeriphCLKInitTypeDef RCC_PeriphCLKInitStruct = {0};
 
-    BSP_SMPS_Init(SMPS_VOLTAGE_OVERDRIVE);
+    //BSP_SMPS_Init(SMPS_VOLTAGE_OVERDRIVE);
 
     RCC_OscInitStruct.OscillatorType = RCC_OSCILLATORTYPE_HSI | RCC_OSCILLATORTYPE_HSE;
     RCC_OscInitStruct.HSIState = RCC_HSI_ON;
@@ -159,7 +134,10 @@ void SystemClock_Config(void)
     RCC_OscInitStruct.PLL4.PLLP1 = 6;
     RCC_OscInitStruct.PLL4.PLLP2 = 6;
 
-    if (HAL_RCC_OscConfig(&RCC_OscInitStruct) != HAL_OK) Error_Handler();
+    if (HAL_RCC_OscConfig(&RCC_OscInitStruct) != HAL_OK){
+    	clock_error = 1;
+    	//Error_Handler();
+    }
 
     RCC_ClkInitStruct.ClockType = RCC_CLOCKTYPE_CPUCLK | RCC_CLOCKTYPE_SYSCLK | RCC_CLOCKTYPE_HCLK | RCC_CLOCKTYPE_PCLK1 | RCC_CLOCKTYPE_PCLK2 | RCC_CLOCKTYPE_PCLK4 | RCC_CLOCKTYPE_PCLK5;
     RCC_ClkInitStruct.CPUCLKSource = RCC_CPUCLKSOURCE_IC1;
@@ -180,13 +158,19 @@ void SystemClock_Config(void)
     RCC_ClkInitStruct.APB4CLKDivider = RCC_APB4_DIV1;
     RCC_ClkInitStruct.APB5CLKDivider = RCC_APB5_DIV1;
 
-    if (HAL_RCC_ClockConfig(&RCC_ClkInitStruct) != HAL_OK) Error_Handler();
+    if (HAL_RCC_ClockConfig(&RCC_ClkInitStruct) != HAL_OK){
+    	clock_error = 2;
+    	Error_Handler();
+    }
 
     RCC_PeriphCLKInitStruct.PeriphClockSelection = RCC_PERIPHCLK_XSPI1 | RCC_PERIPHCLK_XSPI2;
     RCC_PeriphCLKInitStruct.Xspi1ClockSelection = RCC_XSPI1CLKSOURCE_HCLK;
     RCC_PeriphCLKInitStruct.Xspi2ClockSelection = RCC_XSPI2CLKSOURCE_HCLK;
 
-    if (HAL_RCCEx_PeriphCLKConfig(&RCC_PeriphCLKInitStruct) != HAL_OK) Error_Handler();
+    if (HAL_RCCEx_PeriphCLKConfig(&RCC_PeriphCLKInitStruct) != HAL_OK){
+    	clock_error = 3;
+    	Error_Handler();
+    }
 }
 
 // Resource Isolation Frameword defines master and peripheral access type
