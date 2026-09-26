@@ -17,6 +17,7 @@
 #include "stm32n6570_discovery.h"
 
 /* Private function prototypes -----------------------------------------------*/
+void SystemClock_Config2(void);
 void SystemClock_Config(void);
 static void MPU_Config(void);
 static void SystemIsolation_Config(void);
@@ -31,7 +32,6 @@ volatile uint32_t clock_error = 0;
 volatile uint32_t clock_freq = 0;
 int main(void)
 {
-
     HAL_PWREx_EnableVddA();
     HAL_PWREx_EnableVddIO2();
     HAL_PWREx_EnableVddIO3();
@@ -43,20 +43,18 @@ int main(void)
     SCB_EnableDCache();
 
     HAL_Init();
-    SystemClock_Config();
+    SystemClock_Config2();
 
-	clock_freq = 0; UNUSED(clock_freq);
-	clock_freq = HAL_RCC_GetCpuClockFreq();
-	clock_freq = HAL_RCC_GetHCLKFreq();
-	clock_freq = HAL_RCC_GetPCLK1Freq();
-	clock_freq = HAL_RCC_GetPCLK2Freq();
-
-
+    clock_freq 	= HAL_RCC_GetCpuClockFreq();
+    clock_freq	= HAL_RCC_GetHCLKFreq();
+    clock_freq  = HAL_RCC_GetPCLK1Freq();
+    clock_freq  = HAL_RCC_GetPCLK2Freq();
 
 	MX_GPIO_Init();
-    while(1){
-        HAL_GPIO_WritePin(LED_RED_GPIO_Port, LED_RED_Pin, GPIO_PIN_SET);
-    }
+//    while(1){
+//        HAL_GPIO_TogglePin(LED_RED_GPIO_Port, LED_RED_Pin);
+//        HAL_Delay(25);
+//    }
 
     Ethernet_Init();
     SD_Init();
@@ -88,13 +86,190 @@ int main(void)
     while (1){}
 }
 
+void SystemClock_Config2(void)
+{
+    RCC_ClkInitTypeDef RCC_ClkInitStruct = {0};
+    RCC_OscInitTypeDef RCC_OscInitStruct = {0};
+    RCC_PeriphCLKInitTypeDef RCC_PeriphCLKInitStruct = {0};
+
+    /*
+     * Application FSBL'den geliyor.
+     *
+     * FSBL:
+     *   CPU  = 600 MHz
+     *   HCLK = 50 MHz
+     *
+     * Application hedefi:
+     *   CPU  = 800 MHz
+     *   HCLK = 200 MHz
+     *   PCLK = 200 MHz
+     */
+
+    /* 800 MHz için SMPS overdrive */
+    BSP_SMPS_Init(SMPS_VOLTAGE_OVERDRIVE);
+
+    /*
+     * FSBL'de PLL1 aktif ve CPU/SYS clock tarafından kullanılıyor.
+     * PLL'leri yeniden configure etmeden önce CPU ve SYSCLK'i
+     * geçici olarak HSI'ya geçir.
+     */
+    HAL_RCC_GetClockConfig(&RCC_ClkInitStruct);
+
+    if ((RCC_ClkInitStruct.CPUCLKSource == RCC_CPUCLKSOURCE_IC1) ||
+        (RCC_ClkInitStruct.SYSCLKSource == RCC_SYSCLKSOURCE_IC2_IC6_IC11))
+    {
+        RCC_ClkInitStruct.ClockType =
+            RCC_CLOCKTYPE_CPUCLK |
+            RCC_CLOCKTYPE_SYSCLK;
+
+        RCC_ClkInitStruct.CPUCLKSource = RCC_CPUCLKSOURCE_HSI;
+        RCC_ClkInitStruct.SYSCLKSource = RCC_SYSCLKSOURCE_HSI;
+
+        if (HAL_RCC_ClockConfig(&RCC_ClkInitStruct) != HAL_OK)
+        {
+            clock_error = 4;
+            Error_Handler();
+        }
+    }
+
+    /*
+     * AI application's original oscillator/PLL configuration
+     */
+    RCC_OscInitStruct.OscillatorType =
+        RCC_OSCILLATORTYPE_HSI |
+        RCC_OSCILLATORTYPE_HSE;
+
+    RCC_OscInitStruct.HSIState = RCC_HSI_ON;
+    RCC_OscInitStruct.HSIDiv = RCC_HSI_DIV1;
+    RCC_OscInitStruct.HSICalibrationValue = RCC_HSICALIBRATION_DEFAULT;
+
+    RCC_OscInitStruct.HSEState = RCC_HSE_BYPASS_DIGITAL;
+
+    /* PLL1 = 800 MHz */
+    RCC_OscInitStruct.PLL1.PLLState = RCC_PLL_ON;
+    RCC_OscInitStruct.PLL1.PLLSource = RCC_PLLSOURCE_HSI;
+    RCC_OscInitStruct.PLL1.PLLM = 2;
+    RCC_OscInitStruct.PLL1.PLLN = 25;
+    RCC_OscInitStruct.PLL1.PLLFractional = 0;
+    RCC_OscInitStruct.PLL1.PLLP1 = 1;
+    RCC_OscInitStruct.PLL1.PLLP2 = 1;
+
+    /* PLL2 */
+    RCC_OscInitStruct.PLL2.PLLState = RCC_PLL_ON;
+    RCC_OscInitStruct.PLL2.PLLSource = RCC_PLLSOURCE_HSI;
+    RCC_OscInitStruct.PLL2.PLLM = 8;
+    RCC_OscInitStruct.PLL2.PLLN = 125;
+    RCC_OscInitStruct.PLL2.PLLFractional = 0;
+    RCC_OscInitStruct.PLL2.PLLP1 = 1;
+    RCC_OscInitStruct.PLL2.PLLP2 = 1;
+
+    /* PLL3 */
+    RCC_OscInitStruct.PLL3.PLLState = RCC_PLL_ON;
+    RCC_OscInitStruct.PLL3.PLLSource = RCC_PLLSOURCE_HSI;
+    RCC_OscInitStruct.PLL3.PLLM = 8;
+    RCC_OscInitStruct.PLL3.PLLN = 225;
+    RCC_OscInitStruct.PLL3.PLLFractional = 0;
+    RCC_OscInitStruct.PLL3.PLLP1 = 1;
+    RCC_OscInitStruct.PLL3.PLLP2 = 2;
+
+    /* PLL4 */
+    RCC_OscInitStruct.PLL4.PLLState = RCC_PLL_ON;
+    RCC_OscInitStruct.PLL4.PLLSource = RCC_PLLSOURCE_HSI;
+    RCC_OscInitStruct.PLL4.PLLM = 8;
+    RCC_OscInitStruct.PLL4.PLLN = 225;
+    RCC_OscInitStruct.PLL4.PLLFractional = 0;
+    RCC_OscInitStruct.PLL4.PLLP1 = 6;
+    RCC_OscInitStruct.PLL4.PLLP2 = 6;
+
+    if (HAL_RCC_OscConfig(&RCC_OscInitStruct) != HAL_OK)
+    {
+        clock_error = 1;
+        Error_Handler();
+    }
+
+    /*
+     * Final application clocks
+     *
+     * CPUCLK = IC1 = PLL1 / 1 = 800 MHz
+     * SYSCLK = IC2/IC6/IC11
+     * HCLK   = SYSCLK / 2 = 200 MHz
+     */
+    RCC_ClkInitStruct.ClockType =
+        RCC_CLOCKTYPE_CPUCLK |
+        RCC_CLOCKTYPE_SYSCLK |
+        RCC_CLOCKTYPE_HCLK |
+        RCC_CLOCKTYPE_PCLK1 |
+        RCC_CLOCKTYPE_PCLK2 |
+        RCC_CLOCKTYPE_PCLK4 |
+        RCC_CLOCKTYPE_PCLK5;
+
+    RCC_ClkInitStruct.CPUCLKSource =
+        RCC_CPUCLKSOURCE_IC1;
+
+    RCC_ClkInitStruct.SYSCLKSource =
+        RCC_SYSCLKSOURCE_IC2_IC6_IC11;
+
+    /* IC1 = PLL1 / 1 -> CPU = 800 MHz */
+    RCC_ClkInitStruct.IC1Selection.ClockSelection =
+        RCC_ICCLKSOURCE_PLL1;
+    RCC_ClkInitStruct.IC1Selection.ClockDivider = 1;
+
+    /* IC2 = PLL1 / 2 -> 400 MHz */
+    RCC_ClkInitStruct.IC2Selection.ClockSelection =
+        RCC_ICCLKSOURCE_PLL1;
+    RCC_ClkInitStruct.IC2Selection.ClockDivider = 2;
+
+    /* IC6 = PLL2 / 1 */
+    RCC_ClkInitStruct.IC6Selection.ClockSelection =
+        RCC_ICCLKSOURCE_PLL2;
+    RCC_ClkInitStruct.IC6Selection.ClockDivider = 1;
+
+    /* IC11 = PLL3 / 1 */
+    RCC_ClkInitStruct.IC11Selection.ClockSelection =
+        RCC_ICCLKSOURCE_PLL3;
+    RCC_ClkInitStruct.IC11Selection.ClockDivider = 1;
+
+    /* HCLK = 400 / 2 = 200 MHz */
+    RCC_ClkInitStruct.AHBCLKDivider = RCC_HCLK_DIV2;
+
+    RCC_ClkInitStruct.APB1CLKDivider = RCC_APB1_DIV1;
+    RCC_ClkInitStruct.APB2CLKDivider = RCC_APB2_DIV1;
+    RCC_ClkInitStruct.APB4CLKDivider = RCC_APB4_DIV1;
+    RCC_ClkInitStruct.APB5CLKDivider = RCC_APB5_DIV1;
+
+    if (HAL_RCC_ClockConfig(&RCC_ClkInitStruct) != HAL_OK)
+    {
+        clock_error = 2;
+        Error_Handler();
+    }
+
+    /*
+     * XSPI clocks
+     */
+    RCC_PeriphCLKInitStruct.PeriphClockSelection =
+        RCC_PERIPHCLK_XSPI1 |
+        RCC_PERIPHCLK_XSPI2;
+
+    RCC_PeriphCLKInitStruct.Xspi1ClockSelection =
+        RCC_XSPI1CLKSOURCE_HCLK;
+
+    RCC_PeriphCLKInitStruct.Xspi2ClockSelection =
+        RCC_XSPI2CLKSOURCE_HCLK;
+
+    if (HAL_RCCEx_PeriphCLKConfig(&RCC_PeriphCLKInitStruct) != HAL_OK)
+    {
+        clock_error = 3;
+        Error_Handler();
+    }
+}
+
 void SystemClock_Config(void)
 {
     RCC_ClkInitTypeDef RCC_ClkInitStruct = {0};
     RCC_OscInitTypeDef RCC_OscInitStruct = {0};
     RCC_PeriphCLKInitTypeDef RCC_PeriphCLKInitStruct = {0};
 
-    //BSP_SMPS_Init(SMPS_VOLTAGE_OVERDRIVE);
+    BSP_SMPS_Init(SMPS_VOLTAGE_OVERDRIVE);
 
     RCC_OscInitStruct.OscillatorType = RCC_OSCILLATORTYPE_HSI | RCC_OSCILLATORTYPE_HSE;
     RCC_OscInitStruct.HSIState = RCC_HSI_ON;
