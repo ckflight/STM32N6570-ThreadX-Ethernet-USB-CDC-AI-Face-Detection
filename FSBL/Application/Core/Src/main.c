@@ -6,6 +6,7 @@
 #include "Gpio/gpio.h"
 #include "usbpd.h"
 #include "gpdma.h"
+#include "systimer.h"
 
 #include "ai_app.h"
 #include "lcd_app.h"
@@ -30,8 +31,12 @@ static void SystemIsolation_Config(void);
 
 volatile uint32_t clock_error = 0;
 volatile uint32_t clock_freq = 0;
+
+#define DIRECT_DEBUG_START	0 // 1 = Debug this project without fsbl flash load. 0 = Loader project loads this project from flash.
+
 int main(void)
 {
+
     HAL_PWREx_EnableVddA();
     HAL_PWREx_EnableVddIO2();
     HAL_PWREx_EnableVddIO3();
@@ -43,18 +48,28 @@ int main(void)
     SCB_EnableDCache();
 
     HAL_Init();
-    SystemClock_Config2();
+
+    //SystemClock_Config(); // This is the original clock but does not work with fsbl
+    SystemClock_Config2(); // This one sets the clock to 800 200 after fsbl but works with both debug or fsbl load
 
     clock_freq 	= HAL_RCC_GetCpuClockFreq();
     clock_freq	= HAL_RCC_GetHCLKFreq();
     clock_freq  = HAL_RCC_GetPCLK1Freq();
     clock_freq  = HAL_RCC_GetPCLK2Freq();
 
+    SystemIsolation_Config();
+
+    BSP_XSPI_RAM_Init(0);
+    BSP_XSPI_RAM_EnableMemoryMappedMode(0);
+
+	BSP_XSPI_NOR_Init_t NOR_Init;
+	NOR_Init.InterfaceMode 	= BSP_XSPI_NOR_OPI_MODE;
+	NOR_Init.TransferRate 	= BSP_XSPI_NOR_DTR_TRANSFER;
+	BSP_XSPI_NOR_Init(0, &NOR_Init);
+	BSP_XSPI_NOR_EnableMemoryMappedMode(0);
+
+    Timer_Init();
 	MX_GPIO_Init();
-//    while(1){
-//        HAL_GPIO_TogglePin(LED_RED_GPIO_Port, LED_RED_Pin);
-//        HAL_Delay(25);
-//    }
 
     Ethernet_Init();
     SD_Init();
@@ -63,24 +78,17 @@ int main(void)
     MX_UCPD1_Init();
     MX_USB1_OTG_HS_PCD_Init();
 
-    SystemIsolation_Config();
-
-    BSP_XSPI_RAM_Init(0);
-    BSP_XSPI_RAM_EnableMemoryMappedMode(0);
-
-    BSP_XSPI_NOR_Init_t NOR_Init;
-    NOR_Init.InterfaceMode 	= BSP_XSPI_NOR_OPI_MODE;
-    NOR_Init.TransferRate 	= BSP_XSPI_NOR_DTR_TRANSFER;
-    BSP_XSPI_NOR_Init(0, &NOR_Init);
-    BSP_XSPI_NOR_EnableMemoryMappedMode(0);
-
     AI_Init();
     Camera_Init();
     LCD_Init();
-
     Camera_Start();
-
     USBPD_PreInitOs();
+
+	for(int i = 0; i < 40; i++){
+		HAL_GPIO_TogglePin(LED_RED_GPIO_Port, LED_RED_Pin);
+		HAL_Delay(25);
+	}
+
     MX_ThreadX_Init();
 
     while (1){}

@@ -1,6 +1,7 @@
 #include "app_netxduo.h"
 #include "main.h"
 #include <stdio.h>
+#include "systimer.h"
 
 NX_PACKET_POOL NxAppPool;
 NX_IP NetXDuoEthIpInstance;
@@ -32,7 +33,8 @@ UINT MX_NetXDuo_Init(VOID *memory_ptr)
     status = tx_byte_allocate(byte_pool, (VOID **)&memory, NETX_IP_THREAD_STACK_SIZE, TX_NO_WAIT);
     if (status != TX_SUCCESS) return status;
 
-    status = nx_ip_create(&NetXDuoEthIpInstance, "NetX IP", 0, 0, &NxAppPool, nx_stm32_eth_driver, memory, NETX_IP_THREAD_STACK_SIZE, NETX_IP_THREAD_PRIORITY);
+    //status = nx_ip_create(&NetXDuoEthIpInstance, "NetX IP", 0, 0, &NxAppPool, nx_stm32_eth_driver, memory, NETX_IP_THREAD_STACK_SIZE, NETX_IP_THREAD_PRIORITY);
+    status = nx_ip_create(&NetXDuoEthIpInstance, "NetX IP", IP_ADDRESS(10,42,0,158), IP_ADDRESS(255,255,255,0), &NxAppPool, nx_stm32_eth_driver, memory, NETX_IP_THREAD_STACK_SIZE, NETX_IP_THREAD_PRIORITY);
     if (status != NX_SUCCESS) return status;
 
     status = tx_byte_allocate(byte_pool, (VOID **)&memory, NETX_ARP_CACHE_SIZE, TX_NO_WAIT);

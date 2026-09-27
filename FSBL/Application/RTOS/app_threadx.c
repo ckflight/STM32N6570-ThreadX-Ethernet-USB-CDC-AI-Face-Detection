@@ -3,6 +3,8 @@
 #include <stdio.h>
 #include <string.h>
 
+#include "systimer.h"
+
 #include "app_threadx.h"
 #include "ux_device_cdc_acm.h"
 
@@ -52,6 +54,8 @@ volatile float math_result = 0.0f;
 static TX_THREAD ai_thread;
 static UCHAR ai_stack[4096];
 static VOID AI_Thread(ULONG arg);
+static VOID AI_Thread2(ULONG arg);
+
 
 //****************** AI TASK *************
 static TX_THREAD lcd_text_thread;
@@ -124,7 +128,9 @@ UINT App_ThreadX_Init(VOID *memory_ptr)
 
 void MX_ThreadX_Init(void)
 {
+
     tx_kernel_enter();
+
 }
 
 //// TX ONLY TEST
@@ -134,9 +140,9 @@ static VOID Ethernet_Thread(ULONG thread_input)
 
     (void)thread_input;
 
-    status = NetXDuo_DHCP_Wait();
-    if (status != NX_SUCCESS)
-        return;
+//    status = NetXDuo_DHCP_Wait();
+//    if (status != NX_SUCCESS)
+//        return;
 
     status = NetXDuo_TCP_Server_Start(TCP_PORT);
     if (status != NX_SUCCESS)
@@ -226,50 +232,58 @@ static VOID AI_Thread(ULONG arg)
 
     while (1)
     {
+
+        if (cameraFrameReceived == 0)
+        {
+            tx_thread_sleep(1);
+            continue;
+        }
+
+        cameraFrameReceived = 0;
+
         CameraPipeline_IspUpdate();
-        tx_thread_sleep(1);
 
         HAL_GPIO_TogglePin(LED_RED_GPIO_Port, LED_RED_Pin);
 
     }
 }
 
-//static VOID AI_Thread(ULONG arg)
-//{
-//    UX_PARAMETER_NOT_USED(arg);
-//
-//    while (1)
-//    {
-//        if (cameraFrameReceived == 0)
-//        {
-//            tx_thread_sleep(1);
-//            continue;
-//        }
-//
-//        cameraFrameReceived = 0;
-//
-//        // Kameradan alınan görüntüyü modelden geçir
-//        AI_Run();
-//
-//        // Ham NN çıktısını gerçek yüz detection sonucuna çevir
-//        app_postprocess_run((void **)nn_out, number_output, &pp_output, &pp_params);
-//
-//        ai_face_count = pp_output.nb_detect;
-//
-//        ai_task_counter++;
-//
-//        ai_result_ready = 1;
-//        lcd_result_ready = 1;
-//
-//        // Sonraki kamera snapshot'ını başlat
-//        CameraPipeline_IspUpdate();
-//
-//        CameraPipeline_NNPipe_Start((uint8_t *)nn_in, DCMIPP_MODE_SNAPSHOT);
-//
-//        HAL_GPIO_TogglePin(LED_RED_GPIO_Port, LED_RED_Pin);
-//
-//    }
-//}
+static VOID AI_Thread2(ULONG arg)
+{
+    UX_PARAMETER_NOT_USED(arg);
+
+    while (1)
+    {
+        if (cameraFrameReceived == 0)
+        {
+            tx_thread_sleep(1);
+            continue;
+        }
+
+        cameraFrameReceived = 0;
+
+        // Kameradan alınan görüntüyü modelden geçir
+        AI_Run();
+
+        // Ham NN çıktısını gerçek yüz detection sonucuna çevir
+        app_postprocess_run((void **)nn_out, number_output, &pp_output, &pp_params);
+
+        ai_face_count = pp_output.nb_detect;
+
+        ai_task_counter++;
+
+        ai_result_ready = 1;
+        lcd_result_ready = 1;
+
+        // Sonraki kamera snapshot'ını başlat
+        CameraPipeline_IspUpdate();
+
+        CameraPipeline_NNPipe_Start((uint8_t *)nn_in, DCMIPP_MODE_SNAPSHOT);
+
+        HAL_GPIO_TogglePin(LED_RED_GPIO_Port, LED_RED_Pin);
+
+    }
+}
 
 // USB Print Detected Face function
 //static VOID USB_TX_Thread1(ULONG arg)

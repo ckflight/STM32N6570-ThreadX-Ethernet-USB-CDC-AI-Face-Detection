@@ -3,6 +3,7 @@
 #include "app_threadx.h"
 #include "app_filex.h"
 #include "app_netxduo.h"
+#include "systimer.h"
 
 #if (USE_STATIC_ALLOCATION == 1)
 
