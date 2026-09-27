@@ -117,7 +117,7 @@ UINT App_ThreadX_Init(VOID *memory_ptr)
     ret = tx_thread_create(&math_thread, "MATH", MATH_Thread, 0, math_stack, sizeof(math_stack), 20, 20, 1, TX_AUTO_START);
     if (ret != TX_SUCCESS) return ret;
 
-    ret = tx_thread_create(&ai_thread, "AI", AI_Thread, 0, ai_stack, sizeof(ai_stack), 10, 10, 1, TX_AUTO_START);
+    ret = tx_thread_create(&ai_thread, "AI", AI_Thread2, 0, ai_stack, sizeof(ai_stack), 10, 10, 1, TX_AUTO_START);
     if (ret != TX_SUCCESS) return ret;
 
     ret = tx_thread_create(&lcd_text_thread, "LCD TEXT", LCD_Text_Thread, 0, lcd_text_stack, sizeof(lcd_text_stack), 15, 15, 1, TX_AUTO_START);
@@ -133,50 +133,65 @@ void MX_ThreadX_Init(void)
 
 }
 
-//// TX ONLY TEST
-static VOID Ethernet_Thread(ULONG thread_input)
+static VOID AI_Thread(ULONG arg)
 {
-    UINT status;
-
-    (void)thread_input;
-
-//    status = NetXDuo_DHCP_Wait();
-//    if (status != NX_SUCCESS)
-//        return;
-
-    status = NetXDuo_TCP_Server_Start(TCP_PORT);
-    if (status != NX_SUCCESS)
-        return;
+    UX_PARAMETER_NOT_USED(arg);
 
     while (1)
     {
-        printf("Waiting TCP client...\r\n");
-
-        status = NetXDuo_TCP_Accept();
-
-        if (status != NX_SUCCESS)
+        if (cameraFrameReceived == 0)
+        {
+            tx_thread_sleep(1);
             continue;
-
-        for (int i = 0; i < 1400; i++)
-        {
-            tx_data[i] = (UCHAR)i;
         }
 
-        while (1)
-        {
+        cameraFrameReceived = 0;
 
-            status = NetXDuo_TCP_Send(tx_data, 1400);
+        CameraPipeline_IspUpdate();
 
-            if (status != NX_SUCCESS)
-            {
-                printf("TCP send error: 0x%02X\r\n", status);
-                break;
-            }
-        }
+        CameraPipeline_NNPipe_Start((uint8_t *)nn_in, DCMIPP_MODE_SNAPSHOT);
 
-        NetXDuo_TCP_Disconnect();
+        HAL_GPIO_TogglePin(LED_RED_GPIO_Port, LED_RED_Pin);
     }
 }
+
+static VOID AI_Thread2(ULONG arg)
+{
+    UX_PARAMETER_NOT_USED(arg);
+
+    while (1)
+    {
+        if (cameraFrameReceived == 0)
+        {
+            tx_thread_sleep(1);
+            continue;
+        }
+
+        cameraFrameReceived = 0;
+
+        // Kameradan alınan görüntüyü modelden geçir
+        AI_Run();
+
+        // Ham NN çıktısını gerçek yüz detection sonucuna çevir
+        app_postprocess_run((void **)nn_out, number_output, &pp_output, &pp_params);
+
+        ai_face_count = pp_output.nb_detect;
+
+        ai_task_counter++;
+
+        ai_result_ready = 1;
+        lcd_result_ready = 1;
+
+        // Sonraki kamera snapshot'ını başlat
+        CameraPipeline_IspUpdate();
+
+        CameraPipeline_NNPipe_Start((uint8_t *)nn_in, DCMIPP_MODE_SNAPSHOT);
+
+        HAL_GPIO_TogglePin(LED_RED_GPIO_Port, LED_RED_Pin);
+
+    }
+}
+
 
 static VOID LCD_Text_Thread(ULONG arg){
 
@@ -226,62 +241,48 @@ static VOID LCD_Text_Thread(ULONG arg){
 
 }
 
-static VOID AI_Thread(ULONG arg)
+//// TX ONLY TEST
+static VOID Ethernet_Thread(ULONG thread_input)
 {
-    UX_PARAMETER_NOT_USED(arg);
+    UINT status;
+
+    (void)thread_input;
+
+//    status = NetXDuo_DHCP_Wait();
+//    if (status != NX_SUCCESS)
+//        return;
+
+    status = NetXDuo_TCP_Server_Start(TCP_PORT);
+    if (status != NX_SUCCESS)
+        return;
 
     while (1)
     {
+        printf("Waiting TCP client...\r\n");
 
-        if (cameraFrameReceived == 0)
-        {
-            tx_thread_sleep(1);
+        status = NetXDuo_TCP_Accept();
+
+        if (status != NX_SUCCESS)
             continue;
+
+        for (int i = 0; i < 1400; i++)
+        {
+            tx_data[i] = (UCHAR)i;
         }
 
-        cameraFrameReceived = 0;
-
-        CameraPipeline_IspUpdate();
-
-        HAL_GPIO_TogglePin(LED_RED_GPIO_Port, LED_RED_Pin);
-
-    }
-}
-
-static VOID AI_Thread2(ULONG arg)
-{
-    UX_PARAMETER_NOT_USED(arg);
-
-    while (1)
-    {
-        if (cameraFrameReceived == 0)
+        while (1)
         {
-            tx_thread_sleep(1);
-            continue;
+
+            status = NetXDuo_TCP_Send(tx_data, 1400);
+
+            if (status != NX_SUCCESS)
+            {
+                printf("TCP send error: 0x%02X\r\n", status);
+                break;
+            }
         }
 
-        cameraFrameReceived = 0;
-
-        // Kameradan alınan görüntüyü modelden geçir
-        AI_Run();
-
-        // Ham NN çıktısını gerçek yüz detection sonucuna çevir
-        app_postprocess_run((void **)nn_out, number_output, &pp_output, &pp_params);
-
-        ai_face_count = pp_output.nb_detect;
-
-        ai_task_counter++;
-
-        ai_result_ready = 1;
-        lcd_result_ready = 1;
-
-        // Sonraki kamera snapshot'ını başlat
-        CameraPipeline_IspUpdate();
-
-        CameraPipeline_NNPipe_Start((uint8_t *)nn_in, DCMIPP_MODE_SNAPSHOT);
-
-        HAL_GPIO_TogglePin(LED_RED_GPIO_Port, LED_RED_Pin);
-
+        NetXDuo_TCP_Disconnect();
     }
 }
 
