@@ -117,7 +117,7 @@ UINT App_ThreadX_Init(VOID *memory_ptr)
     ret = tx_thread_create(&math_thread, "MATH", MATH_Thread, 0, math_stack, sizeof(math_stack), 20, 20, 1, TX_AUTO_START);
     if (ret != TX_SUCCESS) return ret;
 
-    ret = tx_thread_create(&ai_thread, "AI", AI_Thread2, 0, ai_stack, sizeof(ai_stack), 10, 10, 1, TX_AUTO_START);
+    ret = tx_thread_create(&ai_thread, "AI", AI_Thread, 0, ai_stack, sizeof(ai_stack), 10, 10, 1, TX_AUTO_START);
     if (ret != TX_SUCCESS) return ret;
 
     ret = tx_thread_create(&lcd_text_thread, "LCD TEXT", LCD_Text_Thread, 0, lcd_text_stack, sizeof(lcd_text_stack), 15, 15, 1, TX_AUTO_START);
