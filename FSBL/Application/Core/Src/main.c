@@ -33,10 +33,20 @@ static void SystemIsolation_Config(void);
  *   python3.12 stm32ai_main.py using user_config.yml
  */
 
+// Directly debugging needs clock and flash memory setup since fsbl is not used while directly debugging this project.
+#define DEBUG_MODE		0
+
 volatile uint32_t clock_freq = 0;
 
 int main(void)
 {
+
+#if DEBUG_MODE == 1
+	/* XSPI2 & XSPIM reset */
+	// This was in system_stm32n6xx_fsbl.c. It was resetting memory mapped setup in fsbl so it needs to be commented when fsbl is used.
+	RCC->AHB5RSTSR = RCC_AHB5RSTSR_XSPIMRSTS | RCC_AHB5RSTSR_XSPI2RSTS;
+	RCC->AHB5RSTCR = RCC_AHB5RSTCR_XSPIMRSTC | RCC_AHB5RSTCR_XSPI2RSTC;
+#endif
 
     HAL_PWREx_EnableVddA();
     HAL_PWREx_EnableVddIO2();
@@ -50,8 +60,10 @@ int main(void)
 
     HAL_Init();
 
+#if DEBUG_MODE == 1
     // Use this to direct debug the code other case fsbl loader sets the clocks!!!
-    //SystemClock_Config();
+    SystemClock_Config();
+#endif
 
     clock_freq 	= HAL_RCC_GetCpuClockFreq();
     clock_freq	= HAL_RCC_GetHCLKFreq();
@@ -64,12 +76,16 @@ int main(void)
     BSP_XSPI_RAM_Init(0);
     BSP_XSPI_RAM_EnableMemoryMappedMode(0);
 
+    //system_stm32n6xx_fsbl.c içindeki  XSPI2 & XSPIM reset kısmı fsbl memory mapped bozuyordu bununla ai thread çalışma sorunu çözüldü.
+
+#if DEBUG_MODE == 1
     // Use this to direct debug the code other case fsbl loader sets it.
-    //BSP_XSPI_NOR_Init_t NOR_Init;
-    //NOR_Init.InterfaceMode 	= BSP_XSPI_NOR_OPI_MODE;
-    //NOR_Init.TransferRate 	= BSP_XSPI_NOR_DTR_TRANSFER;
-    //BSP_XSPI_NOR_Init(0, &NOR_Init);
-    //BSP_XSPI_NOR_EnableMemoryMappedMode(0);
+    BSP_XSPI_NOR_Init_t NOR_Init;
+    NOR_Init.InterfaceMode 	= BSP_XSPI_NOR_OPI_MODE;
+    NOR_Init.TransferRate 	= BSP_XSPI_NOR_DTR_TRANSFER;
+    BSP_XSPI_NOR_Init(0, &NOR_Init);
+    BSP_XSPI_NOR_EnableMemoryMappedMode(0);
+#endif
 
     Timer_Init();
 	MX_GPIO_Init();
@@ -87,7 +103,7 @@ int main(void)
     Camera_Start();
     USBPD_PreInitOs();
 
-	for(int i = 0; i < 40; i++){
+	for(int i = 0; i < 10; i++){
 		HAL_GPIO_TogglePin(LED_RED_GPIO_Port, LED_RED_Pin);
 		HAL_Delay(25);
 	}

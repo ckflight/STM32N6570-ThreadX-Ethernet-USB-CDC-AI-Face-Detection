@@ -53,8 +53,8 @@ volatile float math_result = 0.0f;
 //****************** AI TASK *************
 static TX_THREAD ai_thread;
 static UCHAR ai_stack[4096];
+static VOID Camera_Thread(ULONG arg);
 static VOID AI_Thread(ULONG arg);
-static VOID AI_Thread2(ULONG arg);
 
 
 //****************** AI TASK *************
@@ -133,7 +133,9 @@ void MX_ThreadX_Init(void)
 
 }
 
-static VOID AI_Thread(ULONG arg)
+// This one works with fsbl loading.
+// This one does not work with self debug since it does not have AI update codes
+static VOID Camera_Thread(ULONG arg)
 {
     UX_PARAMETER_NOT_USED(arg);
 
@@ -155,7 +157,7 @@ static VOID AI_Thread(ULONG arg)
     }
 }
 
-static VOID AI_Thread2(ULONG arg)
+static VOID AI_Thread(ULONG arg)
 {
     UX_PARAMETER_NOT_USED(arg);
 
