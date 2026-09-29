@@ -122,7 +122,6 @@ static VOID Camera_Thread(ULONG arg)
         }
 
         CK_USBD_Println("Camera Thread entered");
-        CK_USBD_Send();
 
         cameraFrameReceived = 0;
 
@@ -148,13 +147,18 @@ static VOID AI_Thread(ULONG arg)
 
         cameraFrameReceived = 0;
 
+        CK_USBD_Println("AI_Run");
         // Kameradan alınan görüntüyü modelden geçir
         AI_Run();
 
+        CK_USBD_Println("app_postprocess_run");
         // Ham NN çıktısını gerçek yüz detection sonucuna çevir
         app_postprocess_run((void **)nn_out, number_output, &pp_output, &pp_params);
 
         ai_face_count = pp_output.nb_detect;
+
+        CK_USBD_Print("Face Count: ");
+        CK_USBD_IntPrintln(ai_face_count);
 
         ai_task_counter++;
 
@@ -262,31 +266,41 @@ static VOID Ethernet_Thread(ULONG thread_input)
 }
 
 // USB Throughput test function
+//static VOID USB_TX_Thread(ULONG arg)
+//{
+//    UINT status;
+//
+//    UX_PARAMETER_NOT_USED(arg);
+//
+//    while (1)
+//    {
+//        if (cdc_acm == UX_NULL)
+//        {
+//            tx_thread_sleep(1);
+//            continue;
+//        }
+//
+//        status = CK_USBD_BufferSend(usb_tx_buffer, USB_TX_BUFFER_SIZE);
+//
+//        if (status == UX_SUCCESS)
+//        {
+//            usb_task_counter++;
+//            HAL_GPIO_TogglePin(GPIOE, GPIO_PIN_7);
+//        }
+//        else
+//        {
+//            tx_thread_sleep(1);
+//        }
+//    }
+//}
 static VOID USB_TX_Thread(ULONG arg)
 {
-    UINT status;
-
     UX_PARAMETER_NOT_USED(arg);
 
     while (1)
     {
-        if (cdc_acm == UX_NULL)
-        {
-            tx_thread_sleep(1);
-            continue;
-        }
-
-        status = CK_USBD_BufferSend(usb_tx_buffer, USB_TX_BUFFER_SIZE);
-
-        if (status == UX_SUCCESS)
-        {
-            usb_task_counter++;
-            HAL_GPIO_TogglePin(GPIOE, GPIO_PIN_7);
-        }
-        else
-        {
-            tx_thread_sleep(1);
-        }
+        if (CK_USBD_TxAvailable()) CK_USBD_Send();
+        tx_thread_sleep(1);
     }
 }
 

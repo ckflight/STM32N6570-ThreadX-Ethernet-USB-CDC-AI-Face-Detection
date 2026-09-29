@@ -114,14 +114,15 @@ int CK_USBD_Send(void)
 {
     ULONG actual_length;
     UINT status;
+    uint32_t length;
 
-    if (cdc_acm == UX_NULL)
-        return 0;
+    if (cdc_acm == UX_NULL || tx_length == 0) return 0;
 
-    if (tx_length == 0)
-        return 1;
+    length = tx_length;
 
-    status = ux_device_class_cdc_acm_write(cdc_acm, tx_buffer, tx_length, &actual_length);
+    SCB_CleanDCache_by_Addr((uint32_t *)tx_buffer, (length + 31U) & ~31U);
+
+    status = ux_device_class_cdc_acm_write(cdc_acm, tx_buffer, length, &actual_length);
 
     if (status == UX_SUCCESS)
     {
@@ -132,6 +133,7 @@ int CK_USBD_Send(void)
     return 0;
 }
 
+// this one needs cleandcache as well if we are not using the same cleaned buffer
 int CK_USBD_BufferSend(uint8_t *buffer, uint32_t length)
 {
     ULONG actual_length;
