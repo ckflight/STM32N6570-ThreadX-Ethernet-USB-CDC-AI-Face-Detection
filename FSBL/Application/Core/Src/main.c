@@ -8,6 +8,9 @@
 #include "gpdma.h"
 #include "systimer.h"
 
+#include "usbd_interface.h"
+
+
 #include "ai_app.h"
 #include "lcd_app.h"
 #include "camera_app.h"
@@ -102,13 +105,14 @@ int main(void)
     LCD_Init();
     Camera_Start();
     USBPD_PreInitOs();
+    CK_USBD_Init();
 
 	for(int i = 0; i < 10; i++){
 		HAL_GPIO_TogglePin(LED_RED_GPIO_Port, LED_RED_Pin);
 		HAL_Delay(25);
 	}
 
-    MX_ThreadX_Init();
+	MX_ThreadX_Init();
 
     while (1){}
 }

@@ -7,6 +7,7 @@
 
 #include "app_threadx.h"
 #include "ux_device_cdc_acm.h"
+#include "usbd_interface.h"
 
 #include "app_netxduo.h"
 #include "ai_app.h"
@@ -22,9 +23,7 @@ static UCHAR usb_tx_buffer[USB_TX_BUFFER_SIZE];
 static TX_THREAD usb_tx_thread;
 static UCHAR usb_tx_stack[2048];
 //static VOID USB_TX_Thread1(ULONG arg);
-static VOID USB_TX_Thread2(ULONG arg);
-
-static VOID MATH_Thread(ULONG arg);
+static VOID USB_TX_Thread(ULONG arg);
 
 extern UX_SLAVE_CLASS_CDC_ACM *cdc_acm;
 
@@ -33,22 +32,10 @@ volatile ULONG usb_actual_length = 0;
 volatile UINT usb_write_status = 0;
 
 //****************** LED 1 TASK *************
-static TX_THREAD led1_thread;
-static UCHAR led1_stack[1024];
-static VOID LED1_Thread(ULONG arg);
-volatile uint32_t led1_task_counter = 0;
-
-//****************** LED 2 TASK *************
-static TX_THREAD led2_thread;
-static UCHAR led2_stack[1024];
-static VOID LED2_Thread(ULONG arg);
-volatile uint32_t led2_task_counter = 0;
-
-//****************** MATH TASK *************
-static TX_THREAD math_thread;
-static UCHAR math_stack[2048];
-volatile uint32_t math_task_counter = 0;
-volatile float math_result = 0.0f;
+static TX_THREAD led_thread;
+static UCHAR led_stack[1024];
+static VOID LED_Thread(ULONG arg);
+volatile uint32_t led_task_counter = 0;
 
 //****************** AI TASK *************
 static TX_THREAD ai_thread;
@@ -83,11 +70,6 @@ static VOID Ethernet_Thread(ULONG thread_input);
 #define TCP_BUFFER_SIZE 1536
 UCHAR tx_data[1400];
 
-/**********DEBUG*****************/
-volatile uint32_t usb_ready_seen = 0;
-volatile uint32_t usb_write_ok = 0;
-volatile uint32_t usb_write_err = 0;
-
 UINT App_ThreadX_Init(VOID *memory_ptr)
 {
     UINT ret;
@@ -102,19 +84,13 @@ UINT App_ThreadX_Init(VOID *memory_ptr)
     // CPU wrote the data so it is in cache. Clean cache -> ram so usb dma can transfer the correct data
     SCB_CleanDCache_by_Addr((uint32_t *)usb_tx_buffer, USB_TX_BUFFER_SIZE);
 
-    ret = tx_thread_create(&usb_tx_thread, "USB TX", USB_TX_Thread2, 0, usb_tx_stack, sizeof(usb_tx_stack), 15, 15, 1, TX_AUTO_START);
+    ret = tx_thread_create(&usb_tx_thread, "USB TX", USB_TX_Thread, 0, usb_tx_stack, sizeof(usb_tx_stack), 15, 15, 1, TX_AUTO_START);
     if (ret != TX_SUCCESS) return ret;
 
     ret = tx_thread_create(&ethernet_thread, "ETHERNET", Ethernet_Thread, 0, ethernet_stack, sizeof(ethernet_stack), 15, 15, 1, TX_AUTO_START);
     if (ret != TX_SUCCESS) return ret;
 
-    ret = tx_thread_create(&led1_thread, "LED1", LED1_Thread, 0, led1_stack, sizeof(led1_stack), 20, 20, 1, TX_AUTO_START);
-    if (ret != TX_SUCCESS) return ret;
-
-    ret = tx_thread_create(&led2_thread, "LED2", LED2_Thread, 0, led2_stack, sizeof(led2_stack), 20, 20, 1, TX_AUTO_START);
-    if (ret != TX_SUCCESS) return ret;
-
-    ret = tx_thread_create(&math_thread, "MATH", MATH_Thread, 0, math_stack, sizeof(math_stack), 20, 20, 1, TX_AUTO_START);
+    ret = tx_thread_create(&led_thread, "LED", LED_Thread, 0, led_stack, sizeof(led_stack), 20, 20, 1, TX_AUTO_START);
     if (ret != TX_SUCCESS) return ret;
 
     ret = tx_thread_create(&ai_thread, "AI", AI_Thread, 0, ai_stack, sizeof(ai_stack), 10, 10, 1, TX_AUTO_START);
@@ -128,9 +104,7 @@ UINT App_ThreadX_Init(VOID *memory_ptr)
 
 void MX_ThreadX_Init(void)
 {
-
     tx_kernel_enter();
-
 }
 
 // This one works with fsbl loading.
@@ -146,6 +120,9 @@ static VOID Camera_Thread(ULONG arg)
             tx_thread_sleep(1);
             continue;
         }
+
+        CK_USBD_Println("Camera Thread entered");
+        CK_USBD_Send();
 
         cameraFrameReceived = 0;
 
@@ -250,10 +227,6 @@ static VOID Ethernet_Thread(ULONG thread_input)
 
     (void)thread_input;
 
-//    status = NetXDuo_DHCP_Wait();
-//    if (status != NX_SUCCESS)
-//        return;
-
     status = NetXDuo_TCP_Server_Start(TCP_PORT);
     if (status != NX_SUCCESS)
         return;
@@ -288,54 +261,9 @@ static VOID Ethernet_Thread(ULONG thread_input)
     }
 }
 
-// USB Print Detected Face function
-//static VOID USB_TX_Thread1(ULONG arg)
-//{
-//    ULONG actual_length;
-//    UINT status;
-//
-//    UX_PARAMETER_NOT_USED(arg);
-//
-//    while (1)
-//    {
-//        if (cdc_acm == UX_NULL)
-//        {
-//            tx_thread_sleep(1);
-//            continue;
-//        }
-//
-//        if (ai_result_ready)
-//        {
-//            usb_ready_seen++;
-//
-//            int len = snprintf((char *)usb_msg, sizeof(usb_msg), "AI=%lu Faces=%ld\r\n", (unsigned long)ai_task_counter, (long)ai_face_count);
-//
-//            uint32_t clean_len = ((uint32_t)len + 31U) & ~31U;
-//            SCB_CleanDCache_by_Addr((uint32_t *)usb_msg, clean_len);
-//
-//            status = ux_device_class_cdc_acm_write(cdc_acm, usb_msg, len, &actual_length);
-//
-//            if (status == UX_SUCCESS)
-//            {
-//                usb_write_ok++;
-//                ai_result_ready = 0;
-//            }
-//            else
-//            {
-//                usb_write_err++;
-//            }
-//        }
-//        else
-//        {
-//            tx_thread_sleep(1);
-//        }
-//    }
-//}
-
 // USB Throughput test function
-static VOID USB_TX_Thread2(ULONG arg)
+static VOID USB_TX_Thread(ULONG arg)
 {
-    ULONG actual_length;
     UINT status;
 
     UX_PARAMETER_NOT_USED(arg);
@@ -348,7 +276,7 @@ static VOID USB_TX_Thread2(ULONG arg)
             continue;
         }
 
-        status = ux_device_class_cdc_acm_write(cdc_acm, usb_tx_buffer, USB_TX_BUFFER_SIZE, &actual_length);
+        status = CK_USBD_BufferSend(usb_tx_buffer, USB_TX_BUFFER_SIZE);
 
         if (status == UX_SUCCESS)
         {
@@ -362,55 +290,15 @@ static VOID USB_TX_Thread2(ULONG arg)
     }
 }
 
-static VOID MATH_Thread(ULONG arg)
-{
-    float x = 1.2345f;
-
-    UX_PARAMETER_NOT_USED(arg);
-
-    while (1)
-    {
-        /* Example math workload */
-        x = x * 1.00001f + 0.0001f;
-        x = x * x;
-        x = x / 1.0001f;
-
-        if (x > 100.0f)
-            x = 1.2345f;
-
-        math_result = x;
-        math_task_counter++;
-
-        for(int i = 0; i < 1000; i++){
-        	math_result++;
-        }
-
-        HAL_GPIO_TogglePin(GPIOE, GPIO_PIN_14);
-        tx_thread_relinquish();
-    }
-}
-
-static VOID LED1_Thread(ULONG arg)
+static VOID LED_Thread(ULONG arg)
 {
     UX_PARAMETER_NOT_USED(arg);
 
     while (1)
     {
-        led1_task_counter++;
-        HAL_GPIO_WritePin(LED_GREEN_GPIO_Port, LED_GREEN_Pin, GPIO_PIN_SET);
+        led_task_counter++;
+        HAL_GPIO_TogglePin(LED_GREEN_GPIO_Port, LED_GREEN_Pin);
         tx_thread_sleep(25);
 
-    }
-}
-
-static VOID LED2_Thread(ULONG arg)
-{
-    UX_PARAMETER_NOT_USED(arg);
-
-    while (1)
-    {
-        led2_task_counter++;
-        HAL_GPIO_WritePin(LED_GREEN_GPIO_Port, LED_GREEN_Pin, GPIO_PIN_RESET);
-        tx_thread_sleep(50);
     }
 }
