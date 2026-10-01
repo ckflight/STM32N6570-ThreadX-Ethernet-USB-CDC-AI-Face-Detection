@@ -2,6 +2,8 @@
 #include <assert.h>
 #include "stm32n6xx_hal.h"
 
+
+
 /* AI shared data */
 stai_ptr nn_in;
 stai_size number_output = 0;
@@ -24,6 +26,7 @@ void AI_Init(void)
     int32_t nn_out_len[STAI_NETWORK_OUT_NUM] = {0};
 
     NPURam_Enable();
+
     NPUCache_Config();
 
     NeuralNetwork_Init(&nn_in_len, nn_out, &number_output, nn_out_len);
@@ -72,6 +75,7 @@ static void NeuralNetwork_Init(uint32_t *nn_in_length, stai_ptr *nn_out, stai_si
 
 static void NPURam_Enable(void)
 {
+
     __HAL_RCC_NPU_CLK_ENABLE();
 
     __HAL_RCC_NPU_FORCE_RESET();
@@ -97,6 +101,7 @@ static void NPURam_Enable(void)
 
     hramcfg.Instance = RAMCFG_SRAM6_AXI;
     HAL_RAMCFG_EnableAXISRAM(&hramcfg);
+
 }
 
 static void NPUCache_Config(void)

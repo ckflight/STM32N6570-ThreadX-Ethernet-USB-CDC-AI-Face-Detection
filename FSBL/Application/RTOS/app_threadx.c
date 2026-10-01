@@ -39,7 +39,7 @@ volatile uint32_t led_task_counter = 0;
 
 //****************** AI TASK *************
 static TX_THREAD ai_thread;
-static UCHAR ai_stack[4096];
+static UCHAR ai_stack[8192];
 static VOID Camera_Thread(ULONG arg);
 static VOID AI_Thread(ULONG arg);
 
@@ -109,29 +109,29 @@ void MX_ThreadX_Init(void)
 
 // This one works with fsbl loading.
 // This one does not work with self debug since it does not have AI update codes
-static VOID Camera_Thread(ULONG arg)
-{
-    UX_PARAMETER_NOT_USED(arg);
-
-    while (1)
-    {
-        if (cameraFrameReceived == 0)
-        {
-            tx_thread_sleep(1);
-            continue;
-        }
-
-        CK_USBD_Println("Camera Thread entered");
-
-        cameraFrameReceived = 0;
-
-        CameraPipeline_IspUpdate();
-
-        CameraPipeline_NNPipe_Start((uint8_t *)nn_in, DCMIPP_MODE_SNAPSHOT);
-
-        HAL_GPIO_TogglePin(LED_RED_GPIO_Port, LED_RED_Pin);
-    }
-}
+//static VOID Camera_Thread(ULONG arg)
+//{
+//    UX_PARAMETER_NOT_USED(arg);
+//
+//    while (1)
+//    {
+//        if (cameraFrameReceived == 0)
+//        {
+//            tx_thread_sleep(1);
+//            continue;
+//        }
+//
+//        CK_USBD_Println("Camera Thread entered");
+//
+//        cameraFrameReceived = 0;
+//
+//        CameraPipeline_IspUpdate();
+//
+//        CameraPipeline_NNPipe_Start((uint8_t *)nn_in, DCMIPP_MODE_SNAPSHOT);
+//
+//        HAL_GPIO_TogglePin(LED_RED_GPIO_Port, LED_RED_Pin);
+//    }
+//}
 
 static VOID AI_Thread(ULONG arg)
 {
@@ -139,6 +139,7 @@ static VOID AI_Thread(ULONG arg)
 
     while (1)
     {
+
         if (cameraFrameReceived == 0)
         {
             tx_thread_sleep(1);
@@ -147,18 +148,11 @@ static VOID AI_Thread(ULONG arg)
 
         cameraFrameReceived = 0;
 
-        CK_USBD_Println("AI_Run");
-        // Kameradan alınan görüntüyü modelden geçir
-        AI_Run();
+        AI_Run(); // Kameradan alınan görüntüyü modelden geçir
 
-        CK_USBD_Println("app_postprocess_run");
-        // Ham NN çıktısını gerçek yüz detection sonucuna çevir
-        app_postprocess_run((void **)nn_out, number_output, &pp_output, &pp_params);
+        app_postprocess_run((void **)nn_out, number_output, &pp_output, &pp_params);	// Ham NN çıktısını gerçek yüz detection sonucuna çevir
 
         ai_face_count = pp_output.nb_detect;
-
-        CK_USBD_Print("Face Count: ");
-        CK_USBD_IntPrintln(ai_face_count);
 
         ai_task_counter++;
 
@@ -174,7 +168,6 @@ static VOID AI_Thread(ULONG arg)
 
     }
 }
-
 
 static VOID LCD_Text_Thread(ULONG arg){
 
@@ -266,43 +259,44 @@ static VOID Ethernet_Thread(ULONG thread_input)
 }
 
 // USB Throughput test function
-//static VOID USB_TX_Thread(ULONG arg)
-//{
-//    UINT status;
-//
-//    UX_PARAMETER_NOT_USED(arg);
-//
-//    while (1)
-//    {
-//        if (cdc_acm == UX_NULL)
-//        {
-//            tx_thread_sleep(1);
-//            continue;
-//        }
-//
-//        status = CK_USBD_BufferSend(usb_tx_buffer, USB_TX_BUFFER_SIZE);
-//
-//        if (status == UX_SUCCESS)
-//        {
-//            usb_task_counter++;
-//            HAL_GPIO_TogglePin(GPIOE, GPIO_PIN_7);
-//        }
-//        else
-//        {
-//            tx_thread_sleep(1);
-//        }
-//    }
-//}
 static VOID USB_TX_Thread(ULONG arg)
 {
+    UINT status;
+
     UX_PARAMETER_NOT_USED(arg);
 
     while (1)
     {
-        if (CK_USBD_TxAvailable()) CK_USBD_Send();
-        tx_thread_sleep(1);
+        if (cdc_acm == UX_NULL)
+        {
+            tx_thread_sleep(1);
+            continue;
+        }
+
+        status = CK_USBD_BufferSend(usb_tx_buffer, USB_TX_BUFFER_SIZE);
+
+        if (status == UX_SUCCESS)
+        {
+            usb_task_counter++;
+            HAL_GPIO_TogglePin(GPIOE, GPIO_PIN_7);
+        }
+        else
+        {
+            tx_thread_sleep(1);
+        }
     }
 }
+
+//static VOID USB_TX_Thread(ULONG arg)
+//{
+//    UX_PARAMETER_NOT_USED(arg);
+//
+//    while (1)
+//    {
+//        if (CK_USBD_TxAvailable()) CK_USBD_Send();
+//        tx_thread_sleep(1);
+//    }
+//}
 
 static VOID LED_Thread(ULONG arg)
 {

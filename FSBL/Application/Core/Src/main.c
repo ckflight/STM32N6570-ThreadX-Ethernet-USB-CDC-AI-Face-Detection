@@ -37,12 +37,13 @@ static void SystemIsolation_Config(void);
  */
 
 // Directly debugging needs clock and flash memory setup since fsbl is not used while directly debugging this project.
-#define DEBUG_MODE		0
+#define DEBUG_MODE		1
 
 volatile uint32_t clock_freq = 0;
 
 int main(void)
 {
+	// ll_aton_osal.h #define LL_ATON_OSAL_WFE() __NOP()//__WFE() olunca cold flash boot çalıştı.
 
 #if DEBUG_MODE == 1
 	/* XSPI2 & XSPIM reset */
@@ -62,6 +63,8 @@ int main(void)
     SCB_EnableDCache();
 
     HAL_Init();
+
+    SystemCoreClockUpdate();
 
 #if DEBUG_MODE == 1
     // Use this to direct debug the code other case fsbl loader sets the clocks!!!
@@ -277,6 +280,7 @@ void SystemClock_Config(void)
 // Resource Isolation Frameword defines master and peripheral access type
 static void SystemIsolation_Config(void)
 {
+
 	// Enable RIF CLock
 	__HAL_RCC_RIFSC_CLK_ENABLE();
 
@@ -313,6 +317,7 @@ static void SystemIsolation_Config(void)
 // Memory configuration cachable noncachable areas are defined
 void MPU_Config(void)
 {
+
     MPU_Region_InitTypeDef MPU_InitStruct = {0};
     MPU_Attributes_InitTypeDef MPU_AttributesInit = {0};
     uint32_t primask_bit = __get_PRIMASK();
@@ -359,6 +364,7 @@ void MPU_Config(void)
 
     HAL_MPU_Enable(MPU_PRIVILEGED_DEFAULT);
     __set_PRIMASK(primask_bit);
+
 }
 
 /**

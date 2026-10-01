@@ -34,7 +34,7 @@
 #define LL_ATON_OSAL_DEINIT()
 
 /* Wait for / signal event from ATON runtime */
-#define LL_ATON_OSAL_WFE() __WFE()
+#define LL_ATON_OSAL_WFE() __NOP()//__WFE()
 #define LL_ATON_OSAL_SIGNAL_EVENT()
 
 #if defined(APP_HAS_PARALLEL_NETWORKS) && (APP_HAS_PARALLEL_NETWORKS != 0)
