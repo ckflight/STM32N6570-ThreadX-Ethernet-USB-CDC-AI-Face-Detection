@@ -45,9 +45,7 @@ Generated/reference project:
 /home/ck/stm32ai-modelzoo-services/application_code/face_detection/STM32N6/
 ```
 
-## 2. AI Integration
-
-Copy/adapt the required AI files from the generated reference project:
+Copy/adapt the required AI files from this reference project:
 
 ```text
 stedgeai-lib/
@@ -56,14 +54,7 @@ Model/
 
 These contain the STAI runtime, Neural-ART configuration, generated network files and post-processing support.
 
-Runtime flow:
-
-```text
-Camera → DCMIPP → NN Input → Neural-ART NPU
-       → NN Output → Post-Processing → Application
-```
-
-## 3. Flash Boot and Debug Mode
+## 2. Flash Boot and Debug Mode
 
 Program the external NOR:
 
@@ -83,7 +74,7 @@ Use:
 #define DEBUG_MODE 0
 ```
 
-The AI application then uses the clock and XSPI configuration inherited from the FSBL and does not reset/reinitialize XSPI2.
+The AI application uses the clock and XSPI configuration inherited from the FSBL.
 
 ### Direct AI Application Debug
 
@@ -109,49 +100,40 @@ BSEC->DBGCR     = 0xB451B400;
 
 This allows attaching the debugger to the application after a normal FSBL boot.
 
-## 4. USB
+## 3. Application Architecture
 
-Enable:
-
-```text
-USB OTG + USBX CDC ACM
-```
-
-USB buffers use the dedicated non-cacheable region:
+The application combines:
 
 ```text
-USB_RAM → 0x341F8000
-```
-
-## 5. Ethernet
-
-Enable:
-
-```text
-ETH
 ThreadX
-NetX Duo
+├── Camera / DCMIPP
+├── Neural-ART NPU / STAI
+├── USBX CDC
+├── NetX Duo / Ethernet
+└── Application Threads
 ```
 
-Ethernet descriptors and NetX memory use:
+AI processing flow:
 
 ```text
-ETH_RAM → 0x341EA000
+Camera → DCMIPP → NN Input → Neural-ART NPU
+       → NN Output → Post-Processing → Application
 ```
 
-Ethernet DMA/cache coherency must be handled correctly for RX/TX buffers.
-
-## 6. External Memories
+Memory usage:
 
 ```text
 External NOR   → Application image + AI network data
 External PSRAM → Camera / large frame buffers
-Internal SRAM  → Application, USB and Ethernet buffers
+Internal SRAM  → Application and runtime data
+
+ETH_RAM        → 0x341EA000
+USB_RAM        → 0x341F8000
 ```
 
-XSPI, MPU/cache and RIF configuration is based on the working STM32N6 Model Zoo reference project.
+USB RAM and Ethernet DMA descriptors are configured as non-cacheable where required. XSPI, MPU/cache and RIF configuration is based on the working STM32N6 Model Zoo reference project.
 
-## 7. Neural-ART Cold Boot
+## 4. Neural-ART Cold Boot
 
 The STAI synchronous runtime normally waits for NPU events using:
 
