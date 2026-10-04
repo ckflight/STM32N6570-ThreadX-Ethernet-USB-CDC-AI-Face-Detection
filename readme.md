@@ -108,6 +108,8 @@ AI Application .elf → Download: False | Load symbols: True
 
 The debugger starts from the FSBL and keeps source-level symbols available after `BOOT_Application()` jumps to the AI application.
 
+<img width="1991" height="1335" alt="Image" src="https://github.com/user-attachments/assets/c1a7e4b4-ffd2-4f31-b257-7b491a8d0b4b" />
+
 ### Attach Debugger After Flash Boot
 
 After programming the FSBL, AI application and `network_data.hex` with STM32CubeProgrammer, set **BOOT0 = LOW** and **BOOT1 = LOW** and power the board normally.
@@ -130,6 +132,8 @@ Set breakpoint at main → Disabled
 ```
 
 Power the board normally, then start the Attach configuration to inspect the running flash-boot application.
+
+<img width="1991" height="1335" alt="Image" src="https://github.com/user-attachments/assets/eedb619c-97da-4a73-9be0-43ed5f42c552" />
 
 ## 3. Application Architecture
 
