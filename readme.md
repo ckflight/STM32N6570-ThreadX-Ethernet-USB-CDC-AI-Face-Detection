@@ -215,3 +215,11 @@ STM32N6570-DK
 ```
 
 The STM32 AI Model Zoo project is used only as the **reference/model-generation project**. The final application is maintained independently in this STM32CubeIDE project.
+
+## Author
+
+Developed by **Cenk Keskin**.
+
+## License
+
+This project is licensed under the **MIT License**. See the `LICENSE` file for details.
