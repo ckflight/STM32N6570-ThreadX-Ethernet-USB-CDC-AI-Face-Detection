@@ -54,7 +54,7 @@ Model/
 
 These contain the STAI runtime, Neural-ART configuration, generated network files and post-processing support.
 
-## 2. Flash Boot and Debug Mode
+## 2. Flash Boot and Debug
 
 Program the external NOR:
 
@@ -74,7 +74,9 @@ Use:
 #define DEBUG_MODE 0
 ```
 
-The AI application uses the clock and XSPI configuration inherited from the FSBL.
+The AI application then uses the clock and XSPI configuration inherited from the FSBL.
+
+Do not reset/reinitialize XSPI2 in the AI application when booting through the FSBL, as this destroys the NOR memory-mapped configuration.
 
 ### Direct AI Application Debug
 
@@ -86,11 +88,29 @@ Use:
 #define DEBUG_MODE 1
 ```
 
-This enables the required clock setup, XSPI reset and NOR memory-mapped initialization.
+This enables the required:
+
+```text
+System clock configuration
+XSPI2 / XSPIM reset
+NOR initialization
+NOR memory-mapped mode
+```
+
+### Debug AI Application Through FSBL
+
+To debug the complete **FSBL → AI Application** boot flow, add the AI application's `.elf` to the FSBL debug configuration:
+
+```text
+FSBL .elf           → Download: True  | Load symbols: True
+AI Application .elf → Download: False | Load symbols: True
+```
+
+The debugger starts from the FSBL and keeps source-level symbols available after `BOOT_Application()` jumps to the AI application.
 
 ### Attach Debugger After Flash Boot
 
-The FSBL enables debug access with:
+Enable debug access in the FSBL:
 
 ```c
 __HAL_RCC_BSEC_CLK_ENABLE();
@@ -98,19 +118,24 @@ BSEC->AP_UNLOCK = 0xB4;
 BSEC->DBGCR     = 0xB451B400;
 ```
 
-This allows attaching the debugger to the application after a normal FSBL boot.
+Create a separate **Attach** configuration from the normal AI application debug configuration and change:
+
+```text
+Download               → False
+Set breakpoint at main → Disabled
+```
+
+Power the board normally, then start the Attach configuration to debug the already running flash-boot application without reprogramming it.
 
 ## 3. Application Architecture
 
-The application combines:
+The application runs on ThreadX and combines:
 
 ```text
-ThreadX
-├── Camera / DCMIPP
-├── Neural-ART NPU / STAI
-├── USBX CDC
-├── NetX Duo / Ethernet
-└── Application Threads
+Camera / DCMIPP
+Neural-ART NPU / STAI
+USBX CDC
+NetX Duo / Ethernet
 ```
 
 AI processing flow:
@@ -131,7 +156,9 @@ ETH_RAM        → 0x341EA000
 USB_RAM        → 0x341F8000
 ```
 
-USB RAM and Ethernet DMA descriptors are configured as non-cacheable where required. XSPI, MPU/cache and RIF configuration is based on the working STM32N6 Model Zoo reference project.
+USB RAM and Ethernet DMA descriptors are configured as non-cacheable where required.
+
+XSPI, MPU/cache and RIF configuration is based on the working STM32N6 Model Zoo reference project.
 
 ## 4. Neural-ART Cold Boot
 
@@ -141,7 +168,11 @@ The STAI synchronous runtime normally waits for NPU events using:
 #define LL_ATON_OSAL_WFE() __WFE()
 ```
 
-Cold flash boot stalled in `STAI_RUNNING_WFE`.
+Cold flash boot stalled in:
+
+```text
+STAI_RUNNING_WFE
+```
 
 The working configuration is:
 
@@ -149,7 +180,7 @@ The working configuration is:
 #define LL_ATON_OSAL_WFE() __NOP()
 ```
 
-This prevents the Cortex-M55 from sleeping while waiting for the NPU and keeps the STAI runtime polling until inference continues.
+This prevents the Cortex-M55 from entering WFE sleep while waiting for the NPU and keeps the STAI runtime polling until inference continues.
 
 ## Final Project
 
