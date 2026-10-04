@@ -56,7 +56,7 @@ These contain the STAI runtime, Neural-ART configuration, generated network file
 
 ## 2. Flash Boot and Debug
 
-Program the external NOR:
+Program the external NOR with STM32CubeProgrammer:
 
 ```text
 0x70000000 → FSBL trusted binary
@@ -74,7 +74,7 @@ Use:
 #define DEBUG_MODE 0
 ```
 
-The AI application then uses the clock and XSPI configuration inherited from the FSBL.
+The AI application uses the clock and XSPI configuration inherited from the FSBL.
 
 Do not reset/reinitialize XSPI2 in the AI application when booting through the FSBL, as this destroys the NOR memory-mapped configuration.
 
@@ -110,6 +110,10 @@ The debugger starts from the FSBL and keeps source-level symbols available after
 
 ### Attach Debugger After Flash Boot
 
+After programming the FSBL, AI application and `network_data.hex` with STM32CubeProgrammer, set **BOOT0 = LOW** and **BOOT1 = LOW** and power the board normally.
+
+This mode allows the debugger to **attach to the already running application** without resetting or reprogramming it, so the live flash-boot execution can be inspected.
+
 Enable debug access in the FSBL:
 
 ```c
@@ -125,7 +129,7 @@ Download               → False
 Set breakpoint at main → Disabled
 ```
 
-Power the board normally, then start the Attach configuration to debug the already running flash-boot application without reprogramming it.
+Power the board normally, then start the Attach configuration to inspect the running flash-boot application.
 
 ## 3. Application Architecture
 
