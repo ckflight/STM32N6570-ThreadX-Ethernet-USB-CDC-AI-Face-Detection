@@ -39,7 +39,7 @@ cd ~/stm32ai-modelzoo-services/face_detection
 python3.12 stm32ai_main.py
 ```
 
-Reference project:
+Generated/reference project:
 
 ```text
 /home/ck/stm32ai-modelzoo-services/application_code/face_detection/STM32N6/
@@ -63,37 +63,9 @@ Camera → DCMIPP → NN Input → Neural-ART NPU
        → NN Output → Post-Processing → Application
 ```
 
-## 3. USB and Ethernet
+## 3. Flash Boot and Debug Mode
 
-Enable:
-
-```text
-USB OTG + USBX CDC ACM
-ETH + ThreadX + NetX Duo
-```
-
-Dedicated memory regions:
-
-```text
-ETH_RAM → 0x341EA000
-USB_RAM → 0x341F8000
-```
-
-USB RAM and Ethernet DMA descriptors are configured as non-cacheable where required.
-
-## 4. External Memories
-
-```text
-External NOR   → Application image + AI network data
-External PSRAM → Camera / large frame buffers
-Internal SRAM  → Executing application + RTOS/USB/Ethernet data
-```
-
-XSPI, MPU/cache and RIF configuration is based on the working STM32N6 Model Zoo reference project.
-
-## 5. Flash Boot Layout
-
-Program the three images to external NOR:
+Program the external NOR:
 
 ```text
 0x70000000 → FSBL trusted binary
@@ -101,15 +73,33 @@ Program the three images to external NOR:
 0x70380000 → Model/network_data.hex
 ```
 
-`network_data.hex` is generated with the AI model and is located under the project's `Model` directory.
+### Flash Boot
 
-The FSBL initializes the system/external flash, loads the application and jumps to the application image.
+The FSBL configures the **system clocks and XSPI NOR memory mapping** before starting the AI application.
 
-## 6. FSBL / Direct Debug Configuration
+Use:
 
-The FSBL configures the application clocks with **HCLK = 200 MHz**.
+```c
+#define DEBUG_MODE 0
+```
 
-To allow debugger attachment after a normal flash boot, enable BSEC debug access in the FSBL:
+The AI application then uses the clock and XSPI configuration inherited from the FSBL and does not reset/reinitialize XSPI2.
+
+### Direct AI Application Debug
+
+Direct debugging bypasses the FSBL, so the AI application must configure the clocks and XSPI NOR itself.
+
+Use:
+
+```c
+#define DEBUG_MODE 1
+```
+
+This enables the required clock setup, XSPI reset and NOR memory-mapped initialization.
+
+### Attach Debugger After Flash Boot
+
+The FSBL enables debug access with:
 
 ```c
 __HAL_RCC_BSEC_CLK_ENABLE();
@@ -117,19 +107,49 @@ BSEC->AP_UNLOCK = 0xB4;
 BSEC->DBGCR     = 0xB451B400;
 ```
 
-### XSPI reset requirement
+This allows attaching the debugger to the application after a normal FSBL boot.
 
-When booting through the **FSBL**, do **not** reset XSPI2/XSPIM again in the application's `system_stm32n6xx_fsbl.c`.  
-Doing so destroys the external NOR memory-mapped configuration established by the FSBL.
+## 4. USB
 
-For **direct application debugging without the FSBL**, the XSPI reset and NOR initialization must remain enabled because the FSBL has not configured the external flash.
-
-The project uses `DEBUG_MODE` to select between these two cases:
+Enable:
 
 ```text
-DEBUG_MODE = 0 → Normal FSBL / flash boot
-DEBUG_MODE = 1 → Direct application debug
+USB OTG + USBX CDC ACM
 ```
+
+USB buffers use the dedicated non-cacheable region:
+
+```text
+USB_RAM → 0x341F8000
+```
+
+## 5. Ethernet
+
+Enable:
+
+```text
+ETH
+ThreadX
+NetX Duo
+```
+
+Ethernet descriptors and NetX memory use:
+
+```text
+ETH_RAM → 0x341EA000
+```
+
+Ethernet DMA/cache coherency must be handled correctly for RX/TX buffers.
+
+## 6. External Memories
+
+```text
+External NOR   → Application image + AI network data
+External PSRAM → Camera / large frame buffers
+Internal SRAM  → Application, USB and Ethernet buffers
+```
+
+XSPI, MPU/cache and RIF configuration is based on the working STM32N6 Model Zoo reference project.
 
 ## 7. Neural-ART Cold Boot
 
@@ -139,7 +159,7 @@ The STAI synchronous runtime normally waits for NPU events using:
 #define LL_ATON_OSAL_WFE() __WFE()
 ```
 
-In this project, cold flash boot stalled in `STAI_RUNNING_WFE`, while debugger execution worked correctly.
+Cold flash boot stalled in `STAI_RUNNING_WFE`.
 
 The working configuration is:
 
@@ -147,7 +167,7 @@ The working configuration is:
 #define LL_ATON_OSAL_WFE() __NOP()
 ```
 
-This keeps the synchronous STAI runtime polling instead of putting the Cortex-M55 into WFE sleep and allows Neural-ART inference to run correctly after a cold flash boot.
+This prevents the Cortex-M55 from sleeping while waiting for the NPU and keeps the STAI runtime polling until inference continues.
 
 ## Final Project
 
@@ -165,4 +185,4 @@ STM32N6570-DK
 └── External PSRAM
 ```
 
-The STM32 AI Model Zoo project is used only as the **reference and model-generation project**. The final application is maintained independently in this STM32CubeIDE project.
+The STM32 AI Model Zoo project is used only as the **reference/model-generation project**. The final application is maintained independently in this STM32CubeIDE project.
