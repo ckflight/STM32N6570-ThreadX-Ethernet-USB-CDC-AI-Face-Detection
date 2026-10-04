@@ -66,6 +66,10 @@ Program the external NOR with STM32CubeProgrammer:
 
 ### Flash Boot
 
+This project uses the following FSBL loader:
+
+https://github.com/ckflight/STM32N6570-Loader
+
 The FSBL configures the **system clocks and XSPI NOR memory mapping** before starting the AI application.
 
 Use:
@@ -168,27 +172,31 @@ USB RAM and Ethernet DMA descriptors are configured as non-cacheable where requi
 
 XSPI, MPU/cache and RIF configuration is based on the working STM32N6 Model Zoo reference project.
 
-## 4. Neural-ART Cold Boot
+## 4. Neural-ART Standalone Flash Boot Issue
 
-The STAI synchronous runtime normally waits for NPU events using:
+When the project was started from the debugger, Neural-ART inference worked correctly.
 
-```c
-#define LL_ATON_OSAL_WFE() __WFE()
-```
-
-Cold flash boot stalled in:
+However, after programming the FSBL, AI application and `network_data.hex` with STM32CubeProgrammer and starting the board normally from flash after a power cycle, the STAI synchronous runtime could stall in:
 
 ```text
 STAI_RUNNING_WFE
 ```
 
-The working configuration is:
+The STAI runtime normally waits for NPU events using:
+
+```c
+#define LL_ATON_OSAL_WFE() __WFE()
+```
+
+For standalone flash boot, the working configuration is:
 
 ```c
 #define LL_ATON_OSAL_WFE() __NOP()
 ```
 
 This prevents the Cortex-M55 from entering WFE sleep while waiting for the NPU and keeps the STAI runtime polling until inference continues.
+
+With this change, Neural-ART inference runs correctly after a normal standalone power-on boot without requiring the debugger.
 
 ## Final Project
 
