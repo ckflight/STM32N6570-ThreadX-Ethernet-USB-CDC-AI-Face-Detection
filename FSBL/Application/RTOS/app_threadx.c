@@ -154,6 +154,9 @@ static VOID AI_Thread(ULONG arg)
 
         ai_face_count = pp_output.nb_detect;
 
+        CK_USBD_Print("ai_face_count: ");
+        CK_USBD_IntPrintln(ai_face_count);
+
         ai_task_counter++;
 
         ai_result_ready = 1;
@@ -230,7 +233,7 @@ static VOID Ethernet_Thread(ULONG thread_input)
 
     while (1)
     {
-        printf("Waiting TCP client...\r\n");
+    	CK_USBD_Println("Waiting TCP client...\r\n");
 
         status = NetXDuo_TCP_Accept();
 
@@ -249,7 +252,7 @@ static VOID Ethernet_Thread(ULONG thread_input)
 
             if (status != NX_SUCCESS)
             {
-                printf("TCP send error: 0x%02X\r\n", status);
+            	CK_USBD_Println("TCP send error...\r\n");
                 break;
             }
         }

@@ -37,7 +37,7 @@ static void SystemIsolation_Config(void);
  */
 
 // Directly debugging needs clock and flash memory setup since fsbl is not used while directly debugging this project.
-#define DEBUG_MODE		1
+#define DEBUG_MODE		0
 
 volatile uint32_t clock_freq = 0;
 
