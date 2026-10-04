@@ -108,7 +108,7 @@ AI Application .elf → Download: False | Load symbols: True
 
 The debugger starts from the FSBL and keeps source-level symbols available after `BOOT_Application()` jumps to the AI application.
 
-<img width="1991" height="1335" alt="Image" src="https://github.com/user-attachments/assets/c1a7e4b4-ffd2-4f31-b257-7b491a8d0b4b" />
+<img width="1991" height="708" alt="Image" src="https://github.com/user-attachments/assets/92dfadd7-1107-462e-b3ec-2940de3dbd35" />
 
 ### Attach Debugger After Flash Boot
 
@@ -133,7 +133,7 @@ Set breakpoint at main → Disabled
 
 Power the board normally, then start the Attach configuration to inspect the running flash-boot application.
 
-<img width="1991" height="1335" alt="Image" src="https://github.com/user-attachments/assets/eedb619c-97da-4a73-9be0-43ed5f42c552" />
+<img width="1991" height="698" alt="Image" src="https://github.com/user-attachments/assets/38c10fa1-bb4b-46cd-a8af-a58f09d6960a" />
 
 ## 3. Application Architecture
 
