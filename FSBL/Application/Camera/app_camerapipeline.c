@@ -61,22 +61,29 @@ static void DCMIPP_PipeInitDisplay(CMW_CameraInit_t *camConf, uint32_t *bg_width
   lcd_bg_width = (camConf->height <= SCREEN_HEIGHT) ? camConf->height : SCREEN_HEIGHT;
 #endif
 
+  // Send this width height info to our parameter for me to use in my code
   *bg_width = lcd_bg_width;
   *bg_height = lcd_bg_height;
 
-  dcmipp_conf.output_width = lcd_bg_width;
-  dcmipp_conf.output_height = lcd_bg_height;
-  dcmipp_conf.output_format = DCMIPP_PIXEL_PACKER_FORMAT_RGB565_1;
-  dcmipp_conf.output_bpp = 2;
-  dcmipp_conf.mode = aspect_ratio;
-  dcmipp_conf.enable_gamma_conversion = 0;
+  // Also send this widht height info to pipe for it to create pipe size.
+  // Camera orjinalde 2592×1944 çözünürlükte ama biz LCD için 480x480x2 formatında yapıyoruz
+  // output_width = 480 pixel output_height = 480 pixel ve output_bpp = 2
+  // pitch = output_width × bpp = oluyor
+  dcmipp_conf.output_width 				= lcd_bg_width;
+  dcmipp_conf.output_height 			= lcd_bg_height;
+  dcmipp_conf.output_format 			= DCMIPP_PIXEL_PACKER_FORMAT_RGB565_1;
+  dcmipp_conf.output_bpp 				= 2;
+  dcmipp_conf.mode 						= aspect_ratio;
+  dcmipp_conf.enable_gamma_conversion 	= 0;
   uint32_t pitch;
+
   ret = CMW_CAMERA_SetPipeConfig(DCMIPP_PIPE1, &dcmipp_conf, &pitch);
+
   assert(ret == HAL_OK);
   assert(dcmipp_conf.output_width * dcmipp_conf.output_bpp == pitch);
 }
 
-static void DCMIPP_PipeInitNn(uint32_t *pitch)
+static void DCMIPP_PipeInitNn()
 {
   CMW_Aspect_Ratio_Mode_t aspect_ratio;
   CMW_DCMIPP_Conf_t dcmipp_conf;
@@ -95,15 +102,22 @@ static void DCMIPP_PipeInitNn(uint32_t *pitch)
     aspect_ratio = CMW_Aspect_ratio_fit;
   }
 
-  dcmipp_conf.output_width = STAI_NETWORK_IN_1_WIDTH;
-  dcmipp_conf.output_height = STAI_NETWORK_IN_1_HEIGHT;
-  dcmipp_conf.output_format = DCMIPP_PIXEL_PACKER_FORMAT_RGB888_YUV444_1;
-  dcmipp_conf.output_bpp = STAI_NETWORK_IN_1_CHANNEL;
-  dcmipp_conf.mode = aspect_ratio;
-  dcmipp_conf.enable_swap = COLOR_MODE;
-  dcmipp_conf.enable_gamma_conversion = 0;
-  ret = CMW_CAMERA_SetPipeConfig(DCMIPP_PIPE2, &dcmipp_conf, pitch);
+  // NN için size farklı full kamera datası kullanmayacak
+  // 128 x 128 x 3 kullanacak.output_width = 128, output_height = 128 ve output_bpp = 3
+  // pitch = output_width × bpp = oluyor.
+  dcmipp_conf.output_width 				= STAI_NETWORK_IN_1_WIDTH;
+  dcmipp_conf.output_height 			= STAI_NETWORK_IN_1_HEIGHT;
+  dcmipp_conf.output_format 			= DCMIPP_PIXEL_PACKER_FORMAT_RGB888_YUV444_1;
+  dcmipp_conf.output_bpp 				= STAI_NETWORK_IN_1_CHANNEL;
+  dcmipp_conf.mode 						= aspect_ratio;
+  dcmipp_conf.enable_swap 				= COLOR_MODE;
+  dcmipp_conf.enable_gamma_conversion 	= 0;
+  uint32_t pitch;
+
+  ret = CMW_CAMERA_SetPipeConfig(DCMIPP_PIPE2, &dcmipp_conf, &pitch);
   assert(ret == HAL_OK);
+  assert(dcmipp_conf.output_width * dcmipp_conf.output_bpp == pitch);
+
 }
 
 /**
@@ -112,7 +126,7 @@ static void DCMIPP_PipeInitNn(uint32_t *pitch)
 * @param lcd_bg_height display height
 * @param pitch_nn output pitch computed by the CMW
 */
-void CameraPipeline_Init(uint32_t *lcd_bg_width, uint32_t *lcd_bg_height, uint32_t *pitch_nn)
+void CameraPipeline_Init(uint32_t *lcd_bg_width, uint32_t *lcd_bg_height)
 {
   int ret;
   CMW_CameraInit_t cam_conf;
@@ -122,12 +136,18 @@ void CameraPipeline_Init(uint32_t *lcd_bg_width, uint32_t *lcd_bg_height, uint32
   cam_conf.fps 		= CAMERA_FPS;
   cam_conf.mirror_flip = CAMERA_FLIP;
 
+  // Initialize camera and get actual sensor resolution in cam_conf
   ret = CMW_CAMERA_Init(&cam_conf, NULL);
   assert(ret == CMW_ERROR_NONE);
 
+  // Configure DCMIPP PIPE1 for LCD output and return display size
+  // LCD uses 480x480x3 format
+  // we do not send size, lcd_bg_width lcd_bg_height is returned from this function to code usage.
   DCMIPP_PipeInitDisplay(&cam_conf, lcd_bg_width, lcd_bg_height);
 
-  DCMIPP_PipeInitNn(pitch_nn);
+  // Configure DCMIPP PIPE2 for NN input.
+  // NN uses 128x128x3 of camera data.
+  DCMIPP_PipeInitNn();
 }
 
 void CameraPipeline_DeInit(void)

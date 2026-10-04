@@ -23,7 +23,7 @@
 #define SCREEN_HEIGHT (480)
 #define SCREEN_WIDTH  (800)
 
-void CameraPipeline_Init(uint32_t *lcd_bg_width, uint32_t *lcd_bg_height, uint32_t *pitch_nn);
+void CameraPipeline_Init(uint32_t *lcd_bg_width, uint32_t *lcd_bg_height);
 void CameraPipeline_DeInit(void);
 void CameraPipeline_Start(void);
 void CameraPipeline_DisplayPipe_Start(uint8_t *display_pipe_dst, uint32_t cam_mode);

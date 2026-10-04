@@ -5,14 +5,23 @@
 
 void Camera_Init(void)
 {
-    uint32_t pitch_nn = 0;
-    CameraPipeline_Init(&lcd_bg_area.XSize, &lcd_bg_area.YSize, &pitch_nn);
+    // Init camera and pipe lines that will be used by lcd and nn.
+	// Original camera size is 2592×1944
+	// LCD crops and uses 480x480x2 format for LCD compatibility. DCMIPP has this crop and pixel format capability.
+	// NN uses 128x128x3 format
+    CameraPipeline_Init(&lcd_bg_area.XSize, &lcd_bg_area.YSize);
 }
 
 void Camera_Start(void)
 {
+
+	// Start the camera and send pipe data (pipe1) to LCD_GetBackgroundBuffer() buffer in continous mode
     CameraPipeline_DisplayPipe_Start(LCD_GetBackgroundBuffer(), DCMIPP_MODE_CONTINUOUS);
+
     CameraPipeline_IspUpdate();
+
+    // Start the camera and send pipe data (pipe2) to nn_in buffer in snapshot mode
+    // Snap mod uses this function in CameraPipeline_NNPipe_Start to get new data from camera as it completes processing the current camera data.
     CameraPipeline_NNPipe_Start((uint8_t *)nn_in, DCMIPP_MODE_SNAPSHOT);
 }
 

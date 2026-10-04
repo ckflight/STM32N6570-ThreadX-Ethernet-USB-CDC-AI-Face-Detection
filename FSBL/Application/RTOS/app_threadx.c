@@ -172,53 +172,58 @@ static VOID AI_Thread(ULONG arg)
     }
 }
 
-static VOID LCD_Text_Thread(ULONG arg){
+static VOID LCD_Text_Thread(ULONG arg)
+{
+    UX_PARAMETER_NOT_USED(arg);
 
-	UX_PARAMETER_NOT_USED(arg);
+    char text_buffer[64];
 
-	char text_buffer[256];
+    while (1)
+    {
+        if (lcd_result_ready == 0)
+        {
+            tx_thread_sleep(1);
+            continue;
+        }
 
-	while(1){
+        UTIL_LCD_Clear(0x00000000);
+        UTIL_LCD_SetFont(&Font16);
+        UTIL_LCD_SetTextColor(UTIL_LCD_COLOR_LIGHTGREEN);
 
-		if(lcd_result_ready == 0){
-			tx_thread_sleep(1);
-			continue;
-		}
+        if (pp_output.nb_detect)
+        {
+            for (int i = 0; i < pp_output.nb_detect; i++)
+            {
+                float xc = pp_output.pOutBuff[i].x_center * SCREEN_WIDTH;
+                float yc = pp_output.pOutBuff[i].y_center * SCREEN_HEIGHT;
+                float w = pp_output.pOutBuff[i].width * SCREEN_WIDTH;
+                float h = pp_output.pOutBuff[i].height * SCREEN_HEIGHT;
 
-	    UTIL_LCD_Clear(0x00000000);
-	    UTIL_LCD_SetFont(&Font16);
-	    UTIL_LCD_SetTextColor(UTIL_LCD_COLOR_LIGHTGREEN);
+                int32_t x = (int32_t)(xc - (w / 2.0f));
+                int32_t y = (int32_t)(yc - (h / 2.0f));
 
-	    if(pp_output.nb_detect){
-			for(int i = 0; i < pp_output.nb_detect; i++){
+                if (x < 0) x = 0;
+                if (y < 0) y = 0;
+                if ((x + (int32_t)w) > SCREEN_WIDTH) w = SCREEN_WIDTH - x;
+                if ((y + (int32_t)h) > SCREEN_HEIGHT) h = SCREEN_HEIGHT - y;
 
-				snprintf(text_buffer, sizeof(text_buffer),
-						"Face %d: C=%.2f X=%.2f Y=%.2f W=%.2f H=%.2f",
-						i+1,
-						pp_output.pOutBuff[i].conf,
-						pp_output.pOutBuff[i].x_center * SCREEN_WIDTH,
-						pp_output.pOutBuff[i].y_center * SCREEN_HEIGHT,
-						pp_output.pOutBuff[i].width,
-						pp_output.pOutBuff[i].height
-				);
+                UTIL_LCD_DrawRect(x, y, (uint32_t)w, (uint32_t)h, UTIL_LCD_COLOR_LIGHTGREEN);
 
-				UTIL_LCD_DisplayStringAt(10, 10, (uint8_t *)text_buffer, LEFT_MODE);
+                snprintf(text_buffer, sizeof(text_buffer), "Face %d %.2f", i + 1, pp_output.pOutBuff[i].conf);
+                UTIL_LCD_DisplayStringAt(x, (y > 20) ? y - 20 : y, (uint8_t *)text_buffer, LEFT_MODE);
+            }
+        }
+        else
+        {
+            UTIL_LCD_DisplayStringAt(10, 10, (uint8_t *)"No face detected", LEFT_MODE);
+        }
 
-			}
-	    }
-	    else{
-	    	snprintf(text_buffer, sizeof(text_buffer), "No face detected");
-	    	UTIL_LCD_DisplayStringAt(10, 10, (uint8_t *)text_buffer, LEFT_MODE);
-	    }
+        SCB_CleanDCache_by_Addr((uint32_t *)lcd_fg_buffer[0], LCD_FG_FRAMEBUFFER_SIZE);
 
-	    /* CPU cache -> PSRAM, so LTDC sees updated pixels */
-	    SCB_CleanDCache_by_Addr((uint32_t *)lcd_fg_buffer[0], LCD_FG_FRAMEBUFFER_SIZE);
-
-	    lcd_result_ready = 0;
-	}
-
-
+        lcd_result_ready = 0;
+    }
 }
+
 
 //// TX ONLY TEST
 static VOID Ethernet_Thread(ULONG thread_input)
