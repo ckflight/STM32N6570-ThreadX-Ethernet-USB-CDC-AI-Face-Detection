@@ -117,6 +117,9 @@ void Face_Crop(fd_pp_outBuffer_t *face)
 
     assert(STM32Ipl_Resize_Roi(&src, &roi, &resized, NULL, RESIZE_BILINEAR) == stm32ipl_err_Ok);
     assert(STM32Ipl_Convert(&resized, &dst) == stm32ipl_err_Ok);
+
+    LCD_ShowFaceCrop(face_resize_rgb565);
+
 }
 
 static void NPURam_Enable(void)

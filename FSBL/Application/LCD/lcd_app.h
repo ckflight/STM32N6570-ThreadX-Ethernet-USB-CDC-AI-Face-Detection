@@ -22,5 +22,6 @@ extern uint8_t lcd_fg_buffer[2][LCD_FG_WIDTH * LCD_FG_HEIGHT * 2];
 
 void LCD_Init(void);
 uint8_t *LCD_GetBackgroundBuffer(void);
+void LCD_ShowFaceCrop(uint8_t *face);
 
 #endif

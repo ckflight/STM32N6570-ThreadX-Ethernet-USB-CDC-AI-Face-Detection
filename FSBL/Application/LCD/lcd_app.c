@@ -56,3 +56,17 @@ uint8_t *LCD_GetBackgroundBuffer(void)
 {
     return lcd_bg_buffer;
 }
+
+void LCD_ShowFaceCrop(uint8_t *face)
+{
+    uint16_t *src = (uint16_t *)face;
+    uint16_t *dst = (uint16_t *)lcd_bg_buffer;
+
+    for (int y = 0; y < 112; y++) memcpy(&dst[y * 480], &src[y * 112], 112 * 2);
+
+    SCB_CleanDCache_by_Addr((uint32_t *)lcd_bg_buffer, 480 * 480 * 2);
+}
+
+
+
+
