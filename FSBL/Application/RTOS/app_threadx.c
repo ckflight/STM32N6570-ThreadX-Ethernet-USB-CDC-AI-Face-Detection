@@ -154,8 +154,10 @@ static VOID AI_Thread(ULONG arg)
 
         ai_face_count = pp_output.nb_detect;
 
+        // If there is a face crop resize and store it.
         if (pp_output.nb_detect > 0)
         {
+        	// Take the face from camera data displayed on lcd, convert resize it and store it in face_nn_in buffer.
             Face_Crop(&pp_output.pOutBuff[0]);
         }
 
@@ -197,6 +199,9 @@ static VOID LCD_Text_Thread(ULONG arg)
 
         if (pp_output.nb_detect)
         {
+
+            LCD_ShowFaceCrop(face_nn_in);
+
             for (int i = 0; i < pp_output.nb_detect; i++)
             {
                 float xc = pp_output.pOutBuff[i].x_center * SCREEN_WIDTH;
@@ -215,15 +220,14 @@ static VOID LCD_Text_Thread(ULONG arg)
                 UTIL_LCD_DrawRect(x, y, (uint32_t)w, (uint32_t)h, UTIL_LCD_COLOR_LIGHTGREEN);
 
                 snprintf(text_buffer, sizeof(text_buffer), "Face %d %.2f", i + 1, pp_output.pOutBuff[i].conf);
-                UTIL_LCD_DisplayStringAt(x, (y > 20) ? y - 20 : y, (uint8_t *)text_buffer, LEFT_MODE);
+                UTIL_LCD_DisplayStringAt(SCREEN_WIDTH - 200, 10 + i * 20, (uint8_t *)text_buffer, LEFT_MODE);
             }
 
-            LCD_ShowFaceCrop(face_nn_in);
 
         }
         else
         {
-            UTIL_LCD_DisplayStringAt(10, 10, (uint8_t *)"No face detected", LEFT_MODE);
+            UTIL_LCD_DisplayStringAt(SCREEN_WIDTH - 200, 10, (uint8_t *)"No face detected", LEFT_MODE);
         }
 
         SCB_CleanDCache_by_Addr((uint32_t *)lcd_fg_buffer[0], LCD_FG_FRAMEBUFFER_SIZE);

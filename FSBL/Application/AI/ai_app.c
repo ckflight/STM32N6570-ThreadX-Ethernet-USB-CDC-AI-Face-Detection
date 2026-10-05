@@ -116,11 +116,15 @@ void Face_Crop(fd_pp_outBuffer_t *face)
 
     Face_GetROI(face, &roi);
 
+    // Define image descriptors for camera, RGB888 conversion buffer, and final face buffer
     STM32Ipl_Init(&src, 480, 480, IMAGE_BPP_RGB565, LCD_GetBackgroundBuffer());
     STM32Ipl_Init(&src_rgb888, 480, 480, IMAGE_BPP_RGB888, camera_rgb888);
     STM32Ipl_Init(&dst, FACE_WIDTH, FACE_HEIGHT, IMAGE_BPP_RGB888, face_nn_in);
 
+    // Convert the original camera image from RGB565 to RGB888
     convert_ret = STM32Ipl_Convert(&src, &src_rgb888);
+
+    // Crop the face ROI from the RGB888 image, resize it, and write it to face_nn_in
     resize_ret = STM32Ipl_Resize_Roi(&src_rgb888, &roi, &dst, NULL, RESIZE_BILINEAR);
 }
 

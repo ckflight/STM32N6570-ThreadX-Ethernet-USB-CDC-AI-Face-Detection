@@ -58,8 +58,9 @@ uint8_t *LCD_GetBackgroundBuffer(void)
     return lcd_bg_buffer;
 }
 
-void LCD_ShowFaceCrop(uint8_t *face)
+void LCD_ShowFaceCrop(uint8_t *face) // face is face_nn_in data
 {
+	// Take the lcd fg buffer and write face buffer on it.
     uint16_t *dst = (uint16_t *)lcd_fg_buffer[0];
 
     for (int y = 0; y < FACE_HEIGHT; y++)
