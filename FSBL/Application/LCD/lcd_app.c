@@ -1,6 +1,7 @@
 #include "lcd_app.h"
 #include "stm32n6570_discovery_lcd.h"
 #include "stm32_lcd.h"
+#include "ai_app.h"
 
 Rectangle_TypeDef lcd_bg_area = {
 #if ASPECT_RATIO_MODE == ASPECT_RATIO_CROP || ASPECT_RATIO_MODE == ASPECT_RATIO_FIT
@@ -59,14 +60,22 @@ uint8_t *LCD_GetBackgroundBuffer(void)
 
 void LCD_ShowFaceCrop(uint8_t *face)
 {
-    uint16_t *src = (uint16_t *)face;
-    uint16_t *dst = (uint16_t *)lcd_bg_buffer;
+    uint16_t *dst = (uint16_t *)lcd_fg_buffer[0];
 
-    for (int y = 0; y < 112; y++) memcpy(&dst[y * 480], &src[y * 112], 112 * 2);
+    for (int y = 0; y < FACE_HEIGHT; y++)
+    {
+        for (int x = 0; x < FACE_WIDTH; x++)
+        {
+            int i = (y * FACE_WIDTH + x) * 3;
+            uint8_t b = face[i];
+            uint8_t g = face[i + 1];
+            uint8_t r = face[i + 2];
 
-    SCB_CleanDCache_by_Addr((uint32_t *)lcd_bg_buffer, 480 * 480 * 2);
+            dst[y * SCREEN_WIDTH + x] = 0xF000 | ((r >> 4) << 8) | ((g >> 4) << 4) | (b >> 4);
+        }
+    }
+
+    SCB_CleanDCache_by_Addr((uint32_t *)lcd_fg_buffer[0], SCREEN_WIDTH * SCREEN_HEIGHT * 2);
 }
-
-
 
 

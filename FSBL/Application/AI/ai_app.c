@@ -14,17 +14,13 @@ STAI_NETWORK_CONTEXT_DECLARE(network_context, STAI_NETWORK_CONTEXT_SIZE)
 fd_blazeface_pp_static_param_t pp_params;
 fd_pp_out_t pp_output;
 
-// Second NN parameters
-#define FACE_WIDTH 112
-#define FACE_HEIGHT 112
-
 __attribute__((section(".psram_bss")))
 __attribute__((aligned(32)))
 uint8_t face_nn_in[FACE_WIDTH * FACE_HEIGHT * 3];
 
 __attribute__((section(".psram_bss")))
 __attribute__((aligned(32)))
-static uint8_t face_resize_rgb565[FACE_WIDTH * FACE_HEIGHT * 2];
+static uint8_t camera_rgb888[480 * 480 * 3];
 
 /* Private functions */
 static void NeuralNetwork_Init(uint32_t *nn_in_length, stai_ptr *nn_out, stai_size *number_output, int32_t nn_out_len[]);
@@ -33,11 +29,16 @@ static void NPUCache_Config(void);
 
 static void Face_GetROI(fd_pp_outBuffer_t *face, rectangle_t *roi);
 
+#define IPL_MEM_POOL_SIZE (64 * 1024)
+static uint8_t ipl_mem_pool[IPL_MEM_POOL_SIZE];
+
 /* Public API */
 void AI_Init(void)
 {
     uint32_t nn_in_len = 0;
     int32_t nn_out_len[STAI_NETWORK_OUT_NUM] = {0};
+
+    STM32Ipl_InitLib(ipl_mem_pool, sizeof(ipl_mem_pool));
 
     NPURam_Enable();
 
@@ -102,24 +103,25 @@ static void Face_GetROI(fd_pp_outBuffer_t *face, rectangle_t *roi)
     STM32Ipl_RectInit(roi, x0, y0, x1 - x0 + 1, y1 - y0 + 1);
 }
 
+volatile int crop_step = 0;
+volatile stm32ipl_err_t resize_ret;
+volatile stm32ipl_err_t convert_ret;
+
 void Face_Crop(fd_pp_outBuffer_t *face)
 {
     image_t src;
-    image_t resized;
+    image_t src_rgb888;
     image_t dst;
     rectangle_t roi;
 
     Face_GetROI(face, &roi);
 
     STM32Ipl_Init(&src, 480, 480, IMAGE_BPP_RGB565, LCD_GetBackgroundBuffer());
-    STM32Ipl_Init(&resized, FACE_WIDTH, FACE_HEIGHT, IMAGE_BPP_RGB565, face_resize_rgb565);
+    STM32Ipl_Init(&src_rgb888, 480, 480, IMAGE_BPP_RGB888, camera_rgb888);
     STM32Ipl_Init(&dst, FACE_WIDTH, FACE_HEIGHT, IMAGE_BPP_RGB888, face_nn_in);
 
-    assert(STM32Ipl_Resize_Roi(&src, &roi, &resized, NULL, RESIZE_BILINEAR) == stm32ipl_err_Ok);
-    assert(STM32Ipl_Convert(&resized, &dst) == stm32ipl_err_Ok);
-
-    LCD_ShowFaceCrop(face_resize_rgb565);
-
+    convert_ret = STM32Ipl_Convert(&src, &src_rgb888);
+    resize_ret = STM32Ipl_Resize_Roi(&src_rgb888, &roi, &dst, NULL, RESIZE_BILINEAR);
 }
 
 static void NPURam_Enable(void)

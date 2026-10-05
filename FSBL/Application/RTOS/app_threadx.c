@@ -152,11 +152,11 @@ static VOID AI_Thread(ULONG arg)
 
         app_postprocess_run((void **)nn_out, number_output, &pp_output, &pp_params);	// Ham NN çıktısını gerçek yüz detection sonucuna çevir
 
-        if (pp_output.nb_detect > 0){
+        ai_face_count = pp_output.nb_detect;
 
-        	ai_face_count = pp_output.nb_detect;
-
-        	Face_Crop(&pp_output.pOutBuff[0]);
+        if (pp_output.nb_detect > 0)
+        {
+            Face_Crop(&pp_output.pOutBuff[0]);
         }
 
         CK_USBD_Print("ai_face_count: ");
@@ -217,6 +217,9 @@ static VOID LCD_Text_Thread(ULONG arg)
                 snprintf(text_buffer, sizeof(text_buffer), "Face %d %.2f", i + 1, pp_output.pOutBuff[i].conf);
                 UTIL_LCD_DisplayStringAt(x, (y > 20) ? y - 20 : y, (uint8_t *)text_buffer, LEFT_MODE);
             }
+
+            LCD_ShowFaceCrop(face_nn_in);
+
         }
         else
         {
