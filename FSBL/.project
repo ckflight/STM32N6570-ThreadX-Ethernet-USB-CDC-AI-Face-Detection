@@ -78,6 +78,11 @@
 			<locationURI>PARENT-1-PROJECT_LOC/Middlewares/ST/stm32-mw-camera</locationURI>
 		</link>
 		<link>
+			<name>Middlewares/stm32-mw-ipl</name>
+			<type>2</type>
+			<locationURI>PARENT-1-PROJECT_LOC/Middlewares/ST/stm32-mw-ipl</locationURI>
+		</link>
+		<link>
 			<name>Middlewares/stm32-vision-models-postprocessing</name>
 			<type>2</type>
 			<locationURI>PARENT-1-PROJECT_LOC/Middlewares/ST/stm32-vision-models-postprocessing</locationURI>

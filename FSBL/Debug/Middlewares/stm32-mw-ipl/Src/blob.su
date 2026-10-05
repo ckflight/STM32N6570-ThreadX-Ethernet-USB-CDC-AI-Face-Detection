@@ -1,0 +1,4 @@
+/home/ck/Desktop/Workspace/STM32CubeIDE Workspace/STM32N6570-ThreadX-USB-CDC-AI-Face-Detection-Ethernet/Middlewares/ST/stm32-mw-ipl/Src/blob.c:111:14:calc_roundness	0	static,ignoring_inline_asm
+/home/ck/Desktop/Workspace/STM32CubeIDE Workspace/STM32N6570-ThreadX-USB-CDC-AI-Face-Detection-Ethernet/Middlewares/ST/stm32-mw-ipl/Src/blob.c:37:13:bin_up	32	static,ignoring_inline_asm
+/home/ck/Desktop/Workspace/STM32CubeIDE Workspace/STM32N6570-ThreadX-USB-CDC-AI-Face-Detection-Ethernet/Middlewares/ST/stm32-mw-ipl/Src/blob.c:69:13:merge_bins	56	static,ignoring_inline_asm
+/home/ck/Desktop/Workspace/STM32CubeIDE Workspace/STM32N6570-ThreadX-USB-CDC-AI-Face-Detection-Ethernet/Middlewares/ST/stm32-mw-ipl/Src/blob.c:132:6:imlib_find_blobs	856	static,ignoring_inline_asm

@@ -29,6 +29,7 @@ Application/Core/Src \
 Application/FileX/App \
 Application/FileX/Target \
 Application/Hardware/Gpio \
+Application/Hardware \
 Application/LCD \
 Application/NetXDuo/App \
 Application/NetXDuo/Target \
@@ -64,6 +65,7 @@ Middlewares/stm32-mw-camera/sensors/ov5640 \
 Middlewares/stm32-mw-camera/sensors/vd1943 \
 Middlewares/stm32-mw-camera/sensors/vd55g1 \
 Middlewares/stm32-mw-camera/sensors/vd6g \
+Middlewares/stm32-mw-ipl/Src \
 Middlewares/stm32-vision-models-postprocessing/lib_vision_models_pp/Src \
 Middlewares/threadx/Core \
 Middlewares/usbx/Core\ System \

@@ -1,0 +1,6 @@
+/home/ck/Desktop/Workspace/STM32CubeIDE Workspace/STM32N6570-ThreadX-USB-CDC-AI-Face-Detection-Ethernet/Middlewares/ST/stm32-mw-ipl/Src/stm32ipl_resize.c:125:23:ipl_resize	25
+/home/ck/Desktop/Workspace/STM32CubeIDE Workspace/STM32N6570-ThreadX-USB-CDC-AI-Face-Detection-Ethernet/Middlewares/ST/stm32-mw-ipl/Src/stm32ipl_resize.c:42:16:STM32Ipl_Crop	22
+/home/ck/Desktop/Workspace/STM32CubeIDE Workspace/STM32N6570-ThreadX-USB-CDC-AI-Face-Detection-Ethernet/Middlewares/ST/stm32-mw-ipl/Src/stm32ipl_resize.c:252:16:ipl_resize_roi_mve	24
+/home/ck/Desktop/Workspace/STM32CubeIDE Workspace/STM32N6570-ThreadX-USB-CDC-AI-Face-Detection-Ethernet/Middlewares/ST/stm32-mw-ipl/Src/stm32ipl_resize.c:227:16:STM32Ipl_Resize	3
+/home/ck/Desktop/Workspace/STM32CubeIDE Workspace/STM32N6570-ThreadX-USB-CDC-AI-Face-Detection-Ethernet/Middlewares/ST/stm32-mw-ipl/Src/stm32ipl_resize.c:389:16:STM32Ipl_Resize_Roi	8
+/home/ck/Desktop/Workspace/STM32CubeIDE Workspace/STM32N6570-ThreadX-USB-CDC-AI-Face-Detection-Ethernet/Middlewares/ST/stm32-mw-ipl/Src/stm32ipl_resize.c:438:16:STM32Ipl_Downscale	33

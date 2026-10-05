@@ -1,0 +1,6 @@
+/home/ck/Desktop/Workspace/STM32CubeIDE Workspace/STM32N6570-ThreadX-USB-CDC-AI-Face-Detection-Ethernet/Middlewares/ST/stm32-mw-ipl/Src/stm32ipl_morph_op.c:40:16:STM32Ipl_Dilate	24	static
+/home/ck/Desktop/Workspace/STM32CubeIDE Workspace/STM32N6570-ThreadX-USB-CDC-AI-Face-Detection-Ethernet/Middlewares/ST/stm32-mw-ipl/Src/stm32ipl_morph_op.c:70:16:STM32Ipl_Erode	24	static
+/home/ck/Desktop/Workspace/STM32CubeIDE Workspace/STM32N6570-ThreadX-USB-CDC-AI-Face-Detection-Ethernet/Middlewares/ST/stm32-mw-ipl/Src/stm32ipl_morph_op.c:98:16:STM32Ipl_Open	24	static
+/home/ck/Desktop/Workspace/STM32CubeIDE Workspace/STM32N6570-ThreadX-USB-CDC-AI-Face-Detection-Ethernet/Middlewares/ST/stm32-mw-ipl/Src/stm32ipl_morph_op.c:126:16:STM32Ipl_Close	24	static
+/home/ck/Desktop/Workspace/STM32CubeIDE Workspace/STM32N6570-ThreadX-USB-CDC-AI-Face-Detection-Ethernet/Middlewares/ST/stm32-mw-ipl/Src/stm32ipl_morph_op.c:154:16:STM32Ipl_TopHat	24	static
+/home/ck/Desktop/Workspace/STM32CubeIDE Workspace/STM32N6570-ThreadX-USB-CDC-AI-Face-Detection-Ethernet/Middlewares/ST/stm32-mw-ipl/Src/stm32ipl_morph_op.c:182:16:STM32Ipl_BlackHat	24	static

@@ -1,0 +1,14 @@
+../Application/USBX/App/usbd_interface.c:28:6:CK_USBD_Init	0	static
+../Application/USBX/App/usbd_interface.c:40:5:CK_USBD_Available	0	static
+../Application/USBX/App/usbd_interface.c:45:5:CK_USBD_Read	4	static
+../Application/USBX/App/usbd_interface.c:63:6:CK_USBD_RxCallback	12	static
+../Application/USBX/App/usbd_interface.c:97:5:CK_USBD_Write	8	static
+../Application/USBX/App/usbd_interface.c:108:5:CK_USBD_TxAvailable	0	static
+../Application/USBX/App/usbd_interface.c:113:5:CK_USBD_Send	24	static,ignoring_inline_asm
+../Application/USBX/App/usbd_interface.c:137:5:CK_USBD_BufferSend	16	static
+../Application/USBX/App/usbd_interface.c:155:5:CK_USBD_Print	12	static
+../Application/USBX/App/usbd_interface.c:171:5:CK_USBD_Println	16	static
+../Application/USBX/App/usbd_interface.c:190:5:CK_USBD_IntPrint	32	static
+../Application/USBX/App/usbd_interface.c:199:5:CK_USBD_IntPrintln	24	static
+../Application/USBX/App/usbd_interface.c:213:5:CK_USBD_FloatPrint	56	static
+../Application/USBX/App/usbd_interface.c:222:5:CK_USBD_FloatPrintln	48	static

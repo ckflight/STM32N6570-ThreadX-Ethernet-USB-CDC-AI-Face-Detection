@@ -1,0 +1,2 @@
+/home/ck/Desktop/Workspace/STM32CubeIDE Workspace/STM32N6570-ThreadX-USB-CDC-AI-Face-Detection-Ethernet/Middlewares/ST/stm32-mw-ipl/Src/mve_filter.c:27:5:mve_imlib_median_filter_grayscale	184	static,ignoring_inline_asm
+/home/ck/Desktop/Workspace/STM32CubeIDE Workspace/STM32N6570-ThreadX-USB-CDC-AI-Face-Detection-Ethernet/Middlewares/ST/stm32-mw-ipl/Src/mve_filter.c:127:5:mve_imlib_morph_u8	184	static

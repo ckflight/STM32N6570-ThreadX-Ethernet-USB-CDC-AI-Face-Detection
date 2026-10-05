@@ -17,6 +17,7 @@ RM := rm -rf
 -include Middlewares/usbx/Core\ System/subdir.mk
 -include Middlewares/threadx/Core/subdir.mk
 -include Middlewares/stm32-vision-models-postprocessing/lib_vision_models_pp/Src/subdir.mk
+-include Middlewares/stm32-mw-ipl/Src/subdir.mk
 -include Middlewares/stm32-mw-camera/sensors/vd6g/subdir.mk
 -include Middlewares/stm32-mw-camera/sensors/vd55g1/subdir.mk
 -include Middlewares/stm32-mw-camera/sensors/vd1943/subdir.mk
@@ -53,6 +54,7 @@ RM := rm -rf
 -include Application/NetXDuo/App/subdir.mk
 -include Application/LCD/subdir.mk
 -include Application/Hardware/Gpio/subdir.mk
+-include Application/Hardware/subdir.mk
 -include Application/FileX/Target/subdir.mk
 -include Application/FileX/App/subdir.mk
 -include Application/Core/Src/subdir.mk
