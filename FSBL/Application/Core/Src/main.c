@@ -118,6 +118,7 @@ int main(void)
 	MX_ThreadX_Init();
 
     while (1){}
+
 }
 
 void SystemClock_Config(void)

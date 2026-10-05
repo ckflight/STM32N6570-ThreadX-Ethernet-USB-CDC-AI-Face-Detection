@@ -15,4 +15,6 @@ extern fd_pp_out_t pp_output;
 void AI_Init(void);
 void AI_Run(void);
 
+void Face_Crop(fd_pp_outBuffer_t *face);
+
 #endif

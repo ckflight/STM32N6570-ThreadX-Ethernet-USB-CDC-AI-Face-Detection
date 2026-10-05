@@ -1,8 +1,8 @@
 #include "ai_app.h"
 #include <assert.h>
 #include "stm32n6xx_hal.h"
-
-
+#include "stm32ipl.h"
+#include "lcd_app.h"
 
 /* AI shared data */
 stai_ptr nn_in;
@@ -14,10 +14,24 @@ STAI_NETWORK_CONTEXT_DECLARE(network_context, STAI_NETWORK_CONTEXT_SIZE)
 fd_blazeface_pp_static_param_t pp_params;
 fd_pp_out_t pp_output;
 
+// Second NN parameters
+#define FACE_WIDTH 112
+#define FACE_HEIGHT 112
+
+__attribute__((section(".psram_bss")))
+__attribute__((aligned(32)))
+uint8_t face_nn_in[FACE_WIDTH * FACE_HEIGHT * 3];
+
+__attribute__((section(".psram_bss")))
+__attribute__((aligned(32)))
+static uint8_t face_resize_rgb565[FACE_WIDTH * FACE_HEIGHT * 2];
+
 /* Private functions */
 static void NeuralNetwork_Init(uint32_t *nn_in_length, stai_ptr *nn_out, stai_size *number_output, int32_t nn_out_len[]);
 static void NPURam_Enable(void);
 static void NPUCache_Config(void);
+
+static void Face_GetROI(fd_pp_outBuffer_t *face, rectangle_t *roi);
 
 /* Public API */
 void AI_Init(void)
@@ -71,6 +85,38 @@ static void NeuralNetwork_Init(uint32_t *nn_in_length, stai_ptr *nn_out, stai_si
     assert(ret == STAI_SUCCESS);
 
     for (int i = 0; i < *number_output; i++) nn_out_len[i] = info.outputs[i].size_bytes;
+}
+
+static void Face_GetROI(fd_pp_outBuffer_t *face, rectangle_t *roi)
+{
+    int x0 = (int)((face->x_center - face->width * 0.5f) * 480.0f);
+    int y0 = (int)((face->y_center - face->height * 0.5f) * 480.0f);
+    int x1 = (int)((face->x_center + face->width * 0.5f) * 480.0f);
+    int y1 = (int)((face->y_center + face->height * 0.5f) * 480.0f);
+
+    if (x0 < 0) x0 = 0;
+    if (y0 < 0) y0 = 0;
+    if (x1 > 479) x1 = 479;
+    if (y1 > 479) y1 = 479;
+
+    STM32Ipl_RectInit(roi, x0, y0, x1 - x0 + 1, y1 - y0 + 1);
+}
+
+void Face_Crop(fd_pp_outBuffer_t *face)
+{
+    image_t src;
+    image_t resized;
+    image_t dst;
+    rectangle_t roi;
+
+    Face_GetROI(face, &roi);
+
+    STM32Ipl_Init(&src, 480, 480, IMAGE_BPP_RGB565, LCD_GetBackgroundBuffer());
+    STM32Ipl_Init(&resized, FACE_WIDTH, FACE_HEIGHT, IMAGE_BPP_RGB565, face_resize_rgb565);
+    STM32Ipl_Init(&dst, FACE_WIDTH, FACE_HEIGHT, IMAGE_BPP_RGB888, face_nn_in);
+
+    assert(STM32Ipl_Resize_Roi(&src, &roi, &resized, NULL, RESIZE_BILINEAR) == stm32ipl_err_Ok);
+    assert(STM32Ipl_Convert(&resized, &dst) == stm32ipl_err_Ok);
 }
 
 static void NPURam_Enable(void)
