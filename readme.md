@@ -216,6 +216,23 @@ STM32N6570-DK
 
 The STM32 AI Model Zoo project is used only as the **reference/model-generation project**. The final application is maintained independently in this STM32CubeIDE project.
 
+## CENK Neural Network Generation
+
+CENK model files were prepared under:
+
+`~/stm32ai-modelzoo-services/image_classification/`
+
+including `cenk_classifier_int8.tflite`, `cenk_classes.txt` and `user_cenk_config.yaml`.
+
+CENK uses a separate Neural-ART configuration with its weights mapped to `0x70400000`:
+
+```bash
+cd ~/stm32ai-modelzoo-services/application_code/image_classification/STM32N6/Model
+cp user_neuralart_STM32N6570-DK.json cenk_neuralart.json
+cp my_mpools/stm32n6-app2_STM32N6570-DK.mpool my_mpools/cenk.mpool
+sed -i 's/0x70380000/0x70400000/' my_mpools/cenk.mpool
+sed -i 's#stm32n6-app2_STM32N6570-DK.mpool#cenk.mpool#' cenk_neuralart.json
+
 ## Author
 
 Developed by **Cenk Keskin**.
