@@ -200,6 +200,7 @@ static VOID LCD_Text_Thread(ULONG arg)
         if (pp_output.nb_detect)
         {
 
+        	// Display the stored face_nn_in face image on fg layer of display. Bg is continuos camera stream.
             LCD_ShowFaceCrop(face_nn_in);
 
             for (int i = 0; i < pp_output.nb_detect; i++)
