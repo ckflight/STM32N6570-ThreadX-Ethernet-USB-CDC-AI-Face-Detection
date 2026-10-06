@@ -218,13 +218,9 @@ The STM32 AI Model Zoo project is used only as the **reference/model-generation 
 
 ## CENK Neural Network Generation
 
-CENK model files were prepared under:
+CENK model files were prepared under `~/stm32ai-modelzoo-services/image_classification/` including `cenk_classifier_int8.tflite`, `cenk_classes.txt` and `user_cenk_config.yaml`.
 
-`~/stm32ai-modelzoo-services/image_classification/`
-
-including `cenk_classifier_int8.tflite`, `cenk_classes.txt` and `user_cenk_config.yaml`.
-
-CENK uses a separate Neural-ART configuration with its weights mapped to `0x70400000`:
+CENK uses a separate Neural-ART configuration with its weights mapped to `0x70400000`.
 
 ```bash
 cd ~/stm32ai-modelzoo-services/application_code/image_classification/STM32N6/Model
@@ -232,6 +228,33 @@ cp user_neuralart_STM32N6570-DK.json cenk_neuralart.json
 cp my_mpools/stm32n6-app2_STM32N6570-DK.mpool my_mpools/cenk.mpool
 sed -i 's/0x70380000/0x70400000/' my_mpools/cenk.mpool
 sed -i 's#stm32n6-app2_STM32N6570-DK.mpool#cenk.mpool#' cenk_neuralart.json
+```
+
+Generate CENK STAI / Neural-ART files:
+
+```bash
+cd ~/stm32ai-modelzoo-services/image_classification
+rm -rf cenk_generated
+/opt/ST/STEdgeAI/4.0/Utilities/linux/stedgeai generate --target stm32n6 -m ./cenk_classifier_int8.tflite --name cenk --output ./cenk_generated --workspace ./cenk_generated --st-neural-art default@../application_code/image_classification/STM32N6/Model/cenk_neuralart.json --input-data-type uint8 --inputs-ch-position chlast --output-data-type float32
+```
+
+This generates `cenk.c`, `cenk.h`, `cenk_ecblobs.h`, `stai_cenk.c`, `stai_cenk.h` and `cenk_atonbuf.xSPI2.raw` under `cenk_generated/`.
+
+Generate the flashable CENK HEX at `0x70400000`:
+
+```bash
+OBJCOPY=$(find /opt/st -type f -name arm-none-eabi-objcopy 2>/dev/null | head -1)
+"$OBJCOPY" -I binary -O ihex --change-addresses 0x70400000 cenk_generated/cenk_atonbuf.xSPI2.raw cenk_generated/cenk_data.hex
+```
+
+Copy `cenk.c`, `cenk.h`, `cenk_ecblobs.h`, `stai_cenk.c`, `stai_cenk.h` and `cenk_data.hex` to `Model/STM32N6570-DK/`.
+
+Flash layout:
+
+```text
+0x70380000 → BlazeFace network_data.hex
+0x70400000 → CENK cenk_data.hex
+```
 
 ## Author
 
