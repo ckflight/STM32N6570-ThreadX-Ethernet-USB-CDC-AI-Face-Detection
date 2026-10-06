@@ -2,7 +2,7 @@
   ******************************************************************************
   * @file    cenk.h
   * @author  STEdgeAI
-  * @date    2026-10-06 22:07:35
+  * @date    2026-10-06 22:19:40
   * @brief   Minimal description of the generated c-implemention of the network
   ******************************************************************************
   * @attention
@@ -34,8 +34,8 @@
 
 /************************** OUTPUTS *******************************************/
 #define LL_ATON_CENK_OUT_NUM        (1)    // Total number of output buffers
-// Output buffer 1 -- Dequantize_35_out_0
+// Output buffer 1 -- Quantize_36_out_0
 #define LL_ATON_CENK_OUT_1_ALIGNMENT   (32)
-#define LL_ATON_CENK_OUT_1_SIZE_BYTES  (4)
+#define LL_ATON_CENK_OUT_1_SIZE_BYTES  (1)
 
 #endif /* LL_ATON_CENK_H */
