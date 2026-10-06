@@ -70,6 +70,8 @@ static VOID Ethernet_Thread(ULONG thread_input);
 #define TCP_BUFFER_SIZE 1536
 UCHAR tx_data[1400];
 
+volatile float cenk_score = 0.0f;
+
 UINT App_ThreadX_Init(VOID *memory_ptr)
 {
     UINT ret;
@@ -159,6 +161,20 @@ static VOID AI_Thread(ULONG arg)
         {
         	// Take the face from camera data displayed on lcd, convert resize it and store it in face_nn_in buffer.
             Face_Crop(&pp_output.pOutBuff[0]);
+
+            cenk_score = Cenk_Run();
+            CK_USBD_IntPrint(face_nn_in[0]); CK_USBD_Print(" ");
+            CK_USBD_IntPrint(face_nn_in[1]); CK_USBD_Print(" ");
+            CK_USBD_IntPrint(face_nn_in[2]); CK_USBD_Print(" ");
+            CK_USBD_IntPrint(face_nn_in[1000]); CK_USBD_Print(" ");
+            CK_USBD_IntPrint(face_nn_in[1001]); CK_USBD_Print(" ");
+            CK_USBD_IntPrintln(face_nn_in[1002]);
+
+            CK_USBD_Print("CENK SCORE: ");
+            CK_USBD_FloatPrintln(cenk_score);
+
+            if (cenk_score >= 0.8f) CK_USBD_Println("CENK");
+            else CK_USBD_Println("NOT CENK");
         }
 
         CK_USBD_Print("ai_face_count: ");
@@ -280,44 +296,44 @@ static VOID Ethernet_Thread(ULONG thread_input)
 }
 
 // USB Throughput test function
-static VOID USB_TX_Thread(ULONG arg)
-{
-    UINT status;
-
-    UX_PARAMETER_NOT_USED(arg);
-
-    while (1)
-    {
-        if (cdc_acm == UX_NULL)
-        {
-            tx_thread_sleep(1);
-            continue;
-        }
-
-        status = CK_USBD_BufferSend(usb_tx_buffer, USB_TX_BUFFER_SIZE);
-
-        if (status == UX_SUCCESS)
-        {
-            usb_task_counter++;
-            HAL_GPIO_TogglePin(GPIOE, GPIO_PIN_7);
-        }
-        else
-        {
-            tx_thread_sleep(1);
-        }
-    }
-}
-
 //static VOID USB_TX_Thread(ULONG arg)
 //{
+//    UINT status;
+//
 //    UX_PARAMETER_NOT_USED(arg);
 //
 //    while (1)
 //    {
-//        if (CK_USBD_TxAvailable()) CK_USBD_Send();
-//        tx_thread_sleep(1);
+//        if (cdc_acm == UX_NULL)
+//        {
+//            tx_thread_sleep(1);
+//            continue;
+//        }
+//
+//        status = CK_USBD_BufferSend(usb_tx_buffer, USB_TX_BUFFER_SIZE);
+//
+//        if (status == UX_SUCCESS)
+//        {
+//            usb_task_counter++;
+//            HAL_GPIO_TogglePin(GPIOE, GPIO_PIN_7);
+//        }
+//        else
+//        {
+//            tx_thread_sleep(1);
+//        }
 //    }
 //}
+
+static VOID USB_TX_Thread(ULONG arg)
+{
+    UX_PARAMETER_NOT_USED(arg);
+
+    while (1)
+    {
+        if (CK_USBD_TxAvailable()) CK_USBD_Send();
+        tx_thread_sleep(1);
+    }
+}
 
 static VOID LED_Thread(ULONG arg)
 {

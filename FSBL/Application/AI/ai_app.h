@@ -20,7 +20,7 @@ extern uint8_t face_nn_in[FACE_WIDTH * FACE_HEIGHT * 3];
 
 void AI_Init(void);
 void AI_Run(void);
-
+float Cenk_Run(void);
 void Face_Crop(fd_pp_outBuffer_t *face);
 
 #endif

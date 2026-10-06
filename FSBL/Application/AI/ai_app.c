@@ -3,6 +3,7 @@
 #include "stm32n6xx_hal.h"
 #include "stm32ipl.h"
 #include "lcd_app.h"
+#include "stai_cenk.h"
 
 /* AI shared data */
 stai_ptr nn_in;
@@ -32,6 +33,13 @@ static void Face_GetROI(fd_pp_outBuffer_t *face, rectangle_t *roi);
 #define IPL_MEM_POOL_SIZE (64 * 1024)
 static uint8_t ipl_mem_pool[IPL_MEM_POOL_SIZE];
 
+stai_ptr cenk_in;
+stai_ptr cenk_out[1] = {0};
+stai_size cenk_number_output = 0;
+
+STAI_NETWORK_CONTEXT_DECLARE(cenk_context, STAI_CENK_CONTEXT_SIZE)
+static void CenkNetwork_Init(void);
+
 /* Public API */
 void AI_Init(void)
 {
@@ -45,6 +53,7 @@ void AI_Init(void)
     NPUCache_Config();
 
     NeuralNetwork_Init(&nn_in_len, nn_out, &number_output, nn_out_len);
+    CenkNetwork_Init();
 
     stai_network_info info;
     int ret = stai_network_get_info(network_context, &info);
@@ -53,10 +62,48 @@ void AI_Init(void)
     app_postprocess_init(&pp_params, &info);
 }
 
+static void CenkNetwork_Init(void)
+{
+    stai_network_info info;
+    int ret;
+
+    ret = stai_cenk_init(cenk_context);
+    assert(ret == STAI_SUCCESS);
+
+    ret = stai_cenk_get_info(cenk_context, &info);
+    assert(ret == STAI_SUCCESS);
+
+    assert(info.n_inputs == 1);
+    assert(info.n_outputs == 1);
+    assert(info.inputs[0].size_bytes == FACE_WIDTH * FACE_HEIGHT * 3);
+    assert(info.outputs[0].size_bytes == sizeof(uint8_t));
+
+    stai_size n_inputs = 1;
+    cenk_number_output = 1;
+
+    ret = stai_cenk_get_inputs(cenk_context, &cenk_in, &n_inputs);
+    assert(ret == STAI_SUCCESS);
+
+    ret = stai_cenk_get_outputs(cenk_context, cenk_out, &cenk_number_output);
+    assert(ret == STAI_SUCCESS);
+}
+
 void AI_Run(void)
 {
     int ret = stai_network_run(network_context, STAI_MODE_SYNC);
     assert(ret == STAI_SUCCESS);
+}
+
+float Cenk_Run(void)
+{
+    memcpy(cenk_in, face_nn_in, FACE_WIDTH * FACE_HEIGHT * 3);
+
+    int ret = stai_cenk_run(cenk_context, STAI_MODE_SYNC);
+    assert(ret == STAI_SUCCESS);
+
+    uint8_t raw = *(uint8_t *)cenk_out[0];
+
+    return raw * 0.00390625f;
 }
 
 /* Private functions */
