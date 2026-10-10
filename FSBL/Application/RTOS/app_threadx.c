@@ -12,6 +12,12 @@
 #include "app_netxduo.h"
 #include "ai_app.h"
 
+#include "app_postprocess.h"
+#include "camera_app.h"
+#include "lcd_app.h"
+#include "stm32_lcd.h"
+
+
 //****************** USB TASK *************
 // USB 2.0 TX speed is 43 MB. Increasing buffer size decreases task loop time so dont go below 8192*2 which has 2.63k taks loop time
 // 8192*4 buffer size makes task loop time 1.3khz with 43Mb throughput
@@ -40,25 +46,12 @@ volatile uint32_t led_task_counter = 0;
 //****************** AI TASK *************
 static TX_THREAD ai_thread;
 static UCHAR ai_stack[8192];
-static VOID Camera_Thread(ULONG arg);
 static VOID AI_Thread(ULONG arg);
-
 
 //****************** AI TASK *************
 static TX_THREAD lcd_text_thread;
 static UCHAR lcd_text_stack[2048];
 static VOID LCD_Text_Thread(ULONG arg);
-
-#include "app_postprocess.h"
-#include "camera_app.h"
-#include "lcd_app.h"
-#include "stm32_lcd.h"
-
-volatile int32_t cameraFrameReceived = 0;
-volatile uint32_t ai_task_counter = 0;
-volatile int32_t ai_face_count = 0;
-volatile uint32_t ai_result_ready = 0;
-volatile uint32_t lcd_result_ready = 0;
 
 /***********ETHERNET Task********/
 #define ETHERNET_THREAD_STACK_SIZE 4096
@@ -69,6 +62,12 @@ static VOID Ethernet_Thread(ULONG thread_input);
 #define TCP_PORT 5000
 #define TCP_BUFFER_SIZE 1536
 UCHAR tx_data[1400];
+
+volatile int32_t cameraFrameReceived = 0;
+volatile uint32_t ai_task_counter = 0;
+volatile int32_t ai_face_count = 0;
+volatile uint32_t ai_result_ready = 0;
+volatile uint32_t lcd_result_ready = 0;
 
 volatile float cenk_score = 0.0f;
 
@@ -109,32 +108,6 @@ void MX_ThreadX_Init(void)
     tx_kernel_enter();
 }
 
-// This one works with fsbl loading.
-// This one does not work with self debug since it does not have AI update codes
-//static VOID Camera_Thread(ULONG arg)
-//{
-//    UX_PARAMETER_NOT_USED(arg);
-//
-//    while (1)
-//    {
-//        if (cameraFrameReceived == 0)
-//        {
-//            tx_thread_sleep(1);
-//            continue;
-//        }
-//
-//        CK_USBD_Println("Camera Thread entered");
-//
-//        cameraFrameReceived = 0;
-//
-//        CameraPipeline_IspUpdate();
-//
-//        CameraPipeline_NNPipe_Start((uint8_t *)nn_in, DCMIPP_MODE_SNAPSHOT);
-//
-//        HAL_GPIO_TogglePin(LED_RED_GPIO_Port, LED_RED_Pin);
-//    }
-//}
-
 static VOID AI_Thread(ULONG arg)
 {
     UX_PARAMETER_NOT_USED(arg);
@@ -159,25 +132,31 @@ static VOID AI_Thread(ULONG arg)
         // If there is a face crop resize and store it.
         if (pp_output.nb_detect > 0)
         {
-        	// Take the face from camera data displayed on lcd, convert resize it and store it in face_nn_in buffer.
-            Face_Crop(&pp_output.pOutBuff[0]);
-
-            cenk_score = Cenk_Run();
-            CK_USBD_IntPrint(face_nn_in[0]); CK_USBD_Print(" ");
-            CK_USBD_IntPrint(face_nn_in[1]); CK_USBD_Print(" ");
-            CK_USBD_IntPrint(face_nn_in[2]); CK_USBD_Print(" ");
-            CK_USBD_IntPrint(face_nn_in[1000]); CK_USBD_Print(" ");
-            CK_USBD_IntPrint(face_nn_in[1001]); CK_USBD_Print(" ");
-            CK_USBD_IntPrintln(face_nn_in[1002]);
-
-            CK_USBD_Print("CENK SCORE: ");
-            CK_USBD_FloatPrintln(cenk_score);
-
-            if (cenk_score >= 0.8f) CK_USBD_Println("CENK");
-            else CK_USBD_Println("NOT CENK");
+        	// Yüzün koordinatlarını crop için fonksiyona gönder.
+        	// Aşağıdaki fonksiyonlar yüzün olduğu resimi alıp nn datası formatına çeviricek.
+//            Face_Crop(&pp_output.pOutBuff[0]);
+//            Face_Crop2(&pp_output.pOutBuff[0]);
+//
+//            cenk_score = Cenk_Run();
+//            CK_USBD_Print("Cenk Score: ");
+//            CK_USBD_IntPrintln(cenk_score);
+//
+//            int reid_status = ReID_Run();
+//
+//            if (reid_status == STAI_SUCCESS)
+//            {
+//                uint8_t *features = (uint8_t *)reid_out[0];
+//
+//                CK_USBD_Println("ReID Features:");
+//
+//                for (int i = 0; i < 128; i++)
+//                {
+//                    CK_USBD_IntPrintln(features[i]);
+//                }
+//            }
         }
 
-        CK_USBD_Print("ai_face_count: ");
+        CK_USBD_Println("ai_face_count: ");
         CK_USBD_IntPrintln(ai_face_count);
 
         ai_task_counter++;
@@ -216,8 +195,9 @@ static VOID LCD_Text_Thread(ULONG arg)
         if (pp_output.nb_detect)
         {
 
-        	// Display the stored face_nn_in face image on fg layer of display. Bg is continuos camera stream.
-            LCD_ShowFaceCrop(face_nn_in);
+        	// Display cropped camera images on lcd foreground (these are the inputs of nn)
+            //LCD_ShowFaceCrop1(cenk_in);
+            //LCD_ShowFaceCrop2(reid_in);
 
             for (int i = 0; i < pp_output.nb_detect; i++)
             {

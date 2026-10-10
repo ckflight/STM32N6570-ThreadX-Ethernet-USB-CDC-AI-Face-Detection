@@ -58,19 +58,19 @@ uint8_t *LCD_GetBackgroundBuffer(void)
     return lcd_bg_buffer;
 }
 
-void LCD_ShowFaceCrop(uint8_t *face) // face is face_nn_in data
+void LCD_ShowFaceCrop1(uint8_t *cenk_in_buffer) // add cropped image data to fg of lcd
 {
 	// Take the lcd fg buffer and write face buffer on it.
     uint16_t *dst = (uint16_t *)lcd_fg_buffer[0];
 
-    for (int y = 0; y < FACE_HEIGHT; y++)
+    for (int y = 0; y < STAI_CENK_IN_1_HEIGHT; y++)
     {
-        for (int x = 0; x < FACE_WIDTH; x++)
+        for (int x = 0; x < STAI_CENK_IN_1_WIDTH; x++)
         {
-            int i = (y * FACE_WIDTH + x) * 3;
-            uint8_t b = face[i];
-            uint8_t g = face[i + 1];
-            uint8_t r = face[i + 2];
+            int i = (y * STAI_CENK_IN_1_WIDTH + x) * 3;
+            uint8_t b = cenk_in_buffer[i];
+            uint8_t g = cenk_in_buffer[i + 1];
+            uint8_t r = cenk_in_buffer[i + 2];
 
             dst[y * SCREEN_WIDTH + x] = 0xF000 | ((r >> 4) << 8) | ((g >> 4) << 4) | (b >> 4);
         }
@@ -79,4 +79,23 @@ void LCD_ShowFaceCrop(uint8_t *face) // face is face_nn_in data
     SCB_CleanDCache_by_Addr((uint32_t *)lcd_fg_buffer[0], SCREEN_WIDTH * SCREEN_HEIGHT * 2);
 }
 
+void LCD_ShowFaceCrop2(uint8_t *reid_in_buffer) // add cropped image data to fg of lcd
+{
+    uint16_t *dst = (uint16_t *)lcd_fg_buffer[0];
+
+    for (int y = 0; y < STAI_REID_IN_1_HEIGHT; y++)
+    {
+        for (int x = 0; x < STAI_REID_IN_1_WIDTH; x++)
+        {
+            int i = (y * STAI_REID_IN_1_WIDTH + x) * 3;
+            uint8_t b = reid_in_buffer[i];
+            uint8_t g = reid_in_buffer[i + 1];
+            uint8_t r = reid_in_buffer[i + 2];
+
+            dst[(y + 200) * SCREEN_WIDTH + x] = 0xF000 | ((r >> 4) << 8) | ((g >> 4) << 4) | (b >> 4);
+        }
+    }
+
+    SCB_CleanDCache_by_Addr((uint32_t *)lcd_fg_buffer[0], SCREEN_WIDTH * SCREEN_HEIGHT * 2);
+}
 
