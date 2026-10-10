@@ -140,14 +140,14 @@ void AI_Run(void)
 int Cenk_Run(float *percentage)
 {
 	// CleanDCache: CPU cache'indeki değiştirilmiş input verisini RAM'e yazar. Böylece NPU güncel veriyi okur.
-    //SCB_CleanDCache_by_Addr((uint32_t *)cenk_in, STAI_CENK_IN_1_WIDTH * STAI_CENK_IN_1_HEIGHT * STAI_CENK_IN_1_CHANNEL);
+    SCB_CleanDCache_by_Addr((uint32_t *)cenk_in, STAI_CENK_IN_1_WIDTH * STAI_CENK_IN_1_HEIGHT * STAI_CENK_IN_1_CHANNEL);
 
     // stai_cenk_run: NPU inference yapar ve sonucu cenk_out[0] adresindeki output buffer'a yazar.
     int ret = stai_cenk_run(cenk_context, STAI_MODE_SYNC);
     assert(ret == STAI_SUCCESS);
 
     // InvalidateDCache: CPU cache'indeki eski output verisini geçersiz kılar. CPU daha sonra output'u okuduğunda güncel veriyi RAM'den cache'e getirir.
-    //SCB_InvalidateDCache_by_Addr((uint32_t *)cenk_out[0], STAI_CENK_OUT_1_WIDTH * STAI_CENK_OUT_1_HEIGHT * STAI_CENK_OUT_1_CHANNEL);
+    SCB_InvalidateDCache_by_Addr((uint32_t *)cenk_out[0], STAI_CENK_OUT_1_WIDTH * STAI_CENK_OUT_1_HEIGHT * STAI_CENK_OUT_1_CHANNEL);
 
     // Modelin 1 outputu var yüzde kaç Cenk'e benizyor sonucu uint8_t olduğundan 0 ile 255 arası değer çıkıyor bunu normalize edip yolaldık.
     uint8_t raw = *(uint8_t *)cenk_out[0];

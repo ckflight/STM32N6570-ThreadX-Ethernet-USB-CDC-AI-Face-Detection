@@ -214,7 +214,7 @@ int CK_USBD_FloatPrint(float num)
 {
     char buffer[32];
 
-    snprintf(buffer, sizeof(buffer), "%.2f", (double)num);
+    snprintf(buffer, sizeof(buffer), "%.3f", (double)num);
 
     return CK_USBD_Print(buffer);
 }
@@ -223,7 +223,7 @@ int CK_USBD_FloatPrintln(float num)
 {
     char buffer[32];
 
-    snprintf(buffer, sizeof(buffer), "%.2f", (double)num);
+    snprintf(buffer, sizeof(buffer), "%.3f", (double)num);
 
     return CK_USBD_Println(buffer);
 }

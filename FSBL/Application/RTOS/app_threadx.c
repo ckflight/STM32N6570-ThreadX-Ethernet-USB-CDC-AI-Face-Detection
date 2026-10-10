@@ -137,11 +137,12 @@ static VOID AI_Thread(ULONG arg)
             Face_Crop(&pp_output.pOutBuff[0]);
             Cenk_Run(&cenk_score);
             CK_USBD_Print("Cenk Score: ");
-            CK_USBD_IntPrintln(cenk_score);
+            CK_USBD_FloatPrintln(cenk_score);
 
 //        	Face_Crop2(&pp_output.pOutBuff[0]);
 //            int reid_status = ReID_Run();
 //
+
 //            if (reid_status == STAI_SUCCESS)
 //            {
 //                uint8_t *features = (uint8_t *)reid_out[0];
