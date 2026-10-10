@@ -25,7 +25,7 @@ extern stai_ptr reid_out[STAI_REID_OUT_NUM];
 void AI_Init(void);
 
 void AI_Run(void);
-float Cenk_Run(void);
+int Cenk_Run(float *percentage);
 int ReID_Run(void);
 
 void Face_Crop(fd_pp_outBuffer_t *face);

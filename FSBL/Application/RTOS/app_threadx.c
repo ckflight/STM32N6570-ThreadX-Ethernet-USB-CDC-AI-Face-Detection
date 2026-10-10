@@ -69,7 +69,7 @@ volatile int32_t ai_face_count = 0;
 volatile uint32_t ai_result_ready = 0;
 volatile uint32_t lcd_result_ready = 0;
 
-volatile float cenk_score = 0.0f;
+float cenk_score = 0.0f;
 
 UINT App_ThreadX_Init(VOID *memory_ptr)
 {
@@ -134,13 +134,12 @@ static VOID AI_Thread(ULONG arg)
         {
         	// Yüzün koordinatlarını crop için fonksiyona gönder.
         	// Aşağıdaki fonksiyonlar yüzün olduğu resimi alıp nn datası formatına çeviricek.
-//            Face_Crop(&pp_output.pOutBuff[0]);
-//            Face_Crop2(&pp_output.pOutBuff[0]);
-//
-//            cenk_score = Cenk_Run();
-//            CK_USBD_Print("Cenk Score: ");
-//            CK_USBD_IntPrintln(cenk_score);
-//
+            Face_Crop(&pp_output.pOutBuff[0]);
+            Cenk_Run(&cenk_score);
+            CK_USBD_Print("Cenk Score: ");
+            CK_USBD_IntPrintln(cenk_score);
+
+//        	Face_Crop2(&pp_output.pOutBuff[0]);
 //            int reid_status = ReID_Run();
 //
 //            if (reid_status == STAI_SUCCESS)
@@ -196,7 +195,7 @@ static VOID LCD_Text_Thread(ULONG arg)
         {
 
         	// Display cropped camera images on lcd foreground (these are the inputs of nn)
-            //LCD_ShowFaceCrop1(cenk_in);
+            LCD_ShowFaceCrop1(cenk_in);
             //LCD_ShowFaceCrop2(reid_in);
 
             for (int i = 0; i < pp_output.nb_detect; i++)

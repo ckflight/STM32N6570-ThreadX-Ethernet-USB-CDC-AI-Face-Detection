@@ -92,7 +92,7 @@ void LCD_ShowFaceCrop2(uint8_t *reid_in_buffer) // add cropped image data to fg 
             uint8_t g = reid_in_buffer[i + 1];
             uint8_t r = reid_in_buffer[i + 2];
 
-            dst[(y + 200) * SCREEN_WIDTH + x] = 0xF000 | ((r >> 4) << 8) | ((g >> 4) << 4) | (b >> 4);
+            dst[(y + 224) * SCREEN_WIDTH + x] = 0xF000 | ((r >> 4) << 8) | ((g >> 4) << 4) | (b >> 4);
         }
     }
 
