@@ -196,7 +196,11 @@ static VOID LCD_Text_Thread(ULONG arg)
         {
 
         	// Display cropped camera images on lcd foreground (these are the inputs of nn)
+
+        	// RGB Order değiştirdim
             LCD_ShowFaceCrop1(cenk_in);
+
+            // RGB Order aynı değişmedi henüz
             //LCD_ShowFaceCrop2(reid_in);
 
             for (int i = 0; i < pp_output.nb_detect; i++)

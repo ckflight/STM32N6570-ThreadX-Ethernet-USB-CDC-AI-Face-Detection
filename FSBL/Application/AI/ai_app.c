@@ -48,8 +48,8 @@ void AI_Init(void)
     NPUCache_Config();
 
     NeuralNetwork_Init();
-    CenkNetwork_Init();
-    //ReID_Init();
+    CenkNetwork_Init(); // rgb order changed
+    //ReID_Init();		// rgb order is not changed
 
     stai_network_info info;
     int ret = stai_network_get_info(network_context, &info);
@@ -139,20 +139,20 @@ void AI_Run(void)
 
 int Cenk_Run(float *percentage)
 {
-	// CleanDCache: CPU cache'indeki değiştirilmiş input verisini RAM'e yazar. Böylece NPU güncel veriyi okur.
-    SCB_CleanDCache_by_Addr((uint32_t *)cenk_in, STAI_CENK_IN_1_WIDTH * STAI_CENK_IN_1_HEIGHT * STAI_CENK_IN_1_CHANNEL);
+    const uint32_t input_size = STAI_CENK_IN_1_WIDTH *
+                                STAI_CENK_IN_1_HEIGHT *
+                                STAI_CENK_IN_1_CHANNEL;
 
-    // stai_cenk_run: NPU inference yapar ve sonucu cenk_out[0] adresindeki output buffer'a yazar.
+    SCB_CleanDCache_by_Addr((uint32_t *)cenk_in, input_size);
+
     int ret = stai_cenk_run(cenk_context, STAI_MODE_SYNC);
     assert(ret == STAI_SUCCESS);
 
-    // InvalidateDCache: CPU cache'indeki eski output verisini geçersiz kılar. CPU daha sonra output'u okuduğunda güncel veriyi RAM'den cache'e getirir.
-    SCB_InvalidateDCache_by_Addr((uint32_t *)cenk_out[0], STAI_CENK_OUT_1_WIDTH * STAI_CENK_OUT_1_HEIGHT * STAI_CENK_OUT_1_CHANNEL);
+    SCB_InvalidateDCache_by_Addr((uint32_t *)cenk_out[0], 32);
 
-    // Modelin 1 outputu var yüzde kaç Cenk'e benizyor sonucu uint8_t olduğundan 0 ile 255 arası değer çıkıyor bunu normalize edip yolaldık.
     uint8_t raw = *(uint8_t *)cenk_out[0];
 
-    *percentage = raw * (1.0f/256.0f);
+    *percentage = raw * (1.0f / 256.0f);
 
     return ret;
 }
@@ -166,8 +166,7 @@ int ReID_Run(void)
     int ret = stai_reid_run(reid_context, STAI_MODE_SYNC);
     assert(ret == STAI_SUCCESS);
 
-    // InvalidateDCache: CPU cache'indeki eski output verisini geçersiz kılar. CPU daha sonra output'u okuduğunda güncel veriyi RAM'den cache'e getirir.
-    SCB_InvalidateDCache_by_Addr((uint32_t *)reid_out[0], STAI_REID_OUT_1_WIDTH * STAI_REID_OUT_1_HEIGHT * STAI_REID_OUT_1_CHANNEL);
+    // InvalidateDCache yapılıyor zaten
 
     return ret;
 }
@@ -209,6 +208,21 @@ void Face_Crop(fd_pp_outBuffer_t *face_coordinates)
 
     // Crop the face ROI from the RGB888 image, resize it, and write it to face_nn_in
     ret = STM32Ipl_Resize_Roi(&src_rgb888, &roi, &dst, NULL, RESIZE_BILINEAR);
+
+    // Python tarafı RGB kullanıyor. STM32IPL ise IMAGE_BPP_RGB888 adını kullanmasına rağmen bellekte BGR sırasıyla tutuyor.
+    // Bu yüzden R ve B kanallarını değiştirdik.
+	//    typedef struct _rgb888_t
+	//    {
+	//    	uint8_t b; /**< Blue channel. */
+	//    	uint8_t g; /**< Green channel. */
+	//    	uint8_t r; /**< Red channel. */
+	//    } rgb888_t;
+
+    for (int i = 0; i < STAI_CENK_IN_1_WIDTH * STAI_CENK_IN_1_HEIGHT * 3; i += 3) {
+        uint8_t t 	 = cenk_in[i];
+        cenk_in[i]   = cenk_in[i+2];
+        cenk_in[i+2] = t;
+    }
 }
 
 void Face_Crop2(fd_pp_outBuffer_t *face_coordinates)
@@ -230,6 +244,7 @@ void Face_Crop2(fd_pp_outBuffer_t *face_coordinates)
     ret = STM32Ipl_Convert(&src, &src_rgb888);
 
     ret = STM32Ipl_Resize_Roi(&src_rgb888, &roi, &dst, NULL, RESIZE_BILINEAR);
+
 }
 
 static void NPURam_Enable(void)
