@@ -75,6 +75,7 @@ __attribute__((aligned(32)))
 static uint8_t cenk_lcd_buffer[CENK_CROP_SIZE];
 
 float cenk_score = 0.0f;
+uint8_t cenk_raw = 0;
 
 UINT App_ThreadX_Init(VOID *memory_ptr)
 {
@@ -141,13 +142,18 @@ static VOID AI_Thread(ULONG arg)
         	// Aşağıdaki fonksiyonlar yüzün olduğu resimi alıp nn datası formatına çeviricek.
         	Face_Crop(&pp_output.pOutBuff[0]);
 
-        	// NN input bozulmadan önce LCD için kopyala
         	memcpy(cenk_lcd_buffer, cenk_in, CENK_CROP_SIZE);
 
-        	Cenk_Run(&cenk_score);
+        	if (Cenk_Run(&cenk_raw) == STAI_SUCCESS)
+        	{
+        	    cenk_score = cenk_raw * (1.0f / 256.0f);
 
-            CK_USBD_Print("Cenk Score: ");
-            CK_USBD_FloatPrintln(cenk_score);
+        	    CK_USBD_Print("Cenk Raw: ");
+        	    CK_USBD_IntPrintln(cenk_raw);
+
+        	    CK_USBD_Print("Cenk Score: ");
+        	    CK_USBD_FloatPrintln(cenk_score);
+        	}
 
 //        	Face_Crop2(&pp_output.pOutBuff[0]);
 //
@@ -232,6 +238,9 @@ static VOID LCD_Text_Thread(ULONG arg)
 
             snprintf(text_buffer, sizeof(text_buffer), "Cenk Score: %.3f", cenk_score);
             UTIL_LCD_DisplayStringAt(SCREEN_WIDTH - 200, 10 + pp_output.nb_detect * 20, (uint8_t *)text_buffer, LEFT_MODE);
+
+            snprintf(text_buffer, sizeof(text_buffer), "Raw: %u", (unsigned int)cenk_raw);
+            UTIL_LCD_DisplayStringAt(SCREEN_WIDTH - 200, 10 + (pp_output.nb_detect + 1) * 20, (uint8_t *)text_buffer, LEFT_MODE);
 
         }
         else

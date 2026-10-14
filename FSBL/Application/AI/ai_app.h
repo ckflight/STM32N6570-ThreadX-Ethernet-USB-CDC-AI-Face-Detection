@@ -25,7 +25,7 @@ extern stai_ptr reid_out[STAI_REID_OUT_NUM];
 void AI_Init(void);
 
 void AI_Run(void);
-int Cenk_Run(float *percentage);
+int Cenk_Run(uint8_t *raw_output);
 int ReID_Run(void);
 uint32_t ReID_GetHash(const uint8_t *features, uint32_t length);
 

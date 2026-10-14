@@ -139,22 +139,24 @@ void AI_Run(void)
     assert(ret == STAI_SUCCESS);
 }
 
-int Cenk_Run(float *percentage)
+int Cenk_Run(uint8_t *raw_output)
 {
     const uint32_t input_size = STAI_CENK_IN_1_WIDTH *
                                 STAI_CENK_IN_1_HEIGHT *
                                 STAI_CENK_IN_1_CHANNEL;
 
+    // Bu gerekli
     SCB_CleanDCache_by_Addr((uint32_t *)cenk_in, input_size);
 
     int ret = stai_cenk_run(cenk_context, STAI_MODE_SYNC);
     assert(ret == STAI_SUCCESS);
 
+    // Bu gerekli değil run sonucu invalidate yapıyor zaten
     //SCB_InvalidateDCache_by_Addr((uint32_t *)cenk_out[0], 32);
 
-    uint8_t raw = *(uint8_t *)cenk_out[0];
+    *raw_output = *(uint8_t *)cenk_out[0];
 
-    *percentage = raw * (1.0f / 256.0f);
+    return ret;
 
     return ret;
 }
