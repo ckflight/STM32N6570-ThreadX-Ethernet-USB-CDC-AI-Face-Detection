@@ -29,6 +29,9 @@ stai_ptr reid_in;
 stai_ptr reid_out[STAI_REID_OUT_NUM] = {0};
 STAI_NETWORK_CONTEXT_DECLARE(reid_context, STAI_REID_CONTEXT_SIZE)
 
+__attribute__((aligned(32)))
+static uint8_t reid_output_buffer[STAI_REID_OUT_1_SIZE_BYTES];
+
 static void NeuralNetwork_Init(void);
 static void CenkNetwork_Init(void);
 static void ReID_Init(void);
@@ -49,7 +52,7 @@ void AI_Init(void)
 
     NeuralNetwork_Init();
     CenkNetwork_Init(); // rgb order changed
-    //ReID_Init();		// rgb order is not changed
+    ReID_Init();		// rgb order is not changed
 
     stai_network_info info;
     int ret = stai_network_get_info(network_context, &info);
@@ -112,21 +115,20 @@ static void ReID_Init(void)
     stai_network_info info;
     int ret;
 
-	// init model instance
-	ret = stai_reid_init(reid_context);
-	assert(ret == STAI_SUCCESS);
+    ret = stai_reid_init(reid_context);
+    assert(ret == STAI_SUCCESS);
 
     ret = stai_reid_get_info(reid_context, &info);
     assert(ret == STAI_SUCCESS);
 
-    stai_size reid_number_inputs 	= STAI_REID_IN_NUM;
-    stai_size reid_number_outputs 	= STAI_REID_OUT_NUM;
+    stai_size reid_number_inputs = STAI_REID_IN_NUM;
 
-	// Fetch input location
-	ret = stai_reid_get_inputs(reid_context, &reid_in, &reid_number_inputs);
-	assert(ret == STAI_SUCCESS);
+    ret = stai_reid_get_inputs(reid_context, &reid_in, &reid_number_inputs);
+    assert(ret == STAI_SUCCESS);
 
-    ret = stai_reid_get_outputs(reid_context, reid_out, &reid_number_outputs);
+    reid_out[0] = reid_output_buffer;
+
+    ret = stai_reid_set_outputs(reid_context, reid_out, STAI_REID_OUT_NUM);
     assert(ret == STAI_SUCCESS);
 }
 
@@ -148,7 +150,7 @@ int Cenk_Run(float *percentage)
     int ret = stai_cenk_run(cenk_context, STAI_MODE_SYNC);
     assert(ret == STAI_SUCCESS);
 
-    SCB_InvalidateDCache_by_Addr((uint32_t *)cenk_out[0], 32);
+    //SCB_InvalidateDCache_by_Addr((uint32_t *)cenk_out[0], 32);
 
     uint8_t raw = *(uint8_t *)cenk_out[0];
 
@@ -159,16 +161,29 @@ int Cenk_Run(float *percentage)
 
 int ReID_Run(void)
 {
-	// CleanDCache: CPU cache'indeki değiştirilmiş input verisini RAM'e yazar. Böylece NPU güncel veriyi okur.
-    SCB_CleanDCache_by_Addr((uint32_t *)reid_in, STAI_REID_IN_1_WIDTH * STAI_REID_IN_1_HEIGHT * STAI_REID_IN_1_CHANNEL);
+    const uint32_t input_size = STAI_REID_IN_1_WIDTH * STAI_REID_IN_1_HEIGHT * STAI_REID_IN_1_CHANNEL;
 
-    // NPU inference yapar ve sonucu cenk_out[0] adresindeki output buffer'a yazar.
+    SCB_CleanDCache_by_Addr((uint32_t *)reid_in, input_size);
+
+    SCB_InvalidateDCache_by_Addr((uint32_t *)reid_output_buffer, sizeof(reid_output_buffer));
+
     int ret = stai_reid_run(reid_context, STAI_MODE_SYNC);
     assert(ret == STAI_SUCCESS);
 
-    // InvalidateDCache yapılıyor zaten
-
     return ret;
+}
+
+uint32_t ReID_GetHash(const uint8_t *features, uint32_t length)
+{
+    uint32_t hash = 2166136261u;
+
+    for (uint32_t i = 0; i < length; i++)
+    {
+        hash ^= features[i];
+        hash *= 16777619u;
+    }
+
+    return hash;
 }
 
 static void Face_GetROI(fd_pp_outBuffer_t *face, rectangle_t *roi)
@@ -245,6 +260,13 @@ void Face_Crop2(fd_pp_outBuffer_t *face_coordinates)
 
     ret = STM32Ipl_Resize_Roi(&src_rgb888, &roi, &dst, NULL, RESIZE_BILINEAR);
 
+    // STM32IPL BGR üretiyor, ReID input için RGB'ye çeviriyoruz.
+    for (int i = 0; i < STAI_REID_IN_1_WIDTH * STAI_REID_IN_1_HEIGHT * 3; i += 3)
+    {
+        uint8_t t = reid_in[i];
+        reid_in[i] = reid_in[i + 2];
+        reid_in[i + 2] = t;
+    }
 }
 
 static void NPURam_Enable(void)

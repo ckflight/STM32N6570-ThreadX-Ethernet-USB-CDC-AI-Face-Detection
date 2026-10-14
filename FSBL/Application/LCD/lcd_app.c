@@ -69,12 +69,12 @@ void LCD_ShowFaceCrop1(uint8_t *cenk_in_buffer) // add cropped image data to fg 
         {
             int i = (y * STAI_CENK_IN_1_WIDTH + x) * 3;
 
+//            uint8_t b = cenk_in_buffer[i];
+//            uint8_t g = cenk_in_buffer[i + 1];
+//            uint8_t r = cenk_in_buffer[i + 2];
+
             // Face_Crop() içinde NN input buffer'ını BGR'den RGB'ye çevirdim.
             // Burada RGB buffer'ı doğru kanal sırasıyla okuyup LCD'nin ARGB4444 formatına dönüştürüyorum.
-
-            // uint8_t b = cenk_in_buffer[i];
-            // uint8_t g = cenk_in_buffer[i + 1];
-            // uint8_t r = cenk_in_buffer[i + 2];
 
             uint8_t r = cenk_in_buffer[i];
             uint8_t g = cenk_in_buffer[i + 1];
@@ -96,9 +96,16 @@ void LCD_ShowFaceCrop2(uint8_t *reid_in_buffer) // add cropped image data to fg 
         for (int x = 0; x < STAI_REID_IN_1_WIDTH; x++)
         {
             int i = (y * STAI_REID_IN_1_WIDTH + x) * 3;
-            uint8_t b = reid_in_buffer[i];
+//            uint8_t b = reid_in_buffer[i];
+//            uint8_t g = reid_in_buffer[i + 1];
+//            uint8_t r = reid_in_buffer[i + 2];
+
+            // Face_Crop2() içinde BGR -> RGB dönüşümü yapıldı.
+            // RGB verisini LCD'nin ARGB4444 formatına dönüştürüyoruz.
+
+            uint8_t r = reid_in_buffer[i];
             uint8_t g = reid_in_buffer[i + 1];
-            uint8_t r = reid_in_buffer[i + 2];
+            uint8_t b = reid_in_buffer[i + 2];
 
             dst[(y + 224) * SCREEN_WIDTH + x] = 0xF000 | ((r >> 4) << 8) | ((g >> 4) << 4) | (b >> 4);
         }

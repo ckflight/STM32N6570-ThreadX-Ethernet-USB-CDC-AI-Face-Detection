@@ -27,6 +27,7 @@ void AI_Init(void);
 void AI_Run(void);
 int Cenk_Run(float *percentage);
 int ReID_Run(void);
+uint32_t ReID_GetHash(const uint8_t *features, uint32_t length);
 
 void Face_Crop(fd_pp_outBuffer_t *face);
 void Face_Crop2(fd_pp_outBuffer_t *face);

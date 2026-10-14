@@ -69,6 +69,11 @@ volatile int32_t ai_face_count = 0;
 volatile uint32_t ai_result_ready = 0;
 volatile uint32_t lcd_result_ready = 0;
 
+#define CENK_CROP_SIZE (STAI_CENK_IN_1_WIDTH * STAI_CENK_IN_1_HEIGHT * 3)
+
+__attribute__((aligned(32)))
+static uint8_t cenk_lcd_buffer[CENK_CROP_SIZE];
+
 float cenk_score = 0.0f;
 
 UINT App_ThreadX_Init(VOID *memory_ptr)
@@ -134,26 +139,26 @@ static VOID AI_Thread(ULONG arg)
         {
         	// Yüzün koordinatlarını crop için fonksiyona gönder.
         	// Aşağıdaki fonksiyonlar yüzün olduğu resimi alıp nn datası formatına çeviricek.
-            Face_Crop(&pp_output.pOutBuff[0]);
-            Cenk_Run(&cenk_score);
+        	Face_Crop(&pp_output.pOutBuff[0]);
+
+        	// NN input bozulmadan önce LCD için kopyala
+        	memcpy(cenk_lcd_buffer, cenk_in, CENK_CROP_SIZE);
+
+        	Cenk_Run(&cenk_score);
+
             CK_USBD_Print("Cenk Score: ");
             CK_USBD_FloatPrintln(cenk_score);
 
 //        	Face_Crop2(&pp_output.pOutBuff[0]);
-//            int reid_status = ReID_Run();
 //
-
-//            if (reid_status == STAI_SUCCESS)
-//            {
-//                uint8_t *features = (uint8_t *)reid_out[0];
+//        	if (ReID_Run() == STAI_SUCCESS)
+//        	{
+//        	    uint32_t hash = ReID_GetHash((const uint8_t *)reid_out[0], STAI_REID_OUT_1_SIZE_BYTES);
 //
-//                CK_USBD_Println("ReID Features:");
-//
-//                for (int i = 0; i < 128; i++)
-//                {
-//                    CK_USBD_IntPrintln(features[i]);
-//                }
-//            }
+//        	    char buffer[48];
+//        	    snprintf(buffer, sizeof(buffer), "ReID Hash: %08lX", (unsigned long)hash);
+//        	    CK_USBD_Println(buffer);
+//        	}
         }
 
         CK_USBD_Println("ai_face_count: ");
@@ -198,7 +203,8 @@ static VOID LCD_Text_Thread(ULONG arg)
         	// Display cropped camera images on lcd foreground (these are the inputs of nn)
 
         	// RGB Order değiştirdim
-            LCD_ShowFaceCrop1(cenk_in);
+        	LCD_ShowFaceCrop1(cenk_lcd_buffer);
+
 
             // RGB Order aynı değişmedi henüz
             //LCD_ShowFaceCrop2(reid_in);
@@ -224,6 +230,8 @@ static VOID LCD_Text_Thread(ULONG arg)
                 UTIL_LCD_DisplayStringAt(SCREEN_WIDTH - 200, 10 + i * 20, (uint8_t *)text_buffer, LEFT_MODE);
             }
 
+            snprintf(text_buffer, sizeof(text_buffer), "Cenk Score: %.3f", cenk_score);
+            UTIL_LCD_DisplayStringAt(SCREEN_WIDTH - 200, 10 + pp_output.nb_detect * 20, (uint8_t *)text_buffer, LEFT_MODE);
 
         }
         else
