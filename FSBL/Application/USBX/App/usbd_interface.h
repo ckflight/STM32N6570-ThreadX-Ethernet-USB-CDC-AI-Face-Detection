@@ -8,6 +8,7 @@
 void CK_USBD_Init(void);
 
 int CK_USBD_Send(void);
+int CK_USBD_Receive(void);
 int CK_USBD_BufferSend(uint8_t *buffer, uint32_t length);
 int CK_USBD_Read(uint8_t *data);
 int CK_USBD_Available(void);

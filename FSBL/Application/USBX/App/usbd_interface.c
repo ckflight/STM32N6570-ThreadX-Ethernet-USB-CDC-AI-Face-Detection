@@ -133,18 +133,44 @@ int CK_USBD_Send(void)
     return 0;
 }
 
+int CK_USBD_Receive(void)
+{
+    static uint8_t usb_rx_data[64] __attribute__((aligned(32)));
+    ULONG actual_length = 0;
+
+    if (cdc_acm == UX_NULL)
+        return 0;
+
+    SCB_InvalidateDCache_by_Addr((uint32_t *)usb_rx_data, sizeof(usb_rx_data));
+
+    UINT status = ux_device_class_cdc_acm_read(cdc_acm, usb_rx_data, sizeof(usb_rx_data), &actual_length);
+
+    if (status != UX_SUCCESS)
+        return -1;
+
+    if (actual_length > 0)
+    {
+        SCB_InvalidateDCache_by_Addr((uint32_t *)usb_rx_data, sizeof(usb_rx_data));
+        CK_USBD_RxCallback(usb_rx_data, actual_length);
+    }
+
+    return (int)actual_length;
+}
+
 // this one needs cleandcache as well if we are not using the same cleaned buffer
 int CK_USBD_BufferSend(uint8_t *buffer, uint32_t length)
 {
-    ULONG actual_length;
+    ULONG actual_length = 0;
     UINT status;
 
-    if (cdc_acm == UX_NULL)
+    if (cdc_acm == UX_NULL || buffer == NULL || length == 0)
         return -1;
+
+    SCB_CleanDCache_by_Addr((uint32_t *)buffer, (length + 31U) & ~31U);
 
     status = ux_device_class_cdc_acm_write(cdc_acm, buffer, length, &actual_length);
 
-    return (status == UX_SUCCESS) ? 0 : -1;
+    return (status == UX_SUCCESS && actual_length == length) ? 0 : -1;
 }
 
 

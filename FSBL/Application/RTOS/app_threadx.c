@@ -28,7 +28,10 @@ static UCHAR usb_tx_buffer[USB_TX_BUFFER_SIZE];
 
 static TX_THREAD usb_tx_thread;
 static UCHAR usb_tx_stack[2048];
-//static VOID USB_TX_Thread1(ULONG arg);
+static TX_THREAD usb_rx_thread;
+static UCHAR usb_rx_stack[2048];
+
+static VOID USB_RX_Thread(ULONG arg);
 static VOID USB_TX_Thread(ULONG arg);
 
 extern UX_SLAVE_CLASS_CDC_ACM *cdc_acm;
@@ -77,6 +80,14 @@ static uint8_t cenk_lcd_buffer[CENK_CROP_SIZE];
 float cenk_score = 0.0f;
 uint8_t cenk_raw = 0;
 
+#define CENK_TEST_PACKET_SIZE (8 + CENK_CROP_SIZE + 1)
+
+__attribute__((aligned(32)))
+static uint8_t cenk_test_packet[(CENK_TEST_PACKET_SIZE + 31U) & ~31U];
+
+static uint8_t cenk_test_sent = 0;
+volatile uint8_t cenk_capture_requested = 0;
+
 UINT App_ThreadX_Init(VOID *memory_ptr)
 {
     UINT ret;
@@ -106,6 +117,9 @@ UINT App_ThreadX_Init(VOID *memory_ptr)
     ret = tx_thread_create(&lcd_text_thread, "LCD TEXT", LCD_Text_Thread, 0, lcd_text_stack, sizeof(lcd_text_stack), 15, 15, 1, TX_AUTO_START);
     if (ret != TX_SUCCESS) return ret;
 
+    ret = tx_thread_create(&usb_rx_thread, "USB RX", USB_RX_Thread, 0, usb_rx_stack, sizeof(usb_rx_stack), 15, 15, 1, TX_AUTO_START);
+    if (ret != TX_SUCCESS) return ret;
+
     return TX_SUCCESS;
 }
 
@@ -114,12 +128,36 @@ void MX_ThreadX_Init(void)
     tx_kernel_enter();
 }
 
+
 static VOID AI_Thread(ULONG arg)
 {
     UX_PARAMETER_NOT_USED(arg);
 
+    uint8_t rx_byte;
+    uint8_t start_index = 0;
+    const char command[] = "START";
+
     while (1)
     {
+        // Python'dan START komutunu kontrol et
+        while (CK_USBD_Read(&rx_byte))
+        {
+            if (rx_byte == (uint8_t)command[start_index])
+            {
+                start_index++;
+
+                if (start_index == 5)
+                {
+                    cenk_test_sent = 0;
+                    cenk_capture_requested = 1;
+                    start_index = 0;
+                }
+            }
+            else
+            {
+                start_index = (rx_byte == 'S') ? 1 : 0;
+            }
+        }
 
         if (cameraFrameReceived == 0)
         {
@@ -131,44 +169,83 @@ static VOID AI_Thread(ULONG arg)
 
         AI_Run(); // Kameradan alınan görüntüyü modelden geçir
 
-        app_postprocess_run((void **)nn_out, number_output, &pp_output, &pp_params);	// Ham NN çıktısını gerçek yüz detection sonucuna çevir
+        app_postprocess_run((void **)nn_out, number_output, &pp_output, &pp_params); // Ham NN çıktısını gerçek yüz detection sonucuna çevir
 
         ai_face_count = pp_output.nb_detect;
 
         // If there is a face crop resize and store it.
         if (pp_output.nb_detect > 0)
         {
-        	// Yüzün koordinatlarını crop için fonksiyona gönder.
-        	// Aşağıdaki fonksiyonlar yüzün olduğu resimi alıp nn datası formatına çeviricek.
-        	Face_Crop(&pp_output.pOutBuff[0]);
+            // Yüzün koordinatlarını crop için fonksiyona gönder.
+            // Aşağıdaki fonksiyonlar yüzün olduğu resimi alıp nn datası formatına çeviricek.
 
-        	memcpy(cenk_lcd_buffer, cenk_in, CENK_CROP_SIZE);
-
-        	if (Cenk_Run(&cenk_raw) == STAI_SUCCESS)
-        	{
-        	    cenk_score = cenk_raw * (1.0f / 256.0f);
-
-        	    CK_USBD_Print("Cenk Raw: ");
-        	    CK_USBD_IntPrintln(cenk_raw);
-
-        	    CK_USBD_Print("Cenk Score: ");
-        	    CK_USBD_FloatPrintln(cenk_score);
-        	}
-
-//        	Face_Crop2(&pp_output.pOutBuff[0]);
+//          Face_Crop(&pp_output.pOutBuff[0]);
 //
-//        	if (ReID_Run() == STAI_SUCCESS)
-//        	{
-//        	    uint32_t hash = ReID_GetHash((const uint8_t *)reid_out[0], STAI_REID_OUT_1_SIZE_BYTES);
+//          memcpy(cenk_lcd_buffer, cenk_in, CENK_CROP_SIZE);
 //
-//        	    char buffer[48];
-//        	    snprintf(buffer, sizeof(buffer), "ReID Hash: %08lX", (unsigned long)hash);
-//        	    CK_USBD_Println(buffer);
-//        	}
+//          if (Cenk_Run(&cenk_raw) == STAI_SUCCESS)
+//          {
+//
+//              cenk_score = cenk_raw * (1.0f / 256.0f);
+//
+//              CK_USBD_Print("Cenk Raw: ");
+//              CK_USBD_IntPrintln(cenk_raw);
+//
+//              CK_USBD_Print("Cenk Score: ");
+//              CK_USBD_FloatPrintln(cenk_score);
+//          }
+
+            Face_Crop(&pp_output.pOutBuff[0]);
+
+            memcpy(cenk_lcd_buffer, cenk_in, CENK_CROP_SIZE);
+
+            int cenk_status = Cenk_Run(&cenk_raw);
+
+            if (cenk_status == STAI_SUCCESS)
+            {
+                cenk_score = cenk_raw * (1.0f / 256.0f);
+
+                if (!cenk_test_sent && cenk_capture_requested)
+                {
+                    // Paket başlığı
+                    memcpy(cenk_test_packet, "CENK", 4);
+
+                    // Input boyutu
+                    uint32_t size = CENK_CROP_SIZE;
+                    memcpy(&cenk_test_packet[4], &size, 4);
+
+                    // NN input görüntüsü
+                    memcpy(&cenk_test_packet[8], cenk_lcd_buffer, CENK_CROP_SIZE);
+
+                    // NN raw output
+                    cenk_test_packet[8 + CENK_CROP_SIZE] = cenk_raw;
+
+                    // USB üzerinden binary gönder
+                    if (CK_USBD_BufferSend(cenk_test_packet, CENK_TEST_PACKET_SIZE) == 0)
+                    {
+                        cenk_test_sent = 1;
+                        cenk_capture_requested = 0;
+                    }
+                }
+            }
+
+//          Face_Crop2(&pp_output.pOutBuff[0]);
+//
+//          if (ReID_Run() == STAI_SUCCESS)
+//          {
+//              uint32_t hash = ReID_GetHash((const uint8_t *)reid_out[0], STAI_REID_OUT_1_SIZE_BYTES);
+//
+//              char buffer[48];
+//
+//              snprintf(buffer, sizeof(buffer), "ReID Hash: %08lX", (unsigned long)hash);
+//
+//              CK_USBD_Println(buffer);
+//          }
         }
 
-        CK_USBD_Println("ai_face_count: ");
-        CK_USBD_IntPrintln(ai_face_count);
+        // Binary USB testi sırasında kapalı
+        // CK_USBD_Println("ai_face_count: ");
+        // CK_USBD_IntPrintln(ai_face_count);
 
         ai_task_counter++;
 
@@ -181,9 +258,9 @@ static VOID AI_Thread(ULONG arg)
         CameraPipeline_NNPipe_Start((uint8_t *)nn_in, DCMIPP_MODE_SNAPSHOT);
 
         HAL_GPIO_TogglePin(LED_RED_GPIO_Port, LED_RED_Pin);
-
     }
 }
+
 
 static VOID LCD_Text_Thread(ULONG arg)
 {
@@ -268,7 +345,7 @@ static VOID Ethernet_Thread(ULONG thread_input)
 
     while (1)
     {
-    	CK_USBD_Println("Waiting TCP client...\r\n");
+    	//CK_USBD_Println("Waiting TCP client...\r\n");
 
         status = NetXDuo_TCP_Accept();
 
@@ -287,7 +364,7 @@ static VOID Ethernet_Thread(ULONG thread_input)
 
             if (status != NX_SUCCESS)
             {
-            	CK_USBD_Println("TCP send error...\r\n");
+            	//CK_USBD_Println("TCP send error...\r\n");
                 break;
             }
         }
@@ -333,6 +410,22 @@ static VOID USB_TX_Thread(ULONG arg)
     {
         if (CK_USBD_TxAvailable()) CK_USBD_Send();
         tx_thread_sleep(1);
+    }
+}
+
+static VOID USB_RX_Thread(ULONG arg)
+{
+    UX_PARAMETER_NOT_USED(arg);
+
+    while (1)
+    {
+        if (cdc_acm == UX_NULL)
+        {
+            tx_thread_sleep(1);
+            continue;
+        }
+
+        CK_USBD_Receive();
     }
 }
 
